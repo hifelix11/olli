@@ -2,14 +2,13 @@
 
 Web-App als PWA: Kinderbereich (Aufgaben, Figur), Elternbereich (PIN, Lernstand als Karte). Nur Anzeige und Antwort. Alle Logik liegt im Backend.
 
-Noch nicht angelegt. Anlegen mit:
+Vite + React 19 + TypeScript, Linter: oxlint.
 
 ```bash
-cd frontend
-npm create vite@latest web -- --template react-ts
-cd web
 npm install
-npm run dev
+npm run dev       # http://localhost:5173
+npm run build     # tsc + vite build
+npm run lint
 ```
 
 Geplante Struktur:
