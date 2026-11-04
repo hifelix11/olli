@@ -1,0 +1,19 @@
+id: check_results
+competency: check_results
+kind: check_equation
+settings:
+  operations: ["+", "−"]
+params:
+  a: { min: 1, max: 19 }
+  b: { min: 1, max: 9 }
+constraints:
+  sum_max: 20
+  result_min: 0
+levels:
+  easy:
+    settings:
+      operations: ["+"]
+    constraints:
+      sum_max: 10
+answer: choice
+representations: [plain]

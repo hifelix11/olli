@@ -1,6 +1,6 @@
 id: complement_to_10
 competency: complement_to_10
-kind: missing_addend
+kind: missing_number
 params:
   a: { min: 1, max: 9 }
   target: { min: 10, max: 10 }

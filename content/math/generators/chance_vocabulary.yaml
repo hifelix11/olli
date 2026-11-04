@@ -1,0 +1,8 @@
+id: chance_vocabulary
+competency: chance_vocabulary
+kind: chance
+params:
+  red: { min: 0, max: 5 }
+  blue: { min: 0, max: 5 }
+answer: choice
+representations: [plain]

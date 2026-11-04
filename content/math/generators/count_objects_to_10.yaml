@@ -1,0 +1,11 @@
+id: count_objects_to_10
+competency: count_objects_to_10
+kind: count
+params:
+  n: { min: 1, max: 10 }
+levels:
+  easy:
+    params:
+      n: { min: 1, max: 6 }
+answer: free_input
+representations: [scattered]

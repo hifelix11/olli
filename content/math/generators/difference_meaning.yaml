@@ -1,0 +1,11 @@
+id: difference_meaning
+competency: difference_meaning
+kind: subtraction
+prompt: "Wie viel mehr ist {a} als {b}?"
+params:
+  a: { min: 2, max: 10 }
+  b: { min: 1, max: 9 }
+constraints:
+  result_min: 1
+answer: free_input
+representations: [plain, twenty_field]

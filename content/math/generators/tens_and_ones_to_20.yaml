@@ -1,0 +1,9 @@
+id: tens_and_ones_to_20
+competency: tens_and_ones_to_20
+kind: missing_number
+prompt: "{c} = {a} + _"
+params:
+  a: { min: 10, max: 10 }
+  target: { min: 11, max: 20 }
+answer: free_input
+representations: [plain, twenty_field]

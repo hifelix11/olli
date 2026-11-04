@@ -1,0 +1,21 @@
+id: arithmetic_patterns
+competency: arithmetic_patterns
+kind: sequence_gap
+params:
+  start: { min: 0, max: 10 }
+  step: { min: 2, max: 5 }
+settings:
+  length: 4
+  min_value: 0
+  max_value: 20
+  directions: [forward, backward]
+  gap: any
+levels:
+  easy:
+    params:
+      step: { min: 2, max: 3 }
+    settings:
+      directions: [forward]
+      gap: end
+answer: free_input
+representations: [plain]

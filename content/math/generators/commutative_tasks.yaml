@@ -1,0 +1,16 @@
+id: commutative_tasks
+competency: commutative_tasks
+kind: related_fact
+settings:
+  relation: commutative
+params:
+  a: { min: 1, max: 9 }
+  b: { min: 1, max: 9 }
+constraints:
+  sum_max: 10
+levels:
+  hard:
+    constraints:
+      sum_max: 20
+answer: free_input
+representations: [plain]

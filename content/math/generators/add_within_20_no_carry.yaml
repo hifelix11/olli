@@ -1,0 +1,15 @@
+id: add_within_20_no_carry
+competency: add_within_20_no_carry
+kind: addition
+params:
+  a: { min: 11, max: 19 }
+  b: { min: 1, max: 8 }
+constraints:
+  sum_max: 20
+  no_carry: true
+levels:
+  easy:
+    params:
+      b: { min: 1, max: 3 }
+answer: free_input
+representations: [plain, twenty_field]

@@ -1,0 +1,11 @@
+id: tally_charts
+competency: tally_charts
+kind: count
+params:
+  n: { min: 1, max: 20 }
+levels:
+  easy:
+    params:
+      n: { min: 1, max: 10 }
+answer: free_input
+representations: [tally]

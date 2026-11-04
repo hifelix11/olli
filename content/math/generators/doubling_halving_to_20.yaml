@@ -1,0 +1,11 @@
+id: doubling_halving_to_20
+competency: doubling_halving_to_20
+kind: double_half
+params:
+  n: { min: 1, max: 10 }
+levels:
+  easy:
+    params:
+      n: { min: 1, max: 5 }
+answer: free_input
+representations: [plain, twenty_field]

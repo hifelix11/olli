@@ -1,0 +1,12 @@
+id: neighbour_tasks
+competency: neighbour_tasks
+kind: related_fact
+settings:
+  relation: neighbour
+params:
+  a: { min: 2, max: 9 }
+  b: { min: 2, max: 9 }
+constraints:
+  sum_max: 20
+answer: free_input
+representations: [plain]

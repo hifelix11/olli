@@ -1,0 +1,7 @@
+id: subitize_to_5
+competency: subitize_to_5
+kind: count
+params:
+  n: { min: 1, max: 5 }
+answer: free_input
+representations: [dice, fingers]

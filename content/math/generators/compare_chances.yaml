@@ -1,0 +1,9 @@
+id: compare_chances
+competency: compare_chances
+kind: compare_chances
+params:
+  total: { min: 2, max: 6 }
+  red_a: { min: 0, max: 6 }
+  red_b: { min: 0, max: 6 }
+answer: choice
+representations: [plain]

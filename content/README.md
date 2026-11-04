@@ -5,7 +5,7 @@ Fachinhalte als Daten, bundesland-unabhängig. Pro Fach ein Ordner.
 | Datei / Ordner | Inhalt |
 | --- | --- |
 | `math/competencies.yaml` | Kompetenzgraph: Fähigkeiten mit Voraussetzungen, Bereich und BKT-Startparametern. Jahrgangsstufe 1 vollständig (68 Kompetenzen) |
-| `math/generators/` | Pro Kompetenz eine Generator-Spezifikation (Parameter, Schwierigkeit, Antworttyp) |
+| `math/generators/` | Pro Kompetenz eine Generator-Spezifikation (Parameter, Schwierigkeit, Antworttyp). 32 von 68 |
 | `math/word_problems/` | Geprüfte Textaufgaben nach Sprachstufe. Nie live generiert. |
 
 Regeln:

@@ -1,0 +1,16 @@
+id: missing_number_to_20
+competency: missing_number_to_20
+kind: missing_number
+settings:
+  forms: ["a+_=c", "_+b=c", "c-_=a", "_-b=a"]
+params:
+  a: { min: 1, max: 12 }
+  target: { min: 3, max: 20 }
+levels:
+  easy:
+    settings:
+      forms: ["a+_=c"]
+    params:
+      target: { min: 3, max: 10 }
+answer: free_input
+representations: [plain]

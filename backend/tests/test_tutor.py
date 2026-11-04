@@ -4,6 +4,7 @@ import random
 
 import pytest
 
+from app.domain.generators.generate import generate_task
 from app.domain.generators.models import GeneratorSpec, Task
 from app.domain.graph.graph import CompetencyGraph
 from app.domain.selection.select import MASTERED, select_next
@@ -68,3 +69,18 @@ def test_everything_mastered_ends_the_session(
     for competency_id in state.mastery:
         state.mastery[competency_id] = 0.99
     assert Tutor(graph, specs, state).next_task() is None
+
+
+def test_choice_tasks_raise_guess_rate(
+    graph: CompetencyGraph, specs: dict[str, GeneratorSpec]
+) -> None:
+    competency = graph.get("compare_numbers_to_20")
+    task = generate_task(specs[competency.id], "medium", random.Random(0))
+
+    guessable = LearnerState.fresh(graph)
+    Tutor(graph, specs, guessable).submit(task, task.answer)
+
+    free = LearnerState.fresh(graph)
+    free.record(competency, True)
+
+    assert free.mastery[competency.id] > guessable.mastery[competency.id] > competency.bkt.p_init

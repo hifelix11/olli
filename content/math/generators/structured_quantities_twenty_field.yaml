@@ -1,0 +1,11 @@
+id: structured_quantities_twenty_field
+competency: structured_quantities_twenty_field
+kind: count
+params:
+  n: { min: 5, max: 20 }
+levels:
+  easy:
+    params:
+      n: { min: 5, max: 10 }
+answer: free_input
+representations: [twenty_field]

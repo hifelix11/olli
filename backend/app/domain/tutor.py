@@ -33,9 +33,15 @@ class Tutor:
         level = level_for(self.state.mastery[competency.id])
         return generate_task(spec, level, self.rng)
 
-    def submit(self, task: Task, answer: int) -> bool:
+    def submit(self, task: Task, answer: int | str) -> bool:
         competency = self.graph.get(task.competency)
         correct = answer == task.answer
+        if task.options:
+            # Choice tasks can be guessed: never below one over the number of options.
+            p_guess = max(competency.bkt.p_guess, 1 / len(task.options))
+            competency = competency.model_copy(
+                update={"bkt": competency.bkt.model_copy(update={"p_guess": p_guess})}
+            )
         self.state.record(competency, correct)
         if self.state.wrong_streak[competency.id] >= BACKTRACK_AFTER:
             backtrack(self.graph, self.state, competency)

@@ -1,0 +1,16 @@
+id: subtract_ten_and_ones_to_20
+competency: subtract_ten_and_ones_to_20
+kind: subtraction
+params:
+  a: { min: 11, max: 19 }
+  b: { min: 1, max: 10 }
+variants:
+  - params:
+      b: { min: 10, max: 10 }
+  - params:
+      b: { min: 1, max: 9 }
+    constraints:
+      result_min: 10
+      result_max: 10
+answer: free_input
+representations: [plain, twenty_field]

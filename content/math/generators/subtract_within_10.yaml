@@ -1,0 +1,15 @@
+id: subtract_within_10
+competency: subtract_within_10
+kind: subtraction
+params:
+  a: { min: 1, max: 10 }
+  b: { min: 1, max: 10 }
+levels:
+  easy:
+    params:
+      a: { min: 1, max: 6 }
+  hard:
+    params:
+      a: { min: 7, max: 10 }
+answer: free_input
+representations: [plain, twenty_field]

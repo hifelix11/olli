@@ -6,7 +6,21 @@ from pathlib import Path
 
 import yaml
 
-from app.domain.generators import addition, missing_addend
+from app.domain.generators import (
+    addition,
+    chance,
+    check_equation,
+    compare,
+    compare_chances,
+    count,
+    double_half,
+    even_odd,
+    missing_number,
+    number_word,
+    related_fact,
+    sequence_gap,
+    subtraction,
+)
 from app.domain.generators.models import GeneratorSpec, Task
 from app.domain.graph.graph import CompetencyGraph
 
@@ -14,7 +28,18 @@ Generator = Callable[[GeneratorSpec, str, random.Random], Task]
 
 GENERATORS: dict[str, Generator] = {
     "addition": addition.generate,
-    "missing_addend": missing_addend.generate,
+    "subtraction": subtraction.generate,
+    "missing_number": missing_number.generate,
+    "sequence_gap": sequence_gap.generate,
+    "count": count.generate,
+    "number_word": number_word.generate,
+    "compare": compare.generate,
+    "even_odd": even_odd.generate,
+    "related_fact": related_fact.generate,
+    "double_half": double_half.generate,
+    "check_equation": check_equation.generate,
+    "chance": chance.generate,
+    "compare_chances": compare_chances.generate,
 }
 
 
@@ -36,4 +61,7 @@ def load_specs(directory: Path, graph: CompetencyGraph) -> dict[str, GeneratorSp
 
 
 def generate_task(spec: GeneratorSpec, level: str, rng: random.Random) -> Task:
-    return GENERATORS[spec.kind](spec, level, rng)
+    task = GENERATORS[spec.kind](spec, level, rng)
+    if (task.options is not None) != (spec.answer == "choice"):
+        raise ValueError(f"generator '{spec.id}': answer type '{spec.answer}' does not match kind")
+    return task

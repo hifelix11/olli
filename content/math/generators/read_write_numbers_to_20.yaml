@@ -1,0 +1,14 @@
+id: read_write_numbers_to_20
+competency: read_write_numbers_to_20
+kind: number_word
+params:
+  n: { min: 0, max: 20 }
+levels:
+  easy:
+    params:
+      n: { min: 0, max: 10 }
+  hard:
+    params:
+      n: { min: 11, max: 20 }
+answer: free_input
+representations: [plain]

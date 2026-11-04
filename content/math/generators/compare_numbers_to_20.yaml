@@ -1,0 +1,13 @@
+id: compare_numbers_to_20
+competency: compare_numbers_to_20
+kind: compare
+params:
+  a: { min: 0, max: 20 }
+  b: { min: 0, max: 20 }
+levels:
+  easy:
+    params:
+      a: { min: 0, max: 10 }
+      b: { min: 0, max: 10 }
+answer: choice
+representations: [plain, twenty_field]

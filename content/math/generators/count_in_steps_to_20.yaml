@@ -1,0 +1,28 @@
+id: count_in_steps_to_20
+competency: count_in_steps_to_20
+kind: sequence_gap
+params:
+  start: { min: 0, max: 20 }
+  step: { min: 2, max: 2 }
+settings:
+  length: 4
+  min_value: 0
+  max_value: 20
+  directions: [forward, backward]
+  gap: any
+variants:
+  - params:
+      step: { min: 2, max: 2 }
+  - params:
+      step: { min: 5, max: 5 }
+  - params:
+      step: { min: 10, max: 10 }
+    settings:
+      length: 3
+levels:
+  easy:
+    settings:
+      directions: [forward]
+      gap: end
+answer: free_input
+representations: [plain, number_line]

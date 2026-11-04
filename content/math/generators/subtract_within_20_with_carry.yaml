@@ -1,0 +1,18 @@
+id: subtract_within_20_with_carry
+competency: subtract_within_20_with_carry
+kind: subtraction
+params:
+  a: { min: 11, max: 18 }
+  b: { min: 2, max: 9 }
+constraints:
+  borrow: true
+  result_min: 1
+levels:
+  easy:
+    params:
+      a: { min: 11, max: 14 }
+  hard:
+    params:
+      a: { min: 15, max: 18 }
+answer: free_input
+representations: [plain, twenty_field]
