@@ -10,12 +10,13 @@ Follow YAGNI principles. Prefer simple, minimal solutions and concise code. Use 
 
 ```
 backend/          Python + FastAPI. Gesamte Logik.
-  app/main.py     FastAPI-App
-  app/content.py  Pfad zu content/
+  app/main.py     FastAPI-App, legt Tabellen beim Start an
+  app/settings.py DATABASE_URL, CORS aus .env
+  app/content.py  Pfad zu content/, lädt Graph und Generatoren (gecacht)
   app/domain/     graph, generators, tracing, selection, analysis, language
   app/domain/tutor.py   Übungsschleife, verbindet die Module
-  app/api/        Routen
-  app/db/         Modelle, Migrationen
+  app/api/routes.py     children, next-task, answers, mastery
+  app/db/         models (children, tasks, attempts, mastery), session, repository
   tests/
 frontend/web/     Vite + React + TypeScript. Nur Anzeige und Antwort.
 content/          Fachinhalte als Daten, bundesland-unabhängig
@@ -91,7 +92,9 @@ supabase start                               # lokale Datenbank
 - Zurück zu den Grundlagen: nach `BACKTRACK_AFTER` (3) Fehlern in Folge sinkt die schwächste direkte Voraussetzung auf `DOUBT` (0,3) und wird geübt, bis sie wieder sitzt.
 - Generator-Kinds stehen in `content/math/generators/README.md`. Eine Spec pro Kompetenz, 32 von 68 haben eine. Fehlt eine, wirft `Tutor.next_task` einen `LookupError`.
 - Aufgaben mit Auswahl (`options`) heben die Rate-Rate auf mindestens 1 / Anzahl Optionen.
-- Der Demo-Fall steht in `tests/test_tutor.py`.
+- Der Demo-Fall steht in `tests/test_tutor.py` und über HTTP in `tests/test_api.py`.
+- API: Lösung bleibt im Backend (`tasks.payload`). Eine Aufgabe kann nur einmal beantwortet werden. `mastery` hat nur Zeilen für geübte Kompetenzen, der Rest gilt als `not_started`.
+- Tests laufen gegen SQLite im Speicher (Dependency-Override von `get_session`), die App gegen Postgres.
 
 ## Prototyp 0.1
 

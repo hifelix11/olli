@@ -45,7 +45,7 @@ def test_steps_back_after_repeated_failure_and_returns(
     for _ in range(3):
         task = tutor.next_task()
         assert task is not None and task.competency == GOAL
-        assert tutor.submit(task, task.answer + 1) is False
+        assert tutor.submit(task, task.answer + 1).correct is False
 
     task = tutor.next_task()
     assert task is not None and task.competency == "complement_to_10"

@@ -252,7 +252,7 @@ Nicht drin: Textaufgaben, Sprachstufen, Fehlermuster-Analyse, Spielwelt mit Füt
 Zeitrahmen: etwa 6 bis 8 Wochen neben dem Job. Demo-Szenario: jemanden absichtlich Fehler machen lassen und zeigen, wie das System reagiert.
 
 - [x] LehrplanPLUS Mathe Jahrgangsstufe 1 Bayern herunterladen und in Kompetenzen zerlegen (68 Kompetenzen, siehe content/math/competencies.yaml und curricula/de-by/math-1.yaml)
-- [x] Repo mit den vier Ordnern anlegen (Supabase lokal aufsetzen steht noch aus)
+- [x] Repo mit den vier Ordnern anlegen, Supabase lokal aufsetzen
 - [x] Ersten Generator plus Knowledge Tracing als Durchstich bauen (in-memory, siehe backend/tests/test_tutor.py)
 
 ## Nächste Schritte und Gesprächsnotizen

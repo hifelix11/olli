@@ -1,12 +1,19 @@
 """One learner's practice loop: select, generate, check, update. In memory for now."""
 
 import random
+from dataclasses import dataclass
 
 from app.domain.generators.generate import generate_task
 from app.domain.generators.models import GeneratorSpec, Task
 from app.domain.graph.graph import CompetencyGraph
 from app.domain.selection.select import BACKTRACK_AFTER, backtrack, level_for, select_next
 from app.domain.tracing.learner import LearnerState
+
+
+@dataclass
+class SubmitResult:
+    correct: bool
+    backtracked_to: str | None = None
 
 
 class Tutor:
@@ -33,7 +40,7 @@ class Tutor:
         level = level_for(self.state.mastery[competency.id])
         return generate_task(spec, level, self.rng)
 
-    def submit(self, task: Task, answer: int | str) -> bool:
+    def submit(self, task: Task, answer: int | str) -> SubmitResult:
         competency = self.graph.get(task.competency)
         correct = answer == task.answer
         if task.options:
@@ -43,6 +50,8 @@ class Tutor:
                 update={"bkt": competency.bkt.model_copy(update={"p_guess": p_guess})}
             )
         self.state.record(competency, correct)
+        backtracked_to = None
         if self.state.wrong_streak[competency.id] >= BACKTRACK_AFTER:
-            backtrack(self.graph, self.state, competency)
-        return correct
+            weakest = backtrack(self.graph, self.state, competency)
+            backtracked_to = weakest.id if weakest else None
+        return SubmitResult(correct, backtracked_to)
