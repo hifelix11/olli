@@ -1,0 +1,29 @@
+# Bayern, LehrplanPLUS Grundschule, Mathematik, Jahrgangsstufe 1.
+# Lernbereiche im LehrplanPLUS M1/2: 1 Zahlen und Operationen, 2 Raum und Form,
+# 3 Größen und Messen, 4 Daten und Zufall.
+# Platzhalter. Die Zerlegung des Lehrplans steht noch aus (siehe docs/konzept.md).
+
+state: de-by
+subject: math
+grade: 1
+curriculum: LehrplanPLUS Grundschule Mathematik
+source: https://www.lehrplanplus.bayern.de/
+version: 0.1
+
+units:
+  - ref: "M1/2 1 Zahlen und Operationen"
+    title: Zahlen bis 20 verstehen und darstellen
+    half_year: 1
+    competencies:
+      - count_to_20
+      - number_decomposition_to_10
+
+  - ref: "M1/2 1 Zahlen und Operationen"
+    title: Addition im Zahlenraum bis 20
+    half_year: 1
+    competencies:
+      - add_within_10
+      - complement_to_10
+      - add_ten_plus
+      - add_within_20_no_carry
+      - add_within_20_with_carry

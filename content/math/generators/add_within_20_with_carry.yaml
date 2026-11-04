@@ -1,0 +1,18 @@
+# Beispiel-Generator. Format ist ein Vorschlag, siehe README.md.
+id: add_within_20_with_carry
+competency: add_within_20_with_carry
+kind: addition
+params:
+  a: { min: 5, max: 9 }
+  b: { min: 2, max: 9 }
+constraints:
+  sum_min: 11
+  sum_max: 20
+levels:
+  easy:
+    a: { min: 5, max: 7 }
+    sum_max: 14
+  hard:
+    a: { min: 8, max: 9 }
+answer: free_input
+representations: [plain, twenty_field]

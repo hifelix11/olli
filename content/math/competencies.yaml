@@ -1,0 +1,74 @@
+# Kompetenzgraph Mathematik, Grundschule.
+# Bundesland-unabhängig. Lehrpläne verweisen über curricula/ auf diese IDs.
+#
+# Felder:
+#   id             stabil, snake_case, nie umbenennen
+#   title          kurze Bezeichnung
+#   description    was das Kind können soll, ein Satz
+#   grade_hint     typische Klassenstufe, nur Orientierung (verbindlich: curricula/)
+#   prerequisites  Kompetenz-IDs, die sicher sitzen müssen
+#   status         draft | reviewed (reviewed = von Didaktik geprüft)
+#   bkt            Startparameter, optional, sonst defaults
+#
+# Stand: Entwurf aus dem Konzept (Beispiel Zehnerübergang). Vollständiger
+# Graph Klasse 1 folgt nach Zerlegung des LehrplanPLUS.
+
+version: 0.1
+subject: math
+
+defaults:
+  bkt:
+    p_init: 0.2    # Vorwissen
+    p_learn: 0.15  # Lernrate pro Aufgabe
+    p_slip: 0.1    # kann es, antwortet falsch
+    p_guess: 0.05  # kann es nicht, antwortet richtig (freie Eingabe; bei 4 Optionen 0.25)
+
+competencies:
+  - id: count_to_20
+    title: Zählen bis 20
+    description: Zählt vorwärts und rückwärts im Zahlenraum bis 20.
+    grade_hint: 1
+    prerequisites: []
+    status: draft
+
+  - id: number_decomposition_to_10
+    title: Zahlzerlegung bis 10
+    description: Zerlegt Zahlen bis 10 in zwei Summanden, z. B. 7 = 5 + 2.
+    grade_hint: 1
+    prerequisites: [count_to_20]
+    status: draft
+
+  - id: add_within_10
+    title: Addition bis 10
+    description: Addiert im Zahlenraum bis 10, z. B. 3 + 4.
+    grade_hint: 1
+    prerequisites: [number_decomposition_to_10]
+    status: draft
+
+  - id: complement_to_10
+    title: Bis zur 10 auffüllen
+    description: Ergänzt eine Zahl bis 10, z. B. 7 + ? = 10.
+    grade_hint: 1
+    prerequisites: [number_decomposition_to_10]
+    status: draft
+
+  - id: add_ten_plus
+    title: Zehn plus Einer
+    description: Rechnet 10 + x im Zahlenraum bis 20, z. B. 10 + 3 = 13.
+    grade_hint: 1
+    prerequisites: [count_to_20]
+    status: draft
+
+  - id: add_within_20_no_carry
+    title: Addition bis 20 ohne Zehnerübergang
+    description: Addiert im Zahlenraum bis 20 ohne Zehnerübergang, z. B. 12 + 5.
+    grade_hint: 1
+    prerequisites: [add_within_10, add_ten_plus]
+    status: draft
+
+  - id: add_within_20_with_carry
+    title: Addition bis 20 mit Zehnerübergang
+    description: Addiert über die 10 hinweg, z. B. 7 + 5. Füllt bis zur 10 auf und zählt den Rest dazu.
+    grade_hint: 1
+    prerequisites: [complement_to_10, number_decomposition_to_10, add_ten_plus]
+    status: draft
