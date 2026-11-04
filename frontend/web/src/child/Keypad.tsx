@@ -1,0 +1,50 @@
+type Props = {
+  value: string;
+  onChange: (value: string) => void;
+  onSubmit: () => void;
+  maxLength?: number;
+  submitLabel?: string;
+  disabled?: boolean;
+};
+
+export function Keypad({
+  value,
+  onChange,
+  onSubmit,
+  maxLength = 2,
+  submitLabel = "Fertig",
+  disabled = false,
+}: Props) {
+  const press = (digit: string) => {
+    if (value.length < maxLength) onChange(value + digit);
+  };
+  return (
+    <div className="keypad">
+      {["1", "2", "3", "4", "5", "6", "7", "8", "9"].map((d) => (
+        <button key={d} type="button" className="key" onClick={() => press(d)} disabled={disabled}>
+          {d}
+        </button>
+      ))}
+      <button
+        type="button"
+        className="key"
+        onClick={() => onChange(value.slice(0, -1))}
+        disabled={disabled || value.length === 0}
+        aria-label="Letzte Ziffer löschen"
+      >
+        ⌫
+      </button>
+      <button type="button" className="key" onClick={() => press("0")} disabled={disabled}>
+        0
+      </button>
+      <button
+        type="button"
+        className="key key-submit"
+        onClick={onSubmit}
+        disabled={disabled || value.length === 0}
+      >
+        {submitLabel}
+      </button>
+    </div>
+  );
+}

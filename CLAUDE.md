@@ -18,7 +18,7 @@ backend/          Python + FastAPI. Gesamte Logik.
   app/api/routes.py     children, next-task, answers, mastery
   app/db/         models (children, tasks, attempts, mastery), session, repository
   tests/
-frontend/web/     Vite + React + TypeScript. Nur Anzeige und Antwort.
+frontend/web/     Vite + React + TypeScript. Nur Anzeige und Antwort. Design-Tokens in src/index.css, Plan in der README.
 content/          Fachinhalte als Daten, bundesland-unabhängig
   math/competencies.yaml   Kompetenzgraph
   math/generators/         Generator-Spezifikationen pro Kompetenz
@@ -47,7 +47,8 @@ Diese Regeln sind Entscheidungen. Nicht ohne Rücksprache ändern.
 - Sprache: Code, Identifier und Commit-Messages auf Englisch. Doku, Inhalte und UI-Texte auf Deutsch.
 - Schulbegriffe wie im Lehrplan: Jahrgangsstufe, nicht Klasse. Klasse nur für die Lerngruppe (`classes`).
 - Python 3.12+, uv, FastAPI, Pydantic v2, ruff, pytest. Alles typisiert.
-- TypeScript strict. Keine Logik im Frontend, die ins Backend gehört.
+- TypeScript strict. Keine Logik im Frontend, die ins Backend gehört. Keine UI-Bibliothek, Styles in `index.css` mit den Tokens aus `frontend/web/README.md`.
+- UI-Texte kurz, Sentence case, Du-Form für Kinder, Sie-frei für Eltern. Olli spricht in der ersten Person.
 - IDs in YAML sind `snake_case` und stabil. Nie umbenennen, `attempts` referenzieren sie.
 - Fachliche Zerlegungen (Kompetenzen, Voraussetzungen) sind Vorschläge, bis eine Didaktikerin sie geprüft hat. Status `draft` bleibt, bis das passiert ist.
 - Kinderdaten: Datensparsamkeit. Keine Klarnamen in Logs oder LLM-Prompts.

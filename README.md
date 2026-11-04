@@ -83,7 +83,7 @@ uv run uvicorn app.main:app --reload
 # Tests
 uv run pytest
 
-# Frontend (noch nicht angelegt, siehe frontend/web/README.md)
+# Frontend, http://localhost:5173
 cd frontend/web
 npm install
 npm run dev
