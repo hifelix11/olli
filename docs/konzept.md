@@ -253,7 +253,7 @@ Zeitrahmen: etwa 6 bis 8 Wochen neben dem Job. Demo-Szenario: jemanden absichtli
 
 - [ ] LehrplanPLUS Mathe Klasse 1 Bayern herunterladen und in Kompetenzen zerlegen
 - [x] Repo mit den vier Ordnern anlegen (Supabase lokal aufsetzen steht noch aus)
-- [ ] Ersten Generator plus Knowledge Tracing als Durchstich bauen
+- [x] Ersten Generator plus Knowledge Tracing als Durchstich bauen (in-memory, siehe backend/tests/test_tutor.py)
 
 ## Nächste Schritte und Gesprächsnotizen
 

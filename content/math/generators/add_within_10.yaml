@@ -1,0 +1,17 @@
+id: add_within_10
+competency: add_within_10
+kind: addition
+params:
+  a: { min: 1, max: 9 }
+  b: { min: 1, max: 9 }
+constraints:
+  sum_max: 10
+levels:
+  easy:
+    constraints:
+      sum_max: 6
+  hard:
+    constraints:
+      sum_min: 8
+answer: free_input
+representations: [plain, twenty_field]

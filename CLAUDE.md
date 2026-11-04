@@ -11,7 +11,9 @@ Follow YAGNI principles. Prefer simple, minimal solutions and concise code. Use 
 ```
 backend/          Python + FastAPI. Gesamte Logik.
   app/main.py     FastAPI-App
-  app/domain/     graph, tracing, selection, analysis, language
+  app/content.py  Pfad zu content/
+  app/domain/     graph, generators, tracing, selection, analysis, language
+  app/domain/tutor.py   Übungsschleife, verbindet die Module
   app/api/        Routen
   app/db/         Modelle, Migrationen
   tests/
@@ -79,6 +81,15 @@ supabase start                               # lokale Datenbank
 - **Versuch (attempt):** eine Antwort als Ereignis mit Zeit, Hilfebedarf, Darstellung.
 - **Lernstand (mastery):** Wahrscheinlichkeit pro Kind und Kompetenz.
 - **BKT-Parameter:** p_init (Vorwissen), p_learn (Lernrate), p_slip (Verhauen), p_guess (Raten).
+
+## Lernlogik, Stand Durchstich
+
+- Lernstand: `LearnerState.mastery` pro Kompetenz, Start bei `p_init`, Update per BKT in `tracing/bkt.py`.
+- Auswahl in `selection/select.py`: nicht gemeistert, alle Voraussetzungen ab `MASTERED` (0,95), geringste Tiefe zuerst, dann die mit dem höchsten Lernstand.
+- Schwierigkeit aus dem Lernstand: unter 0,4 `easy`, unter 0,75 `medium`, sonst `hard`.
+- Zurück zu den Grundlagen: nach `BACKTRACK_AFTER` (3) Fehlern in Folge sinkt die schwächste direkte Voraussetzung auf `DOUBT` (0,3) und wird geübt, bis sie wieder sitzt.
+- Generator-Kinds: `addition` (a + b = ?), `missing_addend` (a + ? = target). Eine Spec pro Kompetenz. Fehlt eine, wirft `Tutor.next_task` einen `LookupError`.
+- Der Demo-Fall steht in `tests/test_tutor.py`.
 
 ## Prototyp 0.1
 

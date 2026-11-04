@@ -1,0 +1,12 @@
+id: add_ten_plus
+competency: add_ten_plus
+kind: addition
+params:
+  a: { min: 10, max: 10 }
+  b: { min: 1, max: 10 }
+levels:
+  easy:
+    params:
+      b: { min: 1, max: 5 }
+answer: free_input
+representations: [plain, twenty_field]

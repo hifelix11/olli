@@ -1,0 +1,15 @@
+id: number_decomposition_to_10
+competency: number_decomposition_to_10
+kind: missing_addend
+params:
+  a: { min: 1, max: 9 }
+  target: { min: 3, max: 10 }
+levels:
+  easy:
+    params:
+      target: { min: 3, max: 6 }
+  hard:
+    params:
+      target: { min: 8, max: 10 }
+answer: free_input
+representations: [plain, twenty_field]
