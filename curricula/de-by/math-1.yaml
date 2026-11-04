@@ -1,15 +1,15 @@
 # Bayern, LehrplanPLUS Grundschule, Mathematik, Jahrgangsstufe 1.
 #
 # LehrplanPLUS beschreibt die Jahrgangsstufen 1 und 2 gemeinsam (Fachlehrplan M1/2,
-# Zahlenraum bis 100). Eine Trennung nach Klasse 1 und 2 gibt der Lehrplan nicht vor.
-# Diese Datei folgt der üblichen Schulpraxis: Klasse 1 arbeitet im Zahlenraum bis 20,
-# Klasse 2 erweitert auf 100 und führt das Einmaleins ein. Das deckt sich mit den
+# Zahlenraum bis 100). Eine Trennung nach Jahrgangsstufe 1 und 2 gibt der Lehrplan nicht vor.
+# Diese Datei folgt der üblichen Schulpraxis: Jahrgangsstufe 1 arbeitet im Zahlenraum bis 20,
+# Jahrgangsstufe 2 erweitert auf 100 und führt das Einmaleins ein. Das deckt sich mit den
 # "Grundlegenden Kompetenzen zum Ende der Jahrgangsstufe 2" (Einspluseins bis 20
 # automatisiert, vier Grundrechenarten bis 100, Kernaufgaben des Einmaleins).
 #
 # Aufbau: pro Teilbereich (ref) die nummerierten Kompetenzerwartungen (bullet) in
 # Kurzform und die Kompetenz-IDs aus content/math/competencies.yaml, die sie abdecken.
-#   grade_2     Anteil der Kompetenzerwartung, der erst in Klasse 2 drankommt
+#   grade_2     Anteil der Kompetenzerwartung, der erst in Jahrgangsstufe 2 drankommt
 #   not_in_app  Anteil, den die App nicht abdeckt (handelnd, mündlich, Handschrift)
 #
 # Quelle (abgerufen 2026-11-04):
@@ -71,11 +71,11 @@ units:
       - n: 3
         text: Kernaufgaben des kleinen Einmaleins (1, 2, 5, 10, Quadratsätze), Umkehrungen, Malaufgaben mit 0
         competencies: []
-        grade_2: vollständig Klasse 2
+        grade_2: vollständig Jahrgangsstufe 2
       - n: 4
         text: Kernaufgaben des Einmaleins zur Lösung weiterer Aufgaben nutzen
         competencies: []
-        grade_2: vollständig Klasse 2
+        grade_2: vollständig Jahrgangsstufe 2
       - n: 5
         text: Rechenstrategien (Rechnen in Schritten, Umkehr- und Tauschaufgaben, analoge Aufgaben, Nachbaraufgaben) bis 20 und bis 100; Rechenwege vergleichen, bewerten, begründen
         competencies: [commutative_tasks, inverse_tasks, doubling_halving_to_20, neighbour_tasks, add_within_20_with_carry, subtract_within_20_with_carry]
@@ -191,11 +191,11 @@ units:
       - n: 1
         text: Flächeninhalte durch Auslegen mit Einheitsflächen oder Zerlegen vergleichen
         competencies: []
-        grade_2: vollständig Klasse 2
+        grade_2: vollständig Jahrgangsstufe 2
       - n: 2
         text: Umfang durch Nachlegen (Streichhölzer, Wollfaden) oder Nachzeichnen am Gitternetz vergleichen
         competencies: []
-        grade_2: vollständig Klasse 2
+        grade_2: vollständig Jahrgangsstufe 2
 
   - ref: "3.1"
     title: Messhandlungen durchführen

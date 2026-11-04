@@ -13,20 +13,20 @@ Ein adaptiver KI-Lernbegleiter für Schulkinder, der mitwächst und selbst erken
 
 ## Marktumfeld
 
-[klugidu](https://www.klugidu.de/) (Neuracraft GmbH, Gründerin Prof. Dr. Sandra Eisenreich, Uni Passau) ist eine adaptive, evidenzbasierte Leseförderung für Klasse 1 bis 6: KI misst Leseflüssigkeit und passt Geschichten und Übungen an. Finanzierung über Schulen, z. B. Chancenbudget und Sparkassen-Förderung.
+[klugidu](https://www.klugidu.de/) (Neuracraft GmbH, Gründerin Prof. Dr. Sandra Eisenreich, Uni Passau) ist eine adaptive, evidenzbasierte Leseförderung für Jahrgangsstufe 1 bis 6: KI misst Leseflüssigkeit und passt Geschichten und Übungen an. Finanzierung über Schulen, z. B. Chancenbudget und Sparkassen-Förderung.
 
-Beobachtung von Felix: Apps, die Klasse 1 bis 12 und alle Fächer versprechen, wirken wie reine ChatGPT-Wrapper ohne echte Didaktik.
+Beobachtung von Felix: Apps, die Jahrgangsstufe 1 bis 12 und alle Fächer versprechen, wirken wie reine ChatGPT-Wrapper ohne echte Didaktik.
 
 - [ ] Konkrete Wettbewerber recherchieren und hier eintragen
 
 ## Offene Frage: Einstiegspunkt
 
-Felix' Dilemma: Ein Fach (wie klugidu mit Lesen) oder mehrere Fächer? Grundschule 1 bis 4 oder alle Klassenstufen?
+Felix' Dilemma: Ein Fach (wie klugidu mit Lesen) oder mehrere Fächer? Grundschule 1 bis 4 oder alle Jahrgangsstufen?
 
 Erste Einschätzung aus dem Gespräch:
 
 - Was klugidu stark macht, ist die enge Nische plus echte Diagnostik. Breite ohne Tiefe wirkt wie ein Wrapper.
-- Kandidat für den Einstieg: Mathe in der Grundschule, Klasse 1 bis 4. Gründe: klar messbare Lernziele, bundesweit ähnliche Lehrpläne, größter Hebel, und Lesen ist durch klugidu schon besetzt.
+- Kandidat für den Einstieg: Mathe in der Grundschule, Jahrgangsstufe 1 bis 4. Gründe: klar messbare Lernziele, bundesweit ähnliche Lehrpläne, größter Hebel, und Lesen ist durch klugidu schon besetzt.
 - Das Alleinstellungsmerkmal wäre dann nicht das Fach, sondern die Schicht darüber: der mitwachsende Begleiter, der Lücken erkennt. Fächer werden später angedockt.
 - Offen: Vertriebsweg über Schulen (B2B, Chancenbudget) oder über Eltern (B2C)?
 
@@ -36,15 +36,15 @@ Eltern als zahlende Kunden (B2C), Lehrkräfte als kostenlose Mitnutzer mit Einbl
 
 ### Fächer in der Grundschule
 
-Bundesweit ähnlich: Deutsch, Mathematik, Sachunterricht (Bayern: Heimat- und Sachunterricht), ab Klasse 3 meist Englisch, dazu Musik, Kunst, Sport, Religion/Ethik, je nach Land Werken und Textiles Gestalten.
+Bundesweit ähnlich: Deutsch, Mathematik, Sachunterricht (Bayern: Heimat- und Sachunterricht), ab Jahrgangsstufe 3 meist Englisch, dazu Musik, Kunst, Sport, Religion/Ethik, je nach Land Werken und Textiles Gestalten.
 
 Relevant für den Begleiter: Deutsch, Mathe, Sachunterricht, ggf. Englisch. Sachunterricht ist eine Lücke im Markt und trifft die Neugier der Kinder.
 
 ### Lehrpläne
 
-Alle 16 Bundesländer veröffentlichen ihre Grundschul-Lehrpläne online, meist über die Bildungsserver oder Landesinstitute (z. B. Bayern: LehrplanPLUS, NRW: QUA-LiS, Baden-Württemberg: Bildungsplan 2016). Übergreifend gelten die KMK-Bildungsstandards für Deutsch und Mathe am Ende von Klasse 4, die sich als gemeinsamer Nenner für Übungen eignen.
+Alle 16 Bundesländer veröffentlichen ihre Grundschul-Lehrpläne online, meist über die Bildungsserver oder Landesinstitute (z. B. Bayern: LehrplanPLUS, NRW: QUA-LiS, Baden-Württemberg: Bildungsplan 2016). Übergreifend gelten die KMK-Bildungsstandards für Deutsch und Mathe am Ende von Jahrgangsstufe 4, die sich als gemeinsamer Nenner für Übungen eignen.
 
-- [ ] Lehrpläne der Pilot-Bundesländer herunterladen und Kompetenzen pro Klassenstufe in eine Tabelle überführen
+- [ ] Lehrpläne der Pilot-Bundesländer herunterladen und Kompetenzen pro Jahrgangsstufe in eine Tabelle überführen
 
 ### Bildschirme in der Schule: Was sagt die Forschung?
 
@@ -83,7 +83,7 @@ Darstellung der Aufgaben ist offen und ein eigenes Designfeld:
 
 Idee: Die Welt der Figur selbst als Aufgabenraum nutzen, etwa Futter abzählen, einen Zaun aus 12 Brettern bauen, Vorräte gerecht aufteilen. So ist das Lernen Teil des Spiels statt davon getrennt.
 
-### Einstiegsfach: Mathe Klasse 1 bis 4
+### Einstiegsfach: Mathe Jahrgangsstufe 1 bis 4
 
 Entscheidung im Gespräch: Mathe zuerst. Gründe:
 
@@ -125,7 +125,7 @@ Warum so: Die Lernforschung nutzt seit Jahrzehnten genau diese Modelle (Duolingo
 
 Zukunftssicher: Die Schichten sind getrennt. Lernstandsmodell oder LLM lassen sich austauschen, ohne den Rest anzufassen.
 
-- [x] Kompetenzgraph Mathe Klasse 1 als ersten Prototyp bauen (68 Fähigkeiten, Entwurf)
+- [x] Kompetenzgraph Mathe Jahrgangsstufe 1 als ersten Prototyp bauen (68 Fähigkeiten, Entwurf)
 
 ### Wer definiert die Kompetenzen?
 
@@ -157,18 +157,18 @@ Für Mathe werden Aufgaben nicht einzeln erfunden, sondern aus drei Bausteinen z
 2. Darstellungen: Getrennt vom Generator. Dieselbe Aufgabe als nackte Rechnung, Zwanzigerfeld mit Plättchen, Zahlenstrahl oder Szene in der Spielwelt (Hase mit 7 Karotten bekommt 5 dazu). 10 Generatoren mal 5 Darstellungen = 50 Erlebnisse.
 3. Textaufgaben: Generator liefert Zahlen und Struktur, das Sprachmodell kleidet sie in eine kurze Geschichte in der passenden Sprachstufe. Jede Geschichte wird vor Freigabe geprüft (zweites Modell rechnet nach, anfangs von Hand) und liegt dann fertig im Pool. Nie live vor dem Kind generiert.
 
-Start-Umfang Mathe Klasse 1: ca. 30 Generatoren, 3 Darstellungen, einige hundert geprüfte Textaufgaben.
+Start-Umfang Mathe Jahrgangsstufe 1: ca. 30 Generatoren, 3 Darstellungen, einige hundert geprüfte Textaufgaben.
 
 ### Erweiterbare Struktur: Fächer und Bundesländer
 
-Start: Mathe, Klasse 1, Bayern (LehrplanPLUS). Leitprinzip: Kompetenzen sind universell, Lehrpläne sind nur ein Mapping darauf. Ein neues Bundesland = eine neue Mapping-Datei, keine neuen Aufgaben.
+Start: Mathe, Jahrgangsstufe 1, Bayern (LehrplanPLUS). Leitprinzip: Kompetenzen sind universell, Lehrpläne sind nur ein Mapping darauf. Ein neues Bundesland = eine neue Mapping-Datei, keine neuen Aufgaben.
 
 Datenmodell in vier Bereichen:
 
 | Bereich | Tabellen | Bemerkung |
 | --- | --- | --- |
 | Inhalt | subjects, competencies, prerequisites, generators, representations, word_problems | Bundesland-unabhängig |
-| Curricula | states, curricula, curriculum_units, competency_mappings | Mapping: Kompetenz → Lehrplanstelle, Klasse, Halbjahr |
+| Curricula | states, curricula, curriculum_units, competency_mappings | Mapping: Kompetenz → Lehrplanstelle, Jahrgangsstufe, Halbjahr |
 | Nutzer | children, guardians, teachers, classes | Bundesland hängt am Kind |
 | Lernen | attempts (jede Antwort als Ereignis, roh, dauerhaft), mastery (Lernstand pro Kind und Kompetenz), sessions | attempts sind der Datenschatz für spätere Parameterschätzung |
 
@@ -235,11 +235,11 @@ Repo-Struktur, oberste Ebene, vier Ordner: backend (Python, FastAPI), frontend (
 
 ### Prototyp Version 0.1
 
-Rahmen: Bayern, Mathe, Klasse 1. Die Demo muss zeigen, dass das System merkt, wo ein Kind hängt, und zurückgeht. Das ist der Kern, nicht die Spielwelt.
+Rahmen: Bayern, Mathe, Jahrgangsstufe 1. Die Demo muss zeigen, dass das System merkt, wo ein Kind hängt, und zurückgeht. Das ist der Kern, nicht die Spielwelt.
 
 Drin:
 
-- Kompletter Kompetenzgraph Mathe Klasse 1 Bayern (auch wenn es 50 Kompetenzen werden)
+- Kompletter Kompetenzgraph Mathe Jahrgangsstufe 1 Bayern (auch wenn es 50 Kompetenzen werden)
 - Generatoren für etwa die Hälfte der Kompetenzen
 - Zwei Darstellungen: nackte Rechnung und Zwanzigerfeld
 - Knowledge Tracing, Auswahl-Logik und Zurück-zu-den-Grundlagen voll funktionsfähig
@@ -251,12 +251,12 @@ Nicht drin: Textaufgaben, Sprachstufen, Fehlermuster-Analyse, Spielwelt mit Füt
 
 Zeitrahmen: etwa 6 bis 8 Wochen neben dem Job. Demo-Szenario: jemanden absichtlich Fehler machen lassen und zeigen, wie das System reagiert.
 
-- [x] LehrplanPLUS Mathe Klasse 1 Bayern herunterladen und in Kompetenzen zerlegen (68 Kompetenzen, siehe content/math/competencies.yaml und curricula/de-by/math-1.yaml)
+- [x] LehrplanPLUS Mathe Jahrgangsstufe 1 Bayern herunterladen und in Kompetenzen zerlegen (68 Kompetenzen, siehe content/math/competencies.yaml und curricula/de-by/math-1.yaml)
 - [x] Repo mit den vier Ordnern anlegen (Supabase lokal aufsetzen steht noch aus)
 - [x] Ersten Generator plus Knowledge Tracing als Durchstich bauen (in-memory, siehe backend/tests/test_tutor.py)
 
 ## Nächste Schritte und Gesprächsnotizen
 
 - [ ] Gespräch mit der klugidu-Gründerin über Bruder anbahnen: Partnerschaft statt Konkurrenz?
-- [ ] Einstiegsfach und Klassenstufe festlegen
+- [ ] Einstiegsfach und Jahrgangsstufe festlegen
 - [ ] Mit dem Lavita-Geschäftsführer Connections und mögliche Pilotschulen klären

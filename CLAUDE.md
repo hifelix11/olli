@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Olli ist ein adaptiver Lernbegleiter für Grundschulkinder. Start: Mathematik, Klasse 1, Bayern. Der Kern ist Diagnose und Steuerung des Lernens (Knowledge Tracing), nicht das Generieren von Aufgaben. Das vollständige Konzept steht in `docs/konzept.md`.
+Olli ist ein adaptiver Lernbegleiter für Grundschulkinder. Start: Mathematik, Jahrgangsstufe 1, Bayern. Der Kern ist Diagnose und Steuerung des Lernens (Knowledge Tracing), nicht das Generieren von Aufgaben. Das vollständige Konzept steht in `docs/konzept.md`.
 
 ## Working principles
 
@@ -44,6 +44,7 @@ Diese Regeln sind Entscheidungen. Nicht ohne Rücksprache ändern.
 ## Konventionen
 
 - Sprache: Code, Identifier und Commit-Messages auf Englisch. Doku, Inhalte und UI-Texte auf Deutsch.
+- Schulbegriffe wie im Lehrplan: Jahrgangsstufe, nicht Klasse. Klasse nur für die Lerngruppe (`classes`).
 - Python 3.12+, uv, FastAPI, Pydantic v2, ruff, pytest. Alles typisiert.
 - TypeScript strict. Keine Logik im Frontend, die ins Backend gehört.
 - IDs in YAML sind `snake_case` und stabil. Nie umbenennen, `attempts` referenzieren sie.

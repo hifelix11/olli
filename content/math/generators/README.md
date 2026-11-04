@@ -15,4 +15,4 @@ Pro Kompetenz eine Generator-Spezifikation als YAML. Die Logik liegt im Backend 
 
 Noch ohne Generator: `count_to_20` (braucht eine Darstellung mit Mengen) und `add_within_20_no_carry` (braucht eine Bedingung "kein Übertrag").
 
-Ziel für Klasse 1: etwa 30 Generatoren.
+Ziel für Jahrgangsstufe 1: etwa 30 Generatoren.

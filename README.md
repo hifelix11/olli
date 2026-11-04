@@ -4,7 +4,7 @@ Adaptiver KI-Lernbegleiter für Grundschulkinder. Arbeitstitel.
 
 Olli erkennt, wo ein Kind hängt, und entscheidet selbst, was als Nächstes dran ist. Der Kern ist Diagnose und Steuerung des Lernens (Knowledge Tracing), nicht das Generieren von Aufgaben. Kein ChatGPT im Kinderdesign.
 
-**Status:** Konzeptphase. Prototyp 0.1 in Arbeit: Bayern, Mathematik, Klasse 1.
+**Status:** Konzeptphase. Prototyp 0.1 in Arbeit: Bayern, Mathematik, Jahrgangsstufe 1.
 
 Das vollständige Konzept steht in [docs/konzept.md](docs/konzept.md).
 
@@ -23,7 +23,7 @@ Das vollständige Konzept steht in [docs/konzept.md](docs/konzept.md).
 | `backend/` | Python + FastAPI. Kompetenzgraph, Knowledge Tracing, Auswahl-Logik, Fehleranalyse, LLM-Schicht, API, Datenbank. Die gesamte Logik lebt hier. |
 | `frontend/web/` | Vite + React + TypeScript als PWA. Kinderbereich, Elternbereich, Darstellungen der Aufgaben. Nur Anzeige und Antwort. |
 | `content/` | Fachinhalte als Daten, pro Fach: Kompetenzgraph, Generatoren, geprüfte Textaufgaben. Bundesland-unabhängig. |
-| `curricula/` | Mapping pro Bundesland: Kompetenz → Lehrplanstelle, Klasse, Halbjahr. Neues Bundesland = neue Datei. |
+| `curricula/` | Mapping pro Bundesland: Kompetenz → Lehrplanstelle, Jahrgangsstufe, Halbjahr. Neues Bundesland = neue Datei. |
 | `docs/` | Konzept und Entscheidungen. |
 
 ## Architektur
@@ -59,7 +59,7 @@ Ziel: Die Demo zeigt, dass das System merkt, wo ein Kind hängt, und zurückgeht
 
 Drin:
 
-- Kompetenzgraph Mathe Klasse 1 Bayern
+- Kompetenzgraph Mathe Jahrgangsstufe 1 Bayern
 - Generatoren für etwa die Hälfte der Kompetenzen
 - Zwei Darstellungen: nackte Rechnung und Zwanzigerfeld
 - Knowledge Tracing, Auswahl-Logik, Zurück-zu-den-Grundlagen

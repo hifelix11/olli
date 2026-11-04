@@ -6,14 +6,14 @@
 #   title          kurze Bezeichnung
 #   description    was das Kind können soll, ein Satz
 #   area           numbers_operations | space_shape | quantities_measurement | data_chance
-#   grade_hint     typische Klassenstufe, nur Orientierung (verbindlich: curricula/)
+#   grade_hint     typische Jahrgangsstufe, nur Orientierung (verbindlich: curricula/)
 #   prerequisites  Kompetenz-IDs, die sicher sitzen müssen
 #   status         draft | reviewed (reviewed = von Didaktik geprüft), Standard draft
 #   bkt            Startparameter, optional, sonst defaults
 #
-# Stand: Klasse 1 vollständig, zerlegt aus dem LehrplanPLUS Bayern Mathematik 1/2
+# Stand: Jahrgangsstufe 1 vollständig, zerlegt aus dem LehrplanPLUS Bayern Mathematik 1/2
 # (siehe curricula/de-by/math-1.yaml für die Zuordnung). Zahlenraum bis 20.
-# Zahlenraum bis 100 und Einmaleins folgen mit Klasse 2.
+# Zahlenraum bis 100 und Einmaleins folgen mit Jahrgangsstufe 2.
 # Aufgenommen ist nur, was die App diagnostizieren und üben kann. Rein handelnde
 # Kompetenzen (Kneten, Falten, mit Handspannen messen) stehen in curricula/ unter
 # not_in_app. Die Zerlegung ist ein Entwurf und von einer Didaktikerin zu prüfen.
