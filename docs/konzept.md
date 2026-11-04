@@ -125,7 +125,7 @@ Warum so: Die Lernforschung nutzt seit Jahrzehnten genau diese Modelle (Duolingo
 
 Zukunftssicher: Die Schichten sind getrennt. Lernstandsmodell oder LLM lassen sich austauschen, ohne den Rest anzufassen.
 
-- [ ] Kompetenzgraph Mathe Klasse 1 als ersten Prototyp bauen (ca. 30 bis 50 Fähigkeiten)
+- [x] Kompetenzgraph Mathe Klasse 1 als ersten Prototyp bauen (68 Fähigkeiten, Entwurf)
 
 ### Wer definiert die Kompetenzen?
 
@@ -251,7 +251,7 @@ Nicht drin: Textaufgaben, Sprachstufen, Fehlermuster-Analyse, Spielwelt mit Füt
 
 Zeitrahmen: etwa 6 bis 8 Wochen neben dem Job. Demo-Szenario: jemanden absichtlich Fehler machen lassen und zeigen, wie das System reagiert.
 
-- [ ] LehrplanPLUS Mathe Klasse 1 Bayern herunterladen und in Kompetenzen zerlegen
+- [x] LehrplanPLUS Mathe Klasse 1 Bayern herunterladen und in Kompetenzen zerlegen (68 Kompetenzen, siehe content/math/competencies.yaml und curricula/de-by/math-1.yaml)
 - [x] Repo mit den vier Ordnern anlegen (Supabase lokal aufsetzen steht noch aus)
 - [x] Ersten Generator plus Knowledge Tracing als Durchstich bauen (in-memory, siehe backend/tests/test_tutor.py)
 

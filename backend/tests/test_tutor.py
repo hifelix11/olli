@@ -25,11 +25,11 @@ def lena(graph: CompetencyGraph) -> LearnerState:
 def test_fresh_learner_starts_at_a_root(graph: CompetencyGraph) -> None:
     chosen = select_next(graph, LearnerState.fresh(graph))
     assert chosen is not None
-    assert chosen.id == "count_to_20"
+    assert chosen.id == "number_sequence_to_10"
 
 
 def test_missing_generator_fails_loudly(graph: CompetencyGraph) -> None:
-    with pytest.raises(LookupError, match="count_to_20"):
+    with pytest.raises(LookupError, match="number_sequence_to_10"):
         Tutor(graph, specs={}).next_task()
 
 

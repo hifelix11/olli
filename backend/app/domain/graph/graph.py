@@ -15,10 +15,14 @@ class BktParams(BaseModel):
     p_guess: float
 
 
+Area = Literal["numbers_operations", "space_shape", "quantities_measurement", "data_chance"]
+
+
 class Competency(BaseModel):
     id: str
     title: str
     description: str = ""
+    area: Area
     grade_hint: int | None = None
     prerequisites: list[str] = Field(default_factory=list)
     status: Literal["draft", "reviewed"] = "draft"

@@ -6,11 +6,13 @@ BKT = BktParams(p_init=0.2, p_learn=0.15, p_slip=0.1, p_guess=0.05)
 
 
 def competency(id: str, *prerequisites: str) -> Competency:
-    return Competency(id=id, title=id, prerequisites=list(prerequisites), bkt=BKT)
+    return Competency(
+        id=id, title=id, area="numbers_operations", prerequisites=list(prerequisites), bkt=BKT
+    )
 
 
 def test_loads_content_graph(graph: CompetencyGraph) -> None:
-    assert len(graph) == 7
+    assert len(graph) == 68
     goal = graph.get("add_within_20_with_carry")
     assert [p.id for p in graph.prerequisites(goal.id)] == [
         "complement_to_10",
@@ -21,10 +23,11 @@ def test_loads_content_graph(graph: CompetencyGraph) -> None:
 
 
 def test_depth_is_longest_prerequisite_chain(graph: CompetencyGraph) -> None:
-    assert graph.depth("count_to_20") == 0
-    assert graph.depth("number_decomposition_to_10") == 1
-    assert graph.depth("complement_to_10") == 2
-    assert graph.depth("add_within_20_with_carry") == 3
+    assert graph.depth("number_sequence_to_10") == 0
+    assert graph.depth("count_to_20") == 2
+    assert graph.depth("number_decomposition_to_10") == 3
+    assert graph.depth("complement_to_10") == 4
+    assert graph.depth("add_within_20_with_carry") == 6
 
 
 def test_rejects_unknown_prerequisite() -> None:

@@ -5,15 +5,21 @@
 #   id             stabil, snake_case, nie umbenennen
 #   title          kurze Bezeichnung
 #   description    was das Kind können soll, ein Satz
+#   area           numbers_operations | space_shape | quantities_measurement | data_chance
 #   grade_hint     typische Klassenstufe, nur Orientierung (verbindlich: curricula/)
 #   prerequisites  Kompetenz-IDs, die sicher sitzen müssen
-#   status         draft | reviewed (reviewed = von Didaktik geprüft)
+#   status         draft | reviewed (reviewed = von Didaktik geprüft), Standard draft
 #   bkt            Startparameter, optional, sonst defaults
 #
-# Stand: Entwurf aus dem Konzept (Beispiel Zehnerübergang). Vollständiger
-# Graph Klasse 1 folgt nach Zerlegung des LehrplanPLUS.
+# Stand: Klasse 1 vollständig, zerlegt aus dem LehrplanPLUS Bayern Mathematik 1/2
+# (siehe curricula/de-by/math-1.yaml für die Zuordnung). Zahlenraum bis 20.
+# Zahlenraum bis 100 und Einmaleins folgen mit Klasse 2.
+# Aufgenommen ist nur, was die App diagnostizieren und üben kann. Rein handelnde
+# Kompetenzen (Kneten, Falten, mit Handspannen messen) stehen in curricula/ unter
+# not_in_app. Die Zerlegung ist ein Entwurf und von einer Didaktikerin zu prüfen.
+# Die Reihenfolge in dieser Datei ist die Reihenfolge bei Gleichstand in der Auswahl.
 
-version: 0.1
+version: 0.2
 subject: math
 
 defaults:
@@ -24,51 +30,503 @@ defaults:
     p_guess: 0.05  # kann es nicht, antwortet richtig (freie Eingabe; bei 4 Optionen 0.25)
 
 competencies:
-  - id: count_to_20
-    title: Zählen bis 20
-    description: Zählt vorwärts und rückwärts im Zahlenraum bis 20.
+
+  # ---------------------------------------------------------------
+  # Zahlen und Operationen: Zahlvorstellung bis 20 (LehrplanPLUS 1.1)
+  # ---------------------------------------------------------------
+
+  - id: number_sequence_to_10
+    title: Zahlwortreihe und Ziffern bis 10
+    description: Sagt die Zahlwortreihe von 0 bis 10 vorwärts auf und liest und schreibt die Ziffern 0 bis 9.
+    area: numbers_operations
     grade_hint: 1
     prerequisites: []
-    status: draft
+
+  - id: subitize_to_5
+    title: Mengen bis 5 auf einen Blick
+    description: Erfasst Anzahlen bis 5 ohne zu zählen, etwa Würfelbilder und Fingerbilder.
+    area: numbers_operations
+    grade_hint: 1
+    prerequisites: [number_sequence_to_10]
+
+  - id: count_objects_to_10
+    title: Anzahlen bis 10 bestimmen
+    description: Zählt Gegenstände bis 10 ab und nennt die Anzahl, auch bei ungeordneten Mengen.
+    area: numbers_operations
+    grade_hint: 1
+    prerequisites: [number_sequence_to_10]
+
+  - id: read_write_numbers_to_20
+    title: Zahlen bis 20 lesen und schreiben
+    description: Liest und schreibt Zahlen bis 20 und ordnet Zahlwort und Ziffernschreibweise einander zu.
+    area: numbers_operations
+    grade_hint: 1
+    prerequisites: [number_sequence_to_10]
+
+  - id: count_to_20
+    title: Zählen bis 20
+    description: Zählt vorwärts und rückwärts im Zahlenraum bis 20, auch von beliebigen Startzahlen aus.
+    area: numbers_operations
+    grade_hint: 1
+    prerequisites: [read_write_numbers_to_20]
+
+  - id: count_in_steps_to_20
+    title: In Schritten zählen
+    description: Zählt in Zweier-, Fünfer- und Zehnerschritten vorwärts und rückwärts bis 20.
+    area: numbers_operations
+    grade_hint: 1
+    prerequisites: [count_to_20]
+
+  - id: structured_quantities_twenty_field
+    title: Fünfer- und Zehnerstruktur nutzen
+    description: Erfasst Anzahlen bis 20 am Zwanzigerfeld schnell über die Fünfer- und Zehnerstruktur, ohne einzeln zu zählen.
+    area: numbers_operations
+    grade_hint: 1
+    prerequisites: [subitize_to_5, count_objects_to_10]
+
+  - id: compare_numbers_to_20
+    title: Zahlen vergleichen
+    description: Vergleicht Anzahlen und Zahlen bis 20 mit mehr, weniger, gleich und den Zeichen >, < und =.
+    area: numbers_operations
+    grade_hint: 1
+    prerequisites: [count_objects_to_10, read_write_numbers_to_20]
+
+  - id: order_numbers_to_20
+    title: Zahlen ordnen und Nachbarzahlen
+    description: Ordnet Zahlen bis 20 der Größe nach, findet sie am Zahlenstrahl und nennt Vorgänger und Nachfolger.
+    area: numbers_operations
+    grade_hint: 1
+    prerequisites: [count_to_20, compare_numbers_to_20]
+
+  - id: even_odd_to_20
+    title: Gerade und ungerade Zahlen
+    description: Unterscheidet gerade und ungerade Zahlen bis 20 und begründet es über Paare oder Zweierschritte.
+    area: numbers_operations
+    grade_hint: 1
+    prerequisites: [count_in_steps_to_20]
 
   - id: number_decomposition_to_10
     title: Zahlzerlegung bis 10
-    description: Zerlegt Zahlen bis 10 in zwei Summanden, z. B. 7 = 5 + 2.
+    description: Zerlegt Zahlen bis 10 in zwei Summanden, z. B. 7 = 5 + 2, und kennt alle Zerlegungen der 10.
+    area: numbers_operations
     grade_hint: 1
-    prerequisites: [count_to_20]
-    status: draft
+    prerequisites: [count_objects_to_10, structured_quantities_twenty_field]
+
+  - id: tens_and_ones_to_20
+    title: Zehner und Einer bis 20
+    description: Versteht Zahlen von 11 bis 20 als 10 und Einer, z. B. 14 = 10 + 4, und zeigt sie am Zwanzigerfeld.
+    area: numbers_operations
+    grade_hint: 1
+    prerequisites: [number_decomposition_to_10, read_write_numbers_to_20]
+
+  - id: switch_representations_to_20
+    title: Zahldarstellungen übersetzen
+    description: Überträgt eine Zahl bis 20 zwischen Ziffer, Zahlwort, Zwanzigerfeld, Zahlenstrahl und Zehner-Einer-Schreibweise.
+    area: numbers_operations
+    grade_hint: 1
+    prerequisites: [tens_and_ones_to_20, order_numbers_to_20]
+
+  - id: estimate_quantities_to_20
+    title: Anzahlen schätzen
+    description: Schätzt Anzahlen bis 20 grob und prüft die Schätzung durch Abzählen.
+    area: numbers_operations
+    grade_hint: 1
+    prerequisites: [structured_quantities_twenty_field, compare_numbers_to_20]
+
+  - id: number_meanings
+    title: Bedeutungen von Zahlen
+    description: Unterscheidet, ob eine Zahl eine Anzahl, eine Zählzahl, eine Platznummer, eine Maßzahl oder eine Kennzeichnung wie eine Busnummer ist.
+    area: numbers_operations
+    grade_hint: 1
+    prerequisites: [read_write_numbers_to_20]
+
+  # ---------------------------------------------------------------
+  # Zahlen und Operationen: Addition und Subtraktion bis 20 (1.2)
+  # ---------------------------------------------------------------
+
+  - id: addition_meaning
+    title: Plus verstehen
+    description: Versteht Addition als Hinzufügen oder Vereinigen und ordnet Handlungen und Bildern eine Plusaufgabe zu.
+    area: numbers_operations
+    grade_hint: 1
+    prerequisites: [count_objects_to_10]
 
   - id: add_within_10
     title: Addition bis 10
     description: Addiert im Zahlenraum bis 10, z. B. 3 + 4.
+    area: numbers_operations
     grade_hint: 1
-    prerequisites: [number_decomposition_to_10]
-    status: draft
+    prerequisites: [addition_meaning, number_decomposition_to_10]
 
   - id: complement_to_10
     title: Bis zur 10 auffüllen
     description: Ergänzt eine Zahl bis 10, z. B. 7 + ? = 10.
+    area: numbers_operations
     grade_hint: 1
     prerequisites: [number_decomposition_to_10]
-    status: draft
+
+  - id: subtraction_meaning
+    title: Minus verstehen
+    description: Versteht Subtraktion als Wegnehmen und ordnet Handlungen und Bildern eine Minusaufgabe zu.
+    area: numbers_operations
+    grade_hint: 1
+    prerequisites: [addition_meaning]
+
+  - id: subtract_within_10
+    title: Subtraktion bis 10
+    description: Subtrahiert im Zahlenraum bis 10, z. B. 9 − 4.
+    area: numbers_operations
+    grade_hint: 1
+    prerequisites: [subtraction_meaning, number_decomposition_to_10]
+
+  - id: commutative_tasks
+    title: Tauschaufgaben
+    description: Erkennt, dass 3 + 5 und 5 + 3 dasselbe Ergebnis haben, und nutzt das beim Rechnen.
+    area: numbers_operations
+    grade_hint: 1
+    prerequisites: [add_within_10]
+
+  - id: inverse_tasks
+    title: Umkehraufgaben
+    description: Bildet zu einer Plusaufgabe die passenden Minusaufgaben und umgekehrt, z. B. 2 + 7 = 9 und 9 − 7 = 2.
+    area: numbers_operations
+    grade_hint: 1
+    prerequisites: [add_within_10, subtract_within_10]
+
+  - id: difference_meaning
+    title: Unterschied bestimmen
+    description: Versteht Subtraktion auch als Unterschied zweier Mengen oder als Ergänzen, z. B. Wie viele mehr?
+    area: numbers_operations
+    grade_hint: 1
+    prerequisites: [subtract_within_10, compare_numbers_to_20]
 
   - id: add_ten_plus
     title: Zehn plus Einer
     description: Rechnet 10 + x im Zahlenraum bis 20, z. B. 10 + 3 = 13.
+    area: numbers_operations
     grade_hint: 1
-    prerequisites: [count_to_20]
-    status: draft
+    prerequisites: [tens_and_ones_to_20]
+
+  - id: subtract_ten_and_ones_to_20
+    title: Zehner und Einer abziehen
+    description: Rechnet im Zahlenraum bis 20 mit der Zehner-Einer-Struktur, z. B. 14 − 4 = 10 und 14 − 10 = 4.
+    area: numbers_operations
+    grade_hint: 1
+    prerequisites: [tens_and_ones_to_20, subtract_within_10]
 
   - id: add_within_20_no_carry
     title: Addition bis 20 ohne Zehnerübergang
     description: Addiert im Zahlenraum bis 20 ohne Zehnerübergang, z. B. 12 + 5.
+    area: numbers_operations
     grade_hint: 1
     prerequisites: [add_within_10, add_ten_plus]
-    status: draft
+
+  - id: subtract_within_20_no_carry
+    title: Subtraktion bis 20 ohne Zehnerübergang
+    description: Subtrahiert im Zahlenraum bis 20 ohne Zehnerübergang, z. B. 17 − 5.
+    area: numbers_operations
+    grade_hint: 1
+    prerequisites: [subtract_within_10, subtract_ten_and_ones_to_20]
+
+  - id: doubling_halving_to_20
+    title: Verdoppeln und Halbieren
+    description: Verdoppelt Zahlen bis 10 und halbiert gerade Zahlen bis 20, z. B. 6 + 6 = 12 und die Hälfte von 12.
+    area: numbers_operations
+    grade_hint: 1
+    prerequisites: [add_within_10, even_odd_to_20]
 
   - id: add_within_20_with_carry
     title: Addition bis 20 mit Zehnerübergang
     description: Addiert über die 10 hinweg, z. B. 7 + 5. Füllt bis zur 10 auf und zählt den Rest dazu.
+    area: numbers_operations
     grade_hint: 1
     prerequisites: [complement_to_10, number_decomposition_to_10, add_ten_plus]
-    status: draft
+
+  - id: subtract_within_20_with_carry
+    title: Subtraktion bis 20 mit Zehnerübergang
+    description: Subtrahiert über die 10 hinweg, z. B. 13 − 5. Zieht bis zur 10 ab und nimmt den Rest weg.
+    area: numbers_operations
+    grade_hint: 1
+    prerequisites: [subtract_ten_and_ones_to_20, number_decomposition_to_10, subtract_within_20_no_carry]
+
+  - id: neighbour_tasks
+    title: Nachbaraufgaben
+    description: Leitet aus einer bekannten Aufgabe die Nachbaraufgabe ab, z. B. aus 6 + 6 = 12 die Aufgabe 6 + 7.
+    area: numbers_operations
+    grade_hint: 1
+    prerequisites: [doubling_halving_to_20, add_within_20_no_carry]
+
+  - id: missing_number_to_20
+    title: Platzhalteraufgaben
+    description: Findet die fehlende Zahl in Aufgaben wie 7 + _ = 12 oder _ − 3 = 5.
+    area: numbers_operations
+    grade_hint: 1
+    prerequisites: [inverse_tasks, add_within_20_no_carry, subtract_within_20_no_carry]
+
+  - id: check_results
+    title: Ergebnisse prüfen
+    description: Prüft, ob eine Rechnung stimmt, findet den Fehler und korrigiert ihn, etwa mit der Umkehraufgabe.
+    area: numbers_operations
+    grade_hint: 1
+    prerequisites: [inverse_tasks, add_within_20_no_carry, subtract_within_20_no_carry]
+
+  - id: arithmetic_patterns
+    title: Rechenmuster fortsetzen
+    description: Erkennt Muster in Zahlenfolgen und Aufgabenreihen, z. B. 2, 4, 6 oder 3 + 4, 4 + 4, 5 + 4, und setzt sie fort.
+    area: numbers_operations
+    grade_hint: 1
+    prerequisites: [count_in_steps_to_20, add_within_20_no_carry]
+
+  - id: fluency_plus_minus_to_20
+    title: Einspluseins bis 20 automatisiert
+    description: Löst Plus- und Minusaufgaben bis 20 schnell und sicher aus dem Gedächtnis, ohne zu zählen.
+    area: numbers_operations
+    grade_hint: 1
+    prerequisites: [add_within_20_with_carry, subtract_within_20_with_carry, neighbour_tasks]
+
+  # ---------------------------------------------------------------
+  # Zahlen und Operationen: Sachsituationen (1.3)
+  # ---------------------------------------------------------------
+
+  - id: picture_to_equation
+    title: Rechengeschichte und Aufgabe
+    description: Ordnet einem Bild oder einer kurzen Geschichte die passende Plus- oder Minusaufgabe zu und umgekehrt.
+    area: numbers_operations
+    grade_hint: 1
+    prerequisites: [addition_meaning, subtraction_meaning]
+
+  - id: find_math_question
+    title: Mathe-Fragen finden
+    description: Erkennt, welche Frage sich zu einem Bild oder einer Situation mit Zahlen beantworten lässt.
+    area: numbers_operations
+    grade_hint: 1
+    prerequisites: [picture_to_equation]
+
+  - id: word_problems_to_10
+    title: Textaufgaben bis 10
+    description: Löst einfache Sachaufgaben mit einer Rechenart im Zahlenraum bis 10.
+    area: numbers_operations
+    grade_hint: 1
+    prerequisites: [picture_to_equation, add_within_10, subtract_within_10]
+
+  - id: word_problems_to_20
+    title: Textaufgaben bis 20
+    description: Löst Sachaufgaben mit einer Rechenart im Zahlenraum bis 20, auch mit Zehnerübergang.
+    area: numbers_operations
+    grade_hint: 1
+    prerequisites: [word_problems_to_10, add_within_20_with_carry, subtract_within_20_with_carry]
+
+  - id: plausibility_of_solutions
+    title: Lösungen auf Sinn prüfen
+    description: Beurteilt, ob ein Ergebnis zur Sachsituation passen kann, z. B. ob ein Eis 40 Euro kosten kann.
+    area: numbers_operations
+    grade_hint: 1
+    prerequisites: [word_problems_to_10]
+
+  - id: combinatorics_simple
+    title: Möglichkeiten zählen
+    description: Findet durch Probieren alle Kombinationen bei kleinen Aufgaben, z. B. 2 T-Shirts und 3 Hosen, und zählt sie.
+    area: numbers_operations
+    grade_hint: 1
+    prerequisites: [count_objects_to_10]
+
+  # ---------------------------------------------------------------
+  # Raum und Form (2.1 bis 2.4)
+  # ---------------------------------------------------------------
+
+  - id: position_words
+    title: Lagebegriffe
+    description: Versteht und verwendet links, rechts, oben, unten, vor, hinter, über, unter, neben und zwischen.
+    area: space_shape
+    grade_hint: 1
+    prerequisites: []
+
+  - id: follow_paths
+    title: Wege verfolgen
+    description: Folgt Weganweisungen wie zwei nach rechts, eins nach oben in einem Gitter und beschreibt einfache Wege.
+    area: space_shape
+    grade_hint: 1
+    prerequisites: [position_words, count_objects_to_10]
+
+  - id: perspectives
+    title: Ansichten erkennen
+    description: Ordnet Ansichten von vorne, von der Seite und von oben dem passenden Gegenstand oder Bauwerk zu.
+    area: space_shape
+    grade_hint: 1
+    prerequisites: [position_words]
+
+  - id: plane_shapes
+    title: Flächenformen
+    description: Erkennt und benennt Dreieck, Kreis, Viereck, Quadrat und Rechteck, auch gedreht und in verschiedenen Größen.
+    area: space_shape
+    grade_hint: 1
+    prerequisites: []
+
+  - id: shape_properties
+    title: Ecken und Seiten
+    description: Zählt Ecken und Seiten von Flächenformen und sortiert Formen nach solchen Eigenschaften.
+    area: space_shape
+    grade_hint: 1
+    prerequisites: [plane_shapes, count_objects_to_10]
+
+  - id: solids
+    title: Körperformen
+    description: Erkennt und benennt Würfel, Quader, Kugel, Zylinder, Kegel und Pyramide an Gegenständen aus dem Alltag.
+    area: space_shape
+    grade_hint: 1
+    prerequisites: []
+
+  - id: solid_properties
+    title: Eigenschaften von Körpern
+    description: Unterscheidet Körper danach, ob sie rollen oder kippen, und zählt Ecken, Kanten und Flächen.
+    area: space_shape
+    grade_hint: 1
+    prerequisites: [solids, count_objects_to_10]
+
+  - id: compose_decompose_shapes
+    title: Figuren legen und zerlegen
+    description: Legt Figuren aus Teilen zusammen und erkennt, welche Teile beim Zerlegen oder Falten entstehen.
+    area: space_shape
+    grade_hint: 1
+    prerequisites: [plane_shapes]
+
+  - id: copy_shapes_on_grid
+    title: Figuren im Gitter nachzeichnen
+    description: Zeichnet eine vorgegebene Figur im Gitternetz nach und vergleicht sie mit der Vorlage.
+    area: space_shape
+    grade_hint: 1
+    prerequisites: [plane_shapes, position_words]
+
+  - id: symmetry_basics
+    title: Spiegelbilder und Symmetrie
+    description: Erkennt achsensymmetrische Figuren, findet die Spiegelachse und ergänzt eine fehlende Hälfte.
+    area: space_shape
+    grade_hint: 1
+    prerequisites: [plane_shapes]
+
+  - id: geometric_patterns
+    title: Muster aus Formen
+    description: Erkennt die Regel in einem Muster aus Formen oder Farben und setzt es fort.
+    area: space_shape
+    grade_hint: 1
+    prerequisites: [plane_shapes]
+
+  # ---------------------------------------------------------------
+  # Größen und Messen (3.1 bis 3.3)
+  # ---------------------------------------------------------------
+
+  - id: compare_lengths
+    title: Längen vergleichen
+    description: Vergleicht Längen direkt und verwendet länger, kürzer und gleich lang.
+    area: quantities_measurement
+    grade_hint: 1
+    prerequisites: []
+
+  - id: measure_with_nonstandard_units
+    title: Mit eigenen Einheiten messen
+    description: Misst Längen mit Einheiten wie Büroklammern oder Schritten und gibt das Ergebnis als Maßzahl mit Einheit an.
+    area: quantities_measurement
+    grade_hint: 1
+    prerequisites: [compare_lengths, count_objects_to_10]
+
+  - id: measure_cm
+    title: In Zentimetern messen
+    description: Misst Längen bis 20 cm mit dem Lineal und liest sie richtig ab.
+    area: quantities_measurement
+    grade_hint: 1
+    prerequisites: [measure_with_nonstandard_units, read_write_numbers_to_20]
+
+  - id: estimate_lengths
+    title: Längen schätzen
+    description: Kennt Meter und Zentimeter, hat Bezugsgrößen wie Fingerbreite oder Türhöhe und schätzt damit Längen.
+    area: quantities_measurement
+    grade_hint: 1
+    prerequisites: [measure_cm]
+
+  - id: money_coins_notes
+    title: Münzen und Scheine
+    description: Erkennt Münzen und Scheine bis 20 Euro und bestimmt Geldbeträge in ganzen Euro oder in Cent.
+    area: quantities_measurement
+    grade_hint: 1
+    prerequisites: [count_in_steps_to_20, add_within_20_no_carry]
+
+  - id: money_compare_exchange
+    title: Geld vergleichen und wechseln
+    description: Vergleicht Geldbeträge, legt einen Betrag auf verschiedene Weisen und wechselt Münzen und Scheine.
+    area: quantities_measurement
+    grade_hint: 1
+    prerequisites: [money_coins_notes, number_decomposition_to_10]
+
+  - id: clock_full_half_hours
+    title: Volle und halbe Stunden
+    description: Liest volle und halbe Stunden auf der Analoguhr und der Digitaluhr ab und stellt sie ein.
+    area: quantities_measurement
+    grade_hint: 1
+    prerequisites: [read_write_numbers_to_20]
+
+  - id: calendar_basics
+    title: Wochentage und Monate
+    description: Kennt die Reihenfolge der Wochentage, Monate und Jahreszeiten und liest einfache Kalender ab.
+    area: quantities_measurement
+    grade_hint: 1
+    prerequisites: [count_to_20]
+
+  - id: time_spans_hours
+    title: Zeitspannen in Stunden
+    description: Bestimmt einfache Zeitspannen in vollen Stunden, z. B. von 9 Uhr bis 12 Uhr oder drei Stunden später.
+    area: quantities_measurement
+    grade_hint: 1
+    prerequisites: [clock_full_half_hours, add_within_20_no_carry]
+
+  - id: order_quantities
+    title: Größen vergleichen und ordnen
+    description: Vergleicht und ordnet Geldbeträge, Längen und Zeitspannen mit mehr, weniger, länger und kürzer.
+    area: quantities_measurement
+    grade_hint: 1
+    prerequisites: [money_coins_notes, measure_cm, time_spans_hours]
+
+  - id: quantity_word_problems
+    title: Sachaufgaben mit Größen
+    description: Löst einfache Sachaufgaben mit Geld, Längen oder Zeit, z. B. Einkaufen, Bezahlen und Rückgeld bis 20 Euro.
+    area: quantities_measurement
+    grade_hint: 1
+    prerequisites: [word_problems_to_20, money_compare_exchange, measure_cm, time_spans_hours]
+
+  # ---------------------------------------------------------------
+  # Daten und Zufall (4.1, 4.2)
+  # ---------------------------------------------------------------
+
+  - id: tally_charts
+    title: Strichlisten
+    description: Liest Strichlisten mit Fünferbündeln und erstellt sie aus gezählten Daten.
+    area: data_chance
+    grade_hint: 1
+    prerequisites: [count_objects_to_10, structured_quantities_twenty_field]
+
+  - id: read_tables_charts
+    title: Tabellen und Schaubilder lesen
+    description: Liest einfache Tabellen und Säulendiagramme ab und beantwortet Fragen dazu, z. B. Wovon gibt es am meisten?
+    area: data_chance
+    grade_hint: 1
+    prerequisites: [tally_charts, compare_numbers_to_20]
+
+  - id: build_charts
+    title: Daten darstellen
+    description: Überträgt gesammelte Daten in eine Tabelle oder ein einfaches Säulendiagramm.
+    area: data_chance
+    grade_hint: 1
+    prerequisites: [tally_charts]
+
+  - id: chance_vocabulary
+    title: Sicher, möglich, unmöglich
+    description: Beurteilt einfache Zufallssituationen mit sicher, möglich und unmöglich, z. B. beim Ziehen aus einem Säckchen.
+    area: data_chance
+    grade_hint: 1
+    prerequisites: [compare_numbers_to_20]
+
+  - id: compare_chances
+    title: Chancen vergleichen
+    description: Vergleicht bei zwei Säckchen, wo die Chance auf eine rote Kugel größer ist, und begründet es über die Anzahlen.
+    area: data_chance
+    grade_hint: 1
+    prerequisites: [chance_vocabulary]

@@ -1,29 +1,278 @@
 # Bayern, LehrplanPLUS Grundschule, Mathematik, Jahrgangsstufe 1.
-# Lernbereiche im LehrplanPLUS M1/2: 1 Zahlen und Operationen, 2 Raum und Form,
-# 3 Größen und Messen, 4 Daten und Zufall.
-# Platzhalter. Die Zerlegung des Lehrplans steht noch aus (siehe docs/konzept.md).
+#
+# LehrplanPLUS beschreibt die Jahrgangsstufen 1 und 2 gemeinsam (Fachlehrplan M1/2,
+# Zahlenraum bis 100). Eine Trennung nach Klasse 1 und 2 gibt der Lehrplan nicht vor.
+# Diese Datei folgt der üblichen Schulpraxis: Klasse 1 arbeitet im Zahlenraum bis 20,
+# Klasse 2 erweitert auf 100 und führt das Einmaleins ein. Das deckt sich mit den
+# "Grundlegenden Kompetenzen zum Ende der Jahrgangsstufe 2" (Einspluseins bis 20
+# automatisiert, vier Grundrechenarten bis 100, Kernaufgaben des Einmaleins).
+#
+# Aufbau: pro Teilbereich (ref) die nummerierten Kompetenzerwartungen (bullet) in
+# Kurzform und die Kompetenz-IDs aus content/math/competencies.yaml, die sie abdecken.
+#   grade_2     Anteil der Kompetenzerwartung, der erst in Klasse 2 drankommt
+#   not_in_app  Anteil, den die App nicht abdeckt (handelnd, mündlich, Handschrift)
+#
+# Quelle (abgerufen 2026-11-04):
+#   https://www.lehrplanplus.bayern.de/fachlehrplan/grundschule/1/mathematik
+#   https://www.lehrplanplus.bayern.de/jahrgangsstufenprofil/grundschule/2
 
 state: de-by
 subject: math
 grade: 1
-curriculum: LehrplanPLUS Grundschule Mathematik
-source: https://www.lehrplanplus.bayern.de/
-version: 0.1
+curriculum: LehrplanPLUS Grundschule Mathematik 1/2
+source: https://www.lehrplanplus.bayern.de/fachlehrplan/grundschule/1/mathematik
+retrieved: 2026-11-04
+version: 0.2
 
 units:
-  - ref: "M1/2 1 Zahlen und Operationen"
-    title: Zahlen bis 20 verstehen und darstellen
-    half_year: 1
-    competencies:
-      - count_to_20
-      - number_decomposition_to_10
 
-  - ref: "M1/2 1 Zahlen und Operationen"
-    title: Addition im Zahlenraum bis 20
-    half_year: 1
-    competencies:
-      - add_within_10
-      - complement_to_10
-      - add_ten_plus
-      - add_within_20_no_carry
-      - add_within_20_with_carry
+  - ref: "1.1"
+    title: Zahlen strukturiert darstellen und Zahlbeziehungen formulieren
+    bullets:
+      - n: 1
+        text: Bedeutungen von Zahlen aus der Umwelt unterscheiden (Anzahl, Zählzahl, Platznummer, Maßzahl, Kodierung)
+        competencies: [number_meanings]
+      - n: 2
+        text: Orientierung durch flexibles Zählen (vorwärts, rückwärts, in Schritten); ordnen, vergleichen, Nachbarzahlen, gerade und ungerade; Zahlenstrahl und Hundertertafel
+        competencies: [number_sequence_to_10, read_write_numbers_to_20, count_to_20, count_in_steps_to_20, order_numbers_to_20, even_odd_to_20]
+        grade_2: Zahlenraum bis 100, Hundertertafel
+      - n: 3
+        text: 5er- und 10er-Struktur nutzen, um Mengen schnell zu erfassen (Zwanzigerfeld, Hunderterfeld)
+        competencies: [subitize_to_5, structured_quantities_twenty_field]
+        grade_2: Hunderterfeld
+      - n: 4
+        text: Struktur des Zehnersystems (Bündelung, Stellenwert) nutzen; Zahldarstellungen ineinander überführen (Stellenwertschreibweise, Stufenschrift, Zahlwort, Einerwürfel/Zehnerstangen)
+        competencies: [tens_and_ones_to_20, switch_representations_to_20]
+        grade_2: Stellenwerte bis 100, Stufenschrift 3Z 4E, Zehnerstangen
+      - n: 5
+        text: Anzahlen schätzen und bestimmen; Zahlen vergleichen mit größer, kleiner, gleich, mehr, weniger und den Zeichen >, <, =
+        competencies: [count_objects_to_10, estimate_quantities_to_20, compare_numbers_to_20]
+        grade_2: Zahlenraum bis 100
+      - n: 6
+        text: Zahlen additiv zerlegen (10 = 1 + 9, 32 = 30 + 2) und Zusammenhänge an strukturierten Darstellungen erläutern
+        competencies: [number_decomposition_to_10, tens_and_ones_to_20]
+        grade_2: Zerlegungen bis 100
+      - n: 7
+        text: Ziffern und Zahlen deutlich schreiben, übersichtliche Schreibweise bei Rechnungen und Notizen
+        competencies: []
+        not_in_app: Handschrift. Später über Foto von Papieraufgaben möglich.
+
+  - ref: "1.2"
+    title: Im Zahlenraum bis Hundert rechnen und Strukturen nutzen
+    bullets:
+      - n: 1
+        text: Den vier Grundrechenarten Handlungen und Sachsituationen zuordnen und umgekehrt (Addition als Vereinigen oder Hinzufügen; Subtraktion als Wegnehmen, Ergänzen oder Unterschied; Multiplikation; Division)
+        competencies: [addition_meaning, subtraction_meaning, difference_meaning, picture_to_equation]
+        grade_2: Multiplikation und Division
+      - n: 2
+        text: Zahlensätze des Einspluseins bis 20 und ihre Umkehrungen automatisiert und flexibel anwenden; auf analoge Aufgaben übertragen
+        competencies: [add_within_10, subtract_within_10, complement_to_10, add_ten_plus, subtract_ten_and_ones_to_20, add_within_20_no_carry, subtract_within_20_no_carry, add_within_20_with_carry, subtract_within_20_with_carry, inverse_tasks, missing_number_to_20, fluency_plus_minus_to_20]
+        grade_2: Übertragung auf analoge Aufgaben im Zahlenraum bis 100
+      - n: 3
+        text: Kernaufgaben des kleinen Einmaleins (1, 2, 5, 10, Quadratsätze), Umkehrungen, Malaufgaben mit 0
+        competencies: []
+        grade_2: vollständig Klasse 2
+      - n: 4
+        text: Kernaufgaben des Einmaleins zur Lösung weiterer Aufgaben nutzen
+        competencies: []
+        grade_2: vollständig Klasse 2
+      - n: 5
+        text: Rechenstrategien (Rechnen in Schritten, Umkehr- und Tauschaufgaben, analoge Aufgaben, Nachbaraufgaben) bis 20 und bis 100; Rechenwege vergleichen, bewerten, begründen
+        competencies: [commutative_tasks, inverse_tasks, doubling_halving_to_20, neighbour_tasks, add_within_20_with_carry, subtract_within_20_with_carry]
+        grade_2: Zahlenraum bis 100
+        not_in_app: Rechenwege mündlich begründen. Teilweise über "Welcher Rechenweg passt?" abbildbar.
+      - n: 6
+        text: Ergebnisse auf Plausibilität und Richtigkeit prüfen; Rechenfehler finden, erklären, korrigieren
+        competencies: [check_results, plausibility_of_solutions]
+      - n: 7
+        text: Arithmetische Muster erkennen, beschreiben, entwickeln und fortsetzen (fortgesetzte Addition, gleich- und gegensinniges Verändern)
+        competencies: [arithmetic_patterns]
+        grade_2: gleich- und gegensinniges Verändern
+
+  - ref: "1.3"
+    title: Sachsituationen und Mathematik in Beziehung setzen
+    bullets:
+      - n: 1
+        text: Informationen aus Bildern, Erzählungen, Handlungen, einfachen Texten entnehmen und mathematische Fragen formulieren
+        competencies: [find_math_question]
+      - n: 2
+        text: Zusammenhänge zwischen Sachsituationen und Rechenoperationen aufzeigen und beschreiben
+        competencies: [picture_to_equation]
+      - n: 3
+        text: Darstellungsformen (Skizzen, Tabellen, Material) für mathematische Probleme entwickeln und nutzen
+        competencies: []
+        not_in_app: Eigene Darstellungen entwickeln. Die App gibt Darstellungen vor.
+      - n: 4
+        text: Einfache Problemlösestrategien entwickeln und nutzen (systematisches Probieren)
+        competencies: [combinatorics_simple]
+      - n: 5
+        text: Lösungen zu Sachsituationen finden, Lösungswege vergleichen und begründen (Rechenkonferenzen)
+        competencies: [word_problems_to_10, word_problems_to_20]
+        not_in_app: Austausch in Rechenkonferenzen
+      - n: 6
+        text: Anzahl der Möglichkeiten bei einfachen kombinatorischen Aufgaben durch Probieren bestimmen und strukturiert darstellen
+        competencies: [combinatorics_simple]
+
+  - ref: "2.1"
+    title: Sich im Raum orientieren
+    bullets:
+      - n: 1
+        text: Lagebegriffe (links/rechts, neben, zwischen, oben/unten, vor/hinter, über/unter, auf/unter, hinten/vorne) verwenden
+        competencies: [position_words]
+      - n: 2
+        text: Wegverläufe beschreiben und Wege nach Anweisung verfolgen, handelnd und in der Vorstellung
+        competencies: [follow_paths]
+      - n: 3
+        text: Perspektiven einnehmen; Ansichten und Lagebeziehungen von vorne, hinten, links, rechts, oben, unten beschreiben
+        competencies: [perspectives]
+      - n: 4
+        text: Ergebnisse von Handlungen an Flächenformen (Falten, Zerlegen, Drehen, Zusammenfügen) beschreiben
+        competencies: [compose_decompose_shapes]
+
+  - ref: "2.2"
+    title: Geometrische Figuren benennen und darstellen
+    bullets:
+      - n: 1
+        text: Flächen- und Körperformen nach Kriterien vergleichen, beschreiben, sortieren (rollen/kippen, Ecken, Kanten, Begrenzungsflächen)
+        competencies: [shape_properties, solid_properties]
+      - n: 2
+        text: Eigenschaften mit den Fachbegriffen Ecke, Seite (Flächen) und Ecke, Kante, Seitenfläche (Körper) beschreiben
+        competencies: [shape_properties, solid_properties]
+      - n: 3
+        text: Dreieck, Kreis, Viereck (Quadrat, Rechteck) korrekt und routiniert zuordnen
+        competencies: [plane_shapes]
+      - n: 4
+        text: Gemeinsamkeiten und Unterschiede von Vierecken; Rechteck als besonderes Viereck, Quadrat als besonderes Rechteck
+        competencies: []
+        grade_2: Hierarchie der Vierecke
+      - n: 5
+        text: Zylinder, Prisma, Quader, Würfel, Kegel, Pyramide, Kugel korrekt und routiniert zuordnen
+        competencies: [solids]
+        grade_2: Prisma
+      - n: 6
+        text: Gemeinsamkeiten und Unterschiede von Quadern; Würfel als besonderer Quader
+        competencies: []
+        grade_2: Hierarchie Quader und Würfel
+      - n: 7
+        text: Ebene Figuren (Legen, Falten, Geobrett) und Körperformen (Kneten) erzeugen und beschreiben
+        competencies: [compose_decompose_shapes]
+        not_in_app: Kneten, Geobrett, Falten mit Material
+
+  - ref: "2.3"
+    title: Geometrische Abbildungen erkennen und darstellen
+    bullets:
+      - n: 1
+        text: Ebene Figuren frei und mit Lineal in Gitternetzen nachzeichnen und mit der Vorlage vergleichen
+        competencies: [copy_shapes_on_grid]
+        not_in_app: Zeichnen mit Lineal auf Papier
+      - n: 2
+        text: Merkmale achsensymmetrischer Figuren beschreiben; Achsensymmetrie durch Falten und Spiegel prüfen
+        competencies: [symmetry_basics]
+        not_in_app: Prüfen mit Spiegel und Falten
+      - n: 3
+        text: Einfache achsensymmetrische Figuren erzeugen (Geobrett, Falten, Klecksen); Fachbegriffe achsensymmetrisch, Symmetrieachse
+        competencies: [symmetry_basics]
+        grade_2: Fachbegriffe
+        not_in_app: Klecksbilder, Falten
+
+  - ref: "2.4"
+    title: Geometrische Muster untersuchen und erstellen
+    bullets:
+      - n: 1
+        text: Anordnungen aus Körpern und Muster aus ebenen Figuren erstellen; Vorgehen vergleichen und beschreiben
+        competencies: [geometric_patterns]
+      - n: 2
+        text: Gesetzmäßigkeiten (Wiederholungen) in geometrischen Mustern bestimmen, beschreiben, fortsetzen
+        competencies: [geometric_patterns]
+
+  - ref: "2.5"
+    title: Flächeninhalte und Umfänge bestimmen und vergleichen
+    bullets:
+      - n: 1
+        text: Flächeninhalte durch Auslegen mit Einheitsflächen oder Zerlegen vergleichen
+        competencies: []
+        grade_2: vollständig Klasse 2
+      - n: 2
+        text: Umfang durch Nachlegen (Streichhölzer, Wollfaden) oder Nachzeichnen am Gitternetz vergleichen
+        competencies: []
+        grade_2: vollständig Klasse 2
+
+  - ref: "3.1"
+    title: Messhandlungen durchführen
+    bullets:
+      - n: 1
+        text: Mit selbst gewählten Maßeinheiten messen (Daumenbreiten, Handspannen, Fuß); Maßzahl und Einheit angeben; vergleichen
+        competencies: [compare_lengths, measure_with_nonstandard_units]
+        not_in_app: Messen am eigenen Körper. Die App misst mit Objekten auf dem Bildschirm.
+      - n: 2
+        text: Längen und Zeitspannen mit Messgeräten messen (Lineal, Maßband, Uhr, Kalender); Meter, Zentimeter, Stunde, Minute, Woche, Monat, Jahr
+        competencies: [measure_cm, clock_full_half_hours, calendar_basics, time_spans_hours]
+        grade_2: Minuten, Maßband, Meter messen
+      - n: 3
+        text: Münzen und Geldscheine benennen und unterscheiden; Geldbeträge in Euro und Cent bestimmen und vergleichen
+        competencies: [money_coins_notes]
+        grade_2: Beträge über 20 Euro, Euro und Cent gemischt
+      - n: 4
+        text: Abkürzungen m, cm, h, min, Euro, ct; Messergebnisse ganzzahlig und in gemischter Schreibweise notieren
+        competencies: [measure_cm, estimate_lengths, money_coins_notes]
+        grade_2: gemischte Schreibweise (9 Euro 30 ct, 2 m 15 cm)
+      - n: 5
+        text: Messen mit eigenen und standardisierten Einheiten vergleichen; Vor- und Nachteile beurteilen
+        competencies: []
+        not_in_app: Beurteilung im Gespräch
+      - n: 6
+        text: Uhrzeiten ablesen; einfache Zeitspannen über Anfangs- und Endzeitpunkt bestimmen
+        competencies: [clock_full_half_hours, time_spans_hours]
+        grade_2: Viertelstunden, Minuten
+
+  - ref: "3.2"
+    title: Größen strukturieren und Größenvorstellungen nutzen
+    bullets:
+      - n: 1
+        text: Größen mit Bezugsgrößen schätzen und durch Messen überprüfen (Tafelhöhe 1 m, Türhöhe 2 m)
+        competencies: [estimate_lengths]
+      - n: 2
+        text: Geldbeträge, Längen und Zeitspannen vergleichen und ordnen (weniger/mehr, kleiner/größer, kürzer/länger)
+        competencies: [compare_lengths, order_quantities]
+      - n: 3
+        text: Geldscheine und Münzen nach Wert ordnen; Beträge wechseln und auf verschiedene Weise darstellen
+        competencies: [money_compare_exchange]
+
+  - ref: "3.3"
+    title: Mit Größen in Sachsituationen umgehen
+    bullets:
+      - n: 1
+        text: Informationen zu Größen aus Bildern, Erzählungen, Handlungen, einfachen Texten entnehmen und beschreiben
+        competencies: [quantity_word_problems]
+      - n: 2
+        text: Sachsituationen mit Größen lösen; Bezugsgrößen (Fermi-Aufgaben) und Bearbeitungshilfen nutzen
+        competencies: [quantity_word_problems]
+        grade_2: Fermi-Aufgaben
+      - n: 3
+        text: Plausibilität der Lösung mit Rückbezug auf den Sachzusammenhang prüfen (Kann ein Eis 40 Euro kosten?)
+        competencies: [plausibility_of_solutions]
+
+  - ref: "4.1"
+    title: Daten erfassen und strukturiert darstellen
+    bullets:
+      - n: 1
+        text: Daten aus der Lebenswirklichkeit sammeln und vergleichen; in Strichlisten, Schaubildern, Tabellen darstellen
+        competencies: [tally_charts, build_charts]
+        not_in_app: Daten selbst erheben (Befragung, Wetterbeobachtung)
+      - n: 2
+        text: Daten aus Kalender, Tabellen, Schaubildern entnehmen und ihre Bedeutung beschreiben
+        competencies: [read_tables_charts, calendar_basics]
+      - n: 3
+        text: Zu Tabellen und Schaubildern sinnvolle Fragen formulieren und mit Daten beantworten
+        competencies: [read_tables_charts]
+
+  - ref: "4.2"
+    title: Zufallsexperimente durchführen und Wahrscheinlichkeiten vergleichen
+    bullets:
+      - n: 1
+        text: Einfache Zufallsexperimente durchführen (Kugeln aus Säckchen ziehen), vergleichen, einfache Schlüsse ziehen
+        competencies: [compare_chances]
+        not_in_app: Experimente mit echtem Material
+      - n: 2
+        text: Grundbegriffe sicher, möglich, unmöglich sowie wahrscheinlich, unwahrscheinlich verwenden
+        competencies: [chance_vocabulary]

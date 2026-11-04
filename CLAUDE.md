@@ -72,7 +72,7 @@ supabase start                               # lokale Datenbank
 
 ## Domänenbegriffe
 
-- **Kompetenz (competency):** eine übbare Fähigkeit, feiner als der Lehrplan.
+- **Kompetenz (competency):** eine übbare Fähigkeit, feiner als der Lehrplan. Hat einen Bereich (`area`): numbers_operations, space_shape, quantities_measurement, data_chance.
 - **Voraussetzung (prerequisite):** Kante im Graph. Wird nur geübt, wenn die Vorgänger sitzen.
 - **Generator:** Vorlage mit Parametern, liefert korrekte Aufgaben mit bekannter Lösung.
 - **Darstellung (representation):** wie eine Aufgabe gezeigt wird. Start: `plain`, `twenty_field`.
