@@ -26,19 +26,17 @@ class Tutor:
     ) -> None:
         self.graph = graph
         self.specs = specs
+        self.practicable = set(specs)
         self.state = state or LearnerState.fresh(graph)
         self.rng = rng or random.Random()
 
     def next_task(self) -> Task | None:
-        """None means everything in the graph is mastered."""
-        competency = select_next(self.graph, self.state)
+        """None means everything practicable is mastered."""
+        competency = select_next(self.graph, self.state, self.practicable)
         if competency is None:
             return None
-        spec = self.specs.get(competency.id)
-        if spec is None:
-            raise LookupError(f"no generator for competency '{competency.id}'")
         level = level_for(self.state.mastery[competency.id])
-        return generate_task(spec, level, self.rng)
+        return generate_task(self.specs[competency.id], level, self.rng)
 
     def submit(self, task: Task, answer: int | str) -> SubmitResult:
         competency = self.graph.get(task.competency)
@@ -52,6 +50,6 @@ class Tutor:
         self.state.record(competency, correct)
         backtracked_to = None
         if self.state.wrong_streak[competency.id] >= BACKTRACK_AFTER:
-            weakest = backtrack(self.graph, self.state, competency)
+            weakest = backtrack(self.graph, self.state, competency, self.practicable)
             backtracked_to = weakest.id if weakest else None
         return SubmitResult(correct, backtracked_to)

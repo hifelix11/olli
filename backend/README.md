@@ -30,7 +30,7 @@ uv run ruff check . && uv run ruff format .
 | `POST /children` `{name}` | Kind anlegen, liefert `id` |
 | `GET /children/{id}/next-task` | Nächste Aufgabe ohne Lösung. `null`, wenn alles sitzt |
 | `POST /children/{id}/answers` `{task_id, answer}` | Prüft, speichert den Versuch, aktualisiert den Lernstand. Liefert `correct`, Lösung, `p_known`, `backtracked_to` |
-| `GET /children/{id}/mastery` | Alle Kompetenzen mit `p_known` und Status `mastered`, `in_progress`, `not_started` |
+| `GET /children/{id}/mastery` | Alle Kompetenzen mit `p_known`, Status `mastered`, `in_progress`, `not_started` und `practicable` (hat einen Generator) |
 
 Interaktive Doku unter http://127.0.0.1:8000/docs.
 
@@ -39,3 +39,5 @@ Interaktive Doku unter http://127.0.0.1:8000/docs.
 Tabellen werden beim Start mit `create_all` angelegt (noch keine Migrationen). `children`, `tasks` (ausgegebene Aufgaben mit Lösung), `attempts` (jede Antwort, unveränderlich), `mastery` (nur geübte Kompetenzen).
 
 Die Tests laufen gegen SQLite im Speicher, die App gegen Postgres. Das Schema ist einfach genug, dass beide gleich funktionieren.
+
+Bekannte Lücke: Ein unbehandelter Fehler (500) trägt keine CORS-Header, der Browser meldet dann nur "Failed to fetch". Die Ursache steht im Server-Log.

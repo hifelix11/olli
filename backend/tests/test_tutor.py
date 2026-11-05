@@ -2,8 +2,6 @@
 
 import random
 
-import pytest
-
 from app.domain.generators.generate import generate_task
 from app.domain.generators.models import GeneratorSpec, Task
 from app.domain.graph.graph import CompetencyGraph
@@ -23,15 +21,41 @@ def lena(graph: CompetencyGraph) -> LearnerState:
     return state
 
 
-def test_fresh_learner_starts_at_a_root(graph: CompetencyGraph) -> None:
-    chosen = select_next(graph, LearnerState.fresh(graph))
+def test_fresh_learner_starts_at_a_practicable_root(
+    graph: CompetencyGraph, specs: dict[str, GeneratorSpec]
+) -> None:
+    chosen = select_next(graph, LearnerState.fresh(graph), set(specs))
     assert chosen is not None
     assert chosen.id == "number_sequence_to_10"
 
 
-def test_missing_generator_fails_loudly(graph: CompetencyGraph) -> None:
-    with pytest.raises(LookupError, match="number_sequence_to_10"):
-        Tutor(graph, specs={}).next_task()
+def test_nothing_practicable_means_nothing_to_do(graph: CompetencyGraph) -> None:
+    assert Tutor(graph, specs={}).next_task() is None
+
+
+def test_unpracticable_prerequisite_does_not_block(
+    graph: CompetencyGraph, specs: dict[str, GeneratorSpec]
+) -> None:
+    """add_within_10 needs addition_meaning, which has no generator yet."""
+    assert "addition_meaning" not in specs
+    state = LearnerState.fresh(graph)
+    for competency_id in [
+        "number_sequence_to_10",
+        "subitize_to_5",
+        "count_objects_to_10",
+        "structured_quantities_twenty_field",
+        "number_decomposition_to_10",
+    ]:
+        state.mastery[competency_id] = 0.99
+    chosen = select_next(graph, state, set(specs))
+    assert chosen is not None
+    assert chosen.id in {"add_within_10", "complement_to_10", "read_write_numbers_to_20"}
+    assert graph.get("add_within_10").id in {
+        c.id
+        for c in graph
+        if c.id in specs
+        and all(p not in specs or state.mastery[p] >= MASTERED for p in c.prerequisites)
+    }
 
 
 def test_steps_back_after_repeated_failure_and_returns(

@@ -8,13 +8,23 @@ DOUBT = 0.3  # mastery a prerequisite drops to when we step back to it
 BACKTRACK_AFTER = 3  # wrong answers in a row before stepping back
 
 
-def select_next(graph: CompetencyGraph, state: LearnerState) -> Competency | None:
-    """Not yet mastered, all prerequisites mastered. Most basic first, then closest to done."""
+def select_next(
+    graph: CompetencyGraph, state: LearnerState, practicable: set[str]
+) -> Competency | None:
+    """Not yet mastered, all prerequisites mastered. Most basic first, then closest to done.
+
+    Only practicable competencies (those with a generator) are chosen. A prerequisite the app
+    cannot practise does not block its successors.
+    """
     mastery = state.mastery
+
+    def secure(competency_id: str) -> bool:
+        return competency_id not in practicable or mastery[competency_id] >= MASTERED
+
     candidates = [
         c
         for c in graph
-        if mastery[c.id] < MASTERED and all(mastery[p] >= MASTERED for p in c.prerequisites)
+        if c.id in practicable and not secure(c.id) and all(secure(p) for p in c.prerequisites)
     ]
     if not candidates:
         return None
@@ -29,9 +39,11 @@ def level_for(p_known: float) -> str:
     return "hard"
 
 
-def backtrack(graph: CompetencyGraph, state: LearnerState, failed: Competency) -> Competency | None:
-    """Doubt the weakest direct prerequisite so selection practises it again. Roots have none."""
-    prerequisites = graph.prerequisites(failed.id)
+def backtrack(
+    graph: CompetencyGraph, state: LearnerState, failed: Competency, practicable: set[str]
+) -> Competency | None:
+    """Doubt the weakest practicable direct prerequisite so selection practises it again."""
+    prerequisites = [p for p in graph.prerequisites(failed.id) if p.id in practicable]
     state.wrong_streak[failed.id] = 0
     if not prerequisites:
         return None

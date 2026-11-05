@@ -59,6 +59,7 @@ class MasteryOut(BaseModel):
     area: str
     p_known: float
     status: str  # mastered | in_progress | not_started
+    practicable: bool  # False: no generator yet, the app cannot practise it
 
 
 def get_child(session: Session, child_id: str) -> Child:
@@ -128,6 +129,7 @@ def submit_answer(child_id: str, body: AnswerIn, session: Db) -> Any:
 def mastery(child_id: str, session: Db) -> Any:
     get_child(session, child_id)
     graph = load_graph()
+    practicable = set(load_generators())
     rows = {
         r.competency: r
         for r in session.scalars(select(Mastery).where(Mastery.child_id == child_id))
@@ -140,7 +142,14 @@ def mastery(child_id: str, session: Db) -> Any:
             "not_started" if row is None else "mastered" if p_known >= MASTERED else "in_progress"
         )
         out.append(
-            MasteryOut(competency=c.id, title=c.title, area=c.area, p_known=p_known, status=status)
+            MasteryOut(
+                competency=c.id,
+                title=c.title,
+                area=c.area,
+                p_known=p_known,
+                status=status,
+                practicable=c.id in practicable,
+            )
         )
     return out
 

@@ -528,6 +528,11 @@ button {
   color: var(--ink-soft);
 }
 
+.cell-later {
+  opacity: 0.45;
+  border-style: dashed;
+}
+
 .cell i {
   display: block;
   height: 4px;

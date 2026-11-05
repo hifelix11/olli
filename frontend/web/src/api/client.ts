@@ -27,6 +27,7 @@ export type MasteryRow = {
   area: string;
   p_known: number;
   status: MasteryStatus;
+  practicable: boolean;
 };
 
 const BASE: string = import.meta.env.VITE_API_URL ?? "http://127.0.0.1:8000";

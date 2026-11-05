@@ -76,7 +76,8 @@ export function ParentArea({ child, onExit }: { child: Child; onExit: () => void
         <>
           <p className="summary">
             {mastered} von {rows.length} Fähigkeiten sitzen, {inProgress} sind in Arbeit.
-            Mathematik, Jahrgangsstufe 1.
+            Mathematik, Jahrgangsstufe 1. Blass gezeichnete Fähigkeiten kann Olli noch nicht
+            üben.
           </p>
           <div className="legend">
             {(Object.keys(STATUS) as MasteryStatus[]).map((s) => (
@@ -95,8 +96,12 @@ export function ParentArea({ child, onExit }: { child: Child; onExit: () => void
                   .map((r) => (
                     <div
                       key={r.competency}
-                      className={`cell cell-${r.status}`}
-                      title={`${STATUS[r.status]}, ${Math.round(r.p_known * 100)} %`}
+                      className={`cell cell-${r.status}${r.practicable ? "" : " cell-later"}`}
+                      title={
+                        r.practicable
+                          ? `${STATUS[r.status]}, ${Math.round(r.p_known * 100)} %`
+                          : "Kann Olli noch nicht üben"
+                      }
                     >
                       <span>{r.title}</span>
                       <i>

@@ -91,7 +91,7 @@ supabase start                               # lokale Datenbank
 - Auswahl in `selection/select.py`: nicht gemeistert, alle Voraussetzungen ab `MASTERED` (0,95), geringste Tiefe zuerst, dann die mit dem höchsten Lernstand.
 - Schwierigkeit aus dem Lernstand: unter 0,4 `easy`, unter 0,75 `medium`, sonst `hard`.
 - Zurück zu den Grundlagen: nach `BACKTRACK_AFTER` (3) Fehlern in Folge sinkt die schwächste direkte Voraussetzung auf `DOUBT` (0,3) und wird geübt, bis sie wieder sitzt.
-- Generator-Kinds stehen in `content/math/generators/README.md`. Eine Spec pro Kompetenz, 32 von 68 haben eine. Fehlt eine, wirft `Tutor.next_task` einen `LookupError`.
+- Generator-Kinds stehen in `content/math/generators/README.md`. Eine Spec pro Kompetenz, 32 von 68 haben eine. Kompetenzen ohne Generator werden nie gewählt und blockieren ihre Nachfolger nicht (`practicable` in `select_next`). Die Elternkarte zeigt sie blass.
 - Aufgaben mit Auswahl (`options`) heben die Rate-Rate auf mindestens 1 / Anzahl Optionen.
 - Der Demo-Fall steht in `tests/test_tutor.py` und über HTTP in `tests/test_api.py`.
 - API: Lösung bleibt im Backend (`tasks.payload`). Eine Aufgabe kann nur einmal beantwortet werden. `mastery` hat nur Zeilen für geübte Kompetenzen, der Rest gilt als `not_started`.
