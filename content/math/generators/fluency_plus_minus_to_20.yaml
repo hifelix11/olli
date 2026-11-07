@@ -1,0 +1,25 @@
+id: fluency_plus_minus_to_20
+competency: fluency_plus_minus_to_20
+kind: plus_minus
+settings:
+  operations: ["+", "−"]
+params:
+  a: { min: 1, max: 19 }
+  b: { min: 1, max: 9 }
+constraints:
+  sum_max: 20
+  result_min: 0
+levels:
+  easy:
+    params:
+      a: { min: 1, max: 10 }
+    constraints:
+      sum_max: 10
+  hard:
+    params:
+      b: { min: 2, max: 9 }
+    constraints:
+      carry: true
+      borrow: true
+answer: free_input
+representations: [plain]

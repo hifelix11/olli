@@ -1,0 +1,15 @@
+id: estimate_quantities_to_20
+competency: estimate_quantities_to_20
+kind: estimate
+params:
+  n: { min: 3, max: 20 }
+settings:
+  anchors: [5, 10, 15, 20]
+levels:
+  easy:
+    params:
+      n: { min: 3, max: 12 }
+    settings:
+      anchors: [5, 10]
+answer: choice
+representations: [scattered]

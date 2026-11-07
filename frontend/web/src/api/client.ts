@@ -10,6 +10,7 @@ export type Task = {
   operands: Record<string, number | string>;
   options: (number | string)[] | null;
   representations: string[];
+  placement: boolean;
 };
 
 export type AnswerResult = {
@@ -28,6 +29,17 @@ export type MasteryRow = {
   p_known: number;
   status: MasteryStatus;
   practicable: boolean;
+};
+
+/** Stand gegenüber dem Lehrplan: Ziel bis Ende der Jahrgangsstufe. */
+export type Progress = {
+  curriculum: string;
+  grade: number;
+  goal: number;
+  checkable: number;
+  mastered: number;
+  in_progress: number;
+  placement_done: boolean;
 };
 
 const BASE: string = import.meta.env.VITE_API_URL ?? "http://127.0.0.1:8000";
@@ -51,4 +63,5 @@ export const api = {
       body: JSON.stringify({ task_id: taskId, answer }),
     }),
   mastery: (childId: string) => request<MasteryRow[]>(`/children/${childId}/mastery`),
+  progress: (childId: string) => request<Progress>(`/children/${childId}/progress`),
 };

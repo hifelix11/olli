@@ -123,7 +123,9 @@ export function Practice({ child, onExit }: { child: Child; onExit: () => void }
         <div className="who">
           <Olli mood={mood} size={56} />
           <p className="who-text">
-            Olli übt mit {child.name}
+            {task?.placement
+              ? `Olli schaut, was ${child.name} schon kann`
+              : `Olli übt mit ${child.name}`}
             <b>{task?.title ?? "…"}</b>
           </p>
         </div>
@@ -132,6 +134,9 @@ export function Practice({ child, onExit }: { child: Child; onExit: () => void }
             <span key={i} className={i < answered ? "filled" : ""} />
           ))}
         </div>
+        <button type="button" className="btn btn-quiet" onClick={onExit}>
+          Zurück
+        </button>
       </header>
 
       {task ? (
@@ -160,6 +165,7 @@ export function Practice({ child, onExit }: { child: Child; onExit: () => void }
               {result.backtracked_to && (
                 <span className="note">Olli sagt: Wir üben erst etwas Leichteres.</span>
               )}
+              {task?.placement && <span className="note">Olli sagt: Das üben wir später.</span>}
             </div>
           )}
         </footer>

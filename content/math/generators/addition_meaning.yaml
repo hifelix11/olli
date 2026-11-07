@@ -1,0 +1,16 @@
+id: addition_meaning
+competency: addition_meaning
+kind: picture_equation
+settings:
+  operations: ["+"]
+params:
+  a: { min: 2, max: 9 }
+  b: { min: 1, max: 8 }
+constraints:
+  sum_max: 10
+levels:
+  easy:
+    constraints:
+      sum_max: 6
+answer: choice
+representations: [twenty_field]

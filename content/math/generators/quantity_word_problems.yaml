@@ -1,0 +1,36 @@
+id: quantity_word_problems
+competency: quantity_word_problems
+kind: word_problem
+params:
+  a: { min: 2, max: 20 }
+  b: { min: 1, max: 10 }
+constraints:
+  sum_max: 20
+  result_min: 0
+settings:
+  items:
+    - op: "+"
+      prompt: "Ein Heft kostet {a} €. Ein Stift kostet {b} €. Wie viel kosten beide zusammen?"
+    - op: "+"
+      prompt: "Du sparst {a} €. Oma gibt dir {b} € dazu. Wie viel Geld hast du jetzt?"
+    - op: "+"
+      prompt: "Eine Schnur ist {a} cm lang. Du knotest eine {b} cm lange Schnur daran. Wie lang ist die Schnur jetzt?"
+    - op: "+"
+      prompt: "Der Film dauert {a} Stunden. Danach spielst du noch {b} Stunden. Wie viele Stunden sind das zusammen?"
+    - op: "−"
+      prompt: "Du hast {a} €. Du kaufst ein Eis für {b} €. Wie viel Geld hast du noch?"
+    - op: "−"
+      prompt: "Ein Buch kostet {b} €. Du bezahlst mit {a} €. Wie viel Geld bekommst du zurück?"
+    - op: "−"
+      prompt: "Ein Band ist {a} cm lang. Du schneidest {b} cm ab. Wie lang ist das Band jetzt?"
+    - op: "−"
+      prompt: "Ein Stift ist {a} cm lang, ein anderer {b} cm. Um wie viele cm ist der erste Stift länger?"
+levels:
+  easy:
+    params:
+      a: { min: 2, max: 10 }
+      b: { min: 1, max: 5 }
+    constraints:
+      sum_max: 10
+answer: free_input
+representations: [plain]

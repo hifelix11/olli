@@ -8,7 +8,7 @@ from pydantic import BaseModel
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.content import load_generators, load_graph
+from app.content import load_curriculum, load_generators, load_graph
 from app.db.models import Attempt, Child, Mastery, TaskRow
 from app.db.repository import load_state, save_state
 from app.db.session import get_session
@@ -39,6 +39,7 @@ class TaskOut(BaseModel):
     operands: dict[str, int | str]
     options: list[int | str] | None
     representations: list[str]
+    placement: bool  # part of the placement check, not of practice
 
 
 class AnswerIn(BaseModel):
@@ -62,11 +63,36 @@ class MasteryOut(BaseModel):
     practicable: bool  # False: no generator yet, the app cannot practise it
 
 
+class ProgressOut(BaseModel):
+    """How far the child is towards what the curriculum expects by the end of the grade."""
+
+    curriculum: str
+    grade: int
+    goal: int  # competencies the curriculum expects
+    checkable: int  # of those, the ones with a generator
+    mastered: int
+    in_progress: int
+    placement_done: bool
+
+
 def get_child(session: Session, child_id: str) -> Child:
     child = session.get(Child, child_id)
     if child is None:
         raise HTTPException(404, "child not found")
     return child
+
+
+def mastery_rows(session: Session, child_id: str) -> dict[str, Mastery]:
+    return {
+        r.competency: r
+        for r in session.scalars(select(Mastery).where(Mastery.child_id == child_id))
+    }
+
+
+def status_of(row: Mastery | None) -> str:
+    if row is None:
+        return "not_started"
+    return "mastered" if row.p_known >= MASTERED else "in_progress"
 
 
 @router.post("/children", response_model=ChildOut, status_code=201)
@@ -79,22 +105,29 @@ def create_child(body: ChildIn, session: Db) -> Any:
 
 @router.get("/children/{child_id}/next-task", response_model=TaskOut | None)
 def next_task(child_id: str, session: Db) -> Any:
-    """None when every competency is mastered."""
-    get_child(session, child_id)
+    """None when every competency is mastered. A new child gets the placement check first."""
+    child = get_child(session, child_id)
     graph = load_graph()
-    tutor = Tutor(graph, load_generators(), load_state(session, graph, child_id))
+    state = load_state(session, graph, child_id)
+    tutor = Tutor(graph, load_generators(), state, placing=not child.placement_done)
     task = tutor.next_task()
+    child.placement_done = not tutor.placing
     if task is None:
         return None
     row = TaskRow(child_id=child_id, competency=task.competency, payload=task.model_dump())
     session.add(row)
     session.flush()
-    return TaskOut(id=row.id, title=graph.get(task.competency).title, **task.model_dump())
+    return TaskOut(
+        id=row.id,
+        title=graph.get(task.competency).title,
+        placement=tutor.placing,
+        **task.model_dump(),
+    )
 
 
 @router.post("/children/{child_id}/answers", response_model=AnswerOut)
 def submit_answer(child_id: str, body: AnswerIn, session: Db) -> Any:
-    get_child(session, child_id)
+    child = get_child(session, child_id)
     row = session.get(TaskRow, body.task_id)
     if row is None or row.child_id != child_id:
         raise HTTPException(404, "task not found")
@@ -104,7 +137,7 @@ def submit_answer(child_id: str, body: AnswerIn, session: Db) -> Any:
     graph = load_graph()
     task = Task(**row.payload)
     before = load_state(session, graph, child_id)
-    tutor = Tutor(graph, load_generators(), deepcopy(before))
+    tutor = Tutor(graph, load_generators(), deepcopy(before), placing=not child.placement_done)
     result = tutor.submit(task, coerce(body.answer, task.answer))
 
     save_state(session, child_id, before, tutor.state)
@@ -130,28 +163,36 @@ def mastery(child_id: str, session: Db) -> Any:
     get_child(session, child_id)
     graph = load_graph()
     practicable = set(load_generators())
-    rows = {
-        r.competency: r
-        for r in session.scalars(select(Mastery).where(Mastery.child_id == child_id))
-    }
-    out = []
-    for c in graph:
-        row = rows.get(c.id)
-        p_known = row.p_known if row else c.bkt.p_init
-        status = (
-            "not_started" if row is None else "mastered" if p_known >= MASTERED else "in_progress"
+    rows = mastery_rows(session, child_id)
+    return [
+        MasteryOut(
+            competency=c.id,
+            title=c.title,
+            area=c.area,
+            p_known=rows[c.id].p_known if c.id in rows else c.bkt.p_init,
+            status=status_of(rows.get(c.id)),
+            practicable=c.id in practicable,
         )
-        out.append(
-            MasteryOut(
-                competency=c.id,
-                title=c.title,
-                area=c.area,
-                p_known=p_known,
-                status=status,
-                practicable=c.id in practicable,
-            )
-        )
-    return out
+        for c in graph
+    ]
+
+
+@router.get("/children/{child_id}/progress", response_model=ProgressOut)
+def progress(child_id: str, session: Db) -> Any:
+    child = get_child(session, child_id)
+    curriculum = load_curriculum()
+    checkable = curriculum.competencies & set(load_generators())
+    rows = mastery_rows(session, child_id)
+    statuses = [status_of(rows.get(c)) for c in checkable]
+    return ProgressOut(
+        curriculum=curriculum.title,
+        grade=curriculum.grade,
+        goal=len(curriculum.competencies),
+        checkable=len(checkable),
+        mastered=statuses.count("mastered"),
+        in_progress=statuses.count("in_progress"),
+        placement_done=child.placement_done,
+    )
 
 
 def coerce(given: int | str, expected: int | str) -> int | str:

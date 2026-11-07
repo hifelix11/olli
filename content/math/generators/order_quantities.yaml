@@ -1,0 +1,30 @@
+id: order_quantities
+competency: order_quantities
+kind: compare_quantities
+params:
+  a: { min: 1, max: 20 }
+  b: { min: 1, max: 20 }
+settings:
+  ask: [more, less]
+variants:
+  - settings:
+      unit: "€"
+      more: Was ist mehr Geld?
+      less: Was ist weniger Geld?
+  - settings:
+      unit: cm
+      more: Was ist länger?
+      less: Was ist kürzer?
+  - params:
+      a: { min: 2, max: 12 }
+      b: { min: 2, max: 12 }
+    settings:
+      unit: Stunden
+      more: Was dauert länger?
+      less: Was dauert kürzer?
+levels:
+  easy:
+    settings:
+      ask: [more]
+answer: choice
+representations: [plain]

@@ -64,6 +64,17 @@ class CompetencyGraph:
     def prerequisites(self, competency_id: str) -> list[Competency]:
         return [self._by_id[p] for p in self._by_id[competency_id].prerequisites]
 
+    def ancestors(self, competency_id: str) -> list[Competency]:
+        """All competencies below this one, direct and indirect prerequisites."""
+        seen: dict[str, Competency] = {}
+        todo = list(self._by_id[competency_id].prerequisites)
+        while todo:
+            current = todo.pop()
+            if current not in seen:
+                seen[current] = self._by_id[current]
+                todo.extend(self._by_id[current].prerequisites)
+        return list(seen.values())
+
     def depth(self, competency_id: str) -> int:
         """Longest prerequisite chain below this competency. Roots have depth 0."""
         return self._depth[competency_id]

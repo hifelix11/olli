@@ -25,6 +25,7 @@ class Child(Base):
 
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
     name: Mapped[str] = mapped_column(String(100))
+    placement_done: Mapped[bool] = mapped_column(default=False)  # placement check finished
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
 
 

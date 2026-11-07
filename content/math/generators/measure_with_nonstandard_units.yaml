@@ -1,0 +1,13 @@
+id: measure_with_nonstandard_units
+competency: measure_with_nonstandard_units
+kind: measure
+params:
+  n: { min: 1, max: 10 }
+settings:
+  unit: Büroklammern
+levels:
+  easy:
+    params:
+      n: { min: 1, max: 5 }
+answer: free_input
+representations: [units]

@@ -15,6 +15,10 @@ class LearnerState:
     def fresh(cls, graph: CompetencyGraph) -> "LearnerState":
         return cls(mastery={c.id: c.bkt.p_init for c in graph})
 
+    def observed(self, competency_id: str) -> bool:
+        """At least one answer, own or inferred, stands behind this competency's mastery."""
+        return competency_id in self.wrong_streak
+
     def record(self, competency: Competency, correct: bool) -> None:
         self.mastery[competency.id] = bkt.update(
             self.mastery[competency.id], correct, competency.bkt

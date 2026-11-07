@@ -1,0 +1,14 @@
+id: copy_shapes_on_grid
+competency: copy_shapes_on_grid
+kind: grid_copy
+settings:
+  width: 5
+  height: 4
+params:
+  cells: { min: 3, max: 6 }
+levels:
+  easy:
+    params:
+      cells: { min: 3, max: 4 }
+answer: choice
+representations: [grid]

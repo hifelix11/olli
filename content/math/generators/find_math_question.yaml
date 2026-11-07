@@ -1,0 +1,58 @@
+id: find_math_question
+competency: find_math_question
+kind: item_choice
+params:
+  a: { min: 5, max: 9 }
+  b: { min: 1, max: 4 }
+settings:
+  items:
+    - prompt: "Im Hof spielen {a} Kinder. {b} Kinder kommen dazu. Welche Frage kannst du ausrechnen?"
+      answer: "Wie viele Kinder sind es jetzt?"
+      options:
+        - "Wie viele Kinder sind es jetzt?"
+        - "Wie alt sind die Kinder?"
+        - "Wie heißen die Kinder?"
+    - prompt: "Lena hat {a} Bonbons. Sie isst {b} davon. Welche Frage kannst du ausrechnen?"
+      answer: "Wie viele Bonbons hat Lena noch?"
+      options:
+        - "Wie schmecken die Bonbons?"
+        - "Wie viele Bonbons hat Lena noch?"
+        - "Woher hat Lena die Bonbons?"
+    - prompt: "Im Bus sitzen {a} Kinder. An der Haltestelle steigen {b} Kinder aus. Welche Frage kannst du ausrechnen?"
+      answer: "Wie viele Kinder sind noch im Bus?"
+      options:
+        - "Wohin fährt der Bus?"
+        - "Wie alt ist der Busfahrer?"
+        - "Wie viele Kinder sind noch im Bus?"
+    - prompt: "Tom hat {a} rote und {b} blaue Autos. Welche Frage kannst du ausrechnen?"
+      answer: "Wie viele Autos hat Tom?"
+      options:
+        - "Wie viele Autos hat Tom?"
+        - "Welches Auto ist am schnellsten?"
+        - "Wo spielt Tom?"
+    - prompt: "Auf dem Teller liegen {a} Kekse. Mia nimmt {b} Kekse. Welche Frage kannst du ausrechnen?"
+      answer: "Wie viele Kekse bleiben auf dem Teller?"
+      options:
+        - "Wer hat die Kekse gebacken?"
+        - "Wie viele Kekse bleiben auf dem Teller?"
+        - "Wie groß ist der Teller?"
+    - prompt: "Im Garten blühen {a} gelbe und {b} rote Tulpen. Welche Frage kannst du ausrechnen?"
+      answer: "Wie viele Tulpen blühen im Garten?"
+      options:
+        - "Wie riechen die Tulpen?"
+        - "Wie viele Tulpen blühen im Garten?"
+        - "Wer hat die Tulpen gepflanzt?"
+    - prompt: "Ben hat {a} Sticker. Er bekommt {b} Sticker geschenkt. Welche Frage kannst du ausrechnen?"
+      answer: "Wie viele Sticker hat Ben jetzt?"
+      options:
+        - "Wie viele Sticker hat Ben jetzt?"
+        - "Wer schenkt Ben die Sticker?"
+        - "Welche Farbe haben die Sticker?"
+    - prompt: "Auf dem Parkplatz stehen {a} Autos. {b} Autos fahren weg. Welche Frage kannst du ausrechnen?"
+      answer: "Wie viele Autos stehen noch da?"
+      options:
+        - "Wie schnell fahren die Autos?"
+        - "Wie viele Autos stehen noch da?"
+        - "Wem gehören die Autos?"
+answer: choice
+representations: [plain]

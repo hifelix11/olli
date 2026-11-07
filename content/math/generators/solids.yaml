@@ -1,0 +1,49 @@
+id: solids
+competency: solids
+kind: item_choice
+settings:
+  items:
+    - prompt: "Welche Form hat ein Ball?"
+      answer: Kugel
+      options: [Kugel, Würfel, Zylinder]
+    - prompt: "Welche Form hat eine Orange?"
+      answer: Kugel
+      options: [Kegel, Kugel, Quader]
+    - prompt: "Welche Form hat eine Murmel?"
+      answer: Kugel
+      options: [Zylinder, Würfel, Kugel]
+    - prompt: "Welche Form hat ein Spielwürfel?"
+      answer: Würfel
+      options: [Würfel, Quader, Kugel]
+    - prompt: "Welche Form hat ein Zuckerwürfel?"
+      answer: Würfel
+      options: [Kugel, Würfel, Kegel]
+    - prompt: "Welche Form hat ein Schuhkarton?"
+      answer: Quader
+      options: [Quader, Würfel, Kegel]
+    - prompt: "Welche Form hat ein Ziegelstein?"
+      answer: Quader
+      options: [Zylinder, Quader, Würfel]
+    - prompt: "Welche Form hat eine Konservendose?"
+      answer: Zylinder
+      options: [Zylinder, Kugel, Pyramide]
+    - prompt: "Welche Form hat eine Klopapierrolle?"
+      answer: Zylinder
+      options: [Quader, Kugel, Zylinder]
+    - prompt: "Welche Form hat eine dicke runde Kerze?"
+      answer: Zylinder
+      options: [Kegel, Zylinder, Würfel]
+    - prompt: "Welche Form hat eine leere Eistüte?"
+      answer: Kegel
+      options: [Kegel, Zylinder, Würfel]
+    - prompt: "Welche Form hat ein spitzer Partyhut?"
+      answer: Kegel
+      options: [Pyramide, Kugel, Kegel]
+    - prompt: "Welche Form hat ein Verkehrshütchen?"
+      answer: Kegel
+      options: [Zylinder, Kegel, Pyramide]
+    - prompt: "Ein Bauwerk in Ägypten hat vier dreieckige Seiten und eine Spitze. Welche Form ist das?"
+      answer: Pyramide
+      options: [Pyramide, Kegel, Quader]
+answer: choice
+representations: [plain]

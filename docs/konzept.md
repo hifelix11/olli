@@ -143,6 +143,22 @@ Bayesian Knowledge Tracing nutzt pro Fähigkeit vier Werte: Vorwissen, Lernrate,
 - Ab einigen hundert Nutzern: Parameter pro Fähigkeit aus echten Antwortfolgen schätzen (Maximum Likelihood oder EM). Das ist das Mitlernen auf Systemebene.
 - Verfeinerung: Antwortzeit und Hilfebedarf einbeziehen, eine schnelle richtige Antwort zählt mehr als eine zögerliche
 
+### Standortcheck und Jahresziel
+
+Die Elternkarte zeigt, was sitzt. Ohne Bezugspunkt fehlt die Relevanz: Ist das viel oder wenig für den Zeitpunkt im Schuljahr?
+
+Entscheidungen (2026-11-05):
+
+- Kein erfundener Zeitplan. LehrplanPLUS beschreibt Jahrgangsstufe 1 und 2 gemeinsam und nennt keine Monate oder Halbjahre. Tempo und Reihenfolge kommen aus Schulbuch und Stoffverteilungsplan der Lehrkraft.
+- Bezugspunkt ist das Jahresziel: alle Kompetenzen, die das Curriculum-Mapping des Bundeslandes für die Jahrgangsstufe nennt. Die Elternansicht zeigt, wie viele davon Olli prüfen kann und wie viele sitzen.
+- Nie "hinterher". Formulierung: "hier lohnt sich Üben". Die wertvollere Nachricht für Eltern ist ohnehin der Kern: wo es hängt und dass das System zurückgeht.
+- Standortcheck beim Einstieg, damit die Karte nicht leer bleibt und ein Kind im März nicht bei der Zahlwortreihe anfängt. Prüfung von oben: Start in der Mitte des Graphen, dann Binärsuche über die Tiefe. Richtig zählt für alle Voraussetzungen mit, falsch sperrt alles, was darauf aufbaut. Ein Anfänger ist nach etwa 7 Aufgaben durch (eine je Wurzel), ein Kind, das alles kann, nach etwa 29 (eine je Spitze des Graphen). Danach bestätigt das normale Üben die Skizze mit je einer schweren Aufgabe.
+
+Offen:
+
+- [ ] Typischer Verlauf als weiche Anzeige: pro Kompetenz ein `expected_by` (Halbjahr oder Quartal) im Curriculum-YAML, ausdrücklich als "üblich" markiert. Erst, wenn das Jahresziel als Bezug nicht reicht.
+- [ ] Alternative ohne Zeitplan: Eltern sagen, wo die Klasse gerade ist, Olli zeigt, ob das Kind dort sicher ist.
+
 ### Beispiel: Kompetenzgraph Zehnerübergang
 
 Als Daten umgesetzt in `content/math/competencies.yaml` (6 Fähigkeiten, 1 Ziel).
@@ -244,7 +260,8 @@ Drin:
 - Zwei Darstellungen: nackte Rechnung und Zwanzigerfeld
 - Knowledge Tracing, Auswahl-Logik und Zurück-zu-den-Grundlagen voll funktionsfähig
 - Sprachmodell nur für kurze Erklärungen nach einem Fehler
-- Elternbereich mit PIN und einer Ansicht: Graph als Karte (grün sitzt, gelb in Arbeit, grau kommt noch)
+- Elternbereich mit PIN und einer Ansicht: Graph als Karte (grün sitzt, gelb in Arbeit, grau kommt noch), darüber das Jahresziel
+- Standortcheck beim Einstieg, damit die Karte nach der ersten Sitzung etwas zeigt
 - Figur nur als Maskottchen, das lobt und erklärt
 
 Nicht drin: Textaufgaben, Sprachstufen, Fehlermuster-Analyse, Spielwelt mit Füttern und Bauen, Lehrkraft-Bereich, native App.

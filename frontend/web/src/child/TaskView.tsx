@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import type { AnswerResult, Task } from "../api/client";
-import { countersFor } from "../representations/counters";
-import { TwentyField } from "../representations/TwentyField";
+import { Figure } from "../representations/Figure";
 import { speak } from "../speech";
 import { Keypad } from "./Keypad";
 
@@ -36,8 +35,10 @@ export function TaskView({ task, value, onChange, onSubmit, result, busy }: Prop
   const choice = task.options !== null;
   const { question, figure } = split(task.prompt);
   const gap = aroundGap(figure);
-  const counters = countersFor(task);
   const shown = result ? String(result.answer) : value;
+  // Lange Rechnungen ("1 Zehner und 4 Einer") und lange Antworten ("Wie viele Kinder sind es jetzt?") kleiner.
+  const longFigure = figure.length > 14;
+  const stacked = choice && task.options!.some((option) => String(option).length > 12);
 
   useEffect(() => {
     if (choice || result || busy) return;
@@ -76,7 +77,7 @@ export function TaskView({ task, value, onChange, onSubmit, result, busy }: Prop
           </p>
         )}
         {figure && (
-          <div className="figure">
+          <div className={`figure${longFigure ? " long" : ""}`}>
             {gap ? (
               <>
                 <span>{gap[0]}</span>
@@ -88,12 +89,12 @@ export function TaskView({ task, value, onChange, onSubmit, result, busy }: Prop
             )}
           </div>
         )}
+        <Figure task={task} revealed={result !== null} />
         {!figure && !choice && <div className="figure">{gapBox}</div>}
-        {counters && <TwentyField counters={counters} revealed={result !== null} />}
       </main>
       <footer className="heft-bottom">
         {result === null && choice && (
-          <div className="options">
+          <div className={`options${stacked ? " stacked" : ""}`}>
             {task.options!.map((option) => (
               <button
                 key={String(option)}

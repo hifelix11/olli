@@ -1,0 +1,15 @@
+id: shape_properties
+competency: shape_properties
+kind: shape_count
+settings:
+  shapes: [triangle, square, rectangle, quadrilateral, pentagon, hexagon]
+  ask: [corners, sides]
+  rotations: [0, 20, 45]
+levels:
+  easy:
+    settings:
+      shapes: [triangle, square, rectangle]
+      ask: [corners]
+      rotations: [0]
+answer: free_input
+representations: [shapes]

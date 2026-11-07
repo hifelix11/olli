@@ -1,0 +1,12 @@
+id: plane_shapes
+competency: plane_shapes
+kind: shape_name
+settings:
+  shapes: [triangle, circle, square, rectangle, quadrilateral]
+  rotations: [0, 15, 30, 45, 60, 90]
+levels:
+  easy:
+    settings:
+      rotations: [0]
+answer: choice
+representations: [shapes]

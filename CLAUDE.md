@@ -88,13 +88,15 @@ supabase start                               # lokale Datenbank
 ## Lernlogik, Stand Durchstich
 
 - Lernstand: `LearnerState.mastery` pro Kompetenz, Start bei `p_init`, Update per BKT in `tracing/bkt.py`.
+- Standortcheck: ein neues Kind (`children.placement_done` false) wird zuerst von oben geprüft, `selection/placement.py`. Start in der Mitte des Graphen, dann Binärsuche über die Tiefe. Richtig zählt auch für alle Voraussetzungen, falsch sperrt alles darüber. Stufe `medium`, endet, wenn nichts mehr zu prüfen ist. Die Zahl der Proben begrenzt der Graph: ein Anfänger braucht eine je Wurzel (7), ein Kind, das alles kann, etwa eine je Spitze (29). Danach bestätigt das normale Üben die Skizze.
 - Auswahl in `selection/select.py`: nicht gemeistert, alle Voraussetzungen ab `MASTERED` (0,95), geringste Tiefe zuerst, dann die mit dem höchsten Lernstand.
 - Schwierigkeit aus dem Lernstand: unter 0,4 `easy`, unter 0,75 `medium`, sonst `hard`.
 - Zurück zu den Grundlagen: nach `BACKTRACK_AFTER` (3) Fehlern in Folge sinkt die schwächste direkte Voraussetzung auf `DOUBT` (0,3) und wird geübt, bis sie wieder sitzt.
-- Generator-Kinds stehen in `content/math/generators/README.md`. Eine Spec pro Kompetenz, 32 von 68 haben eine. Kompetenzen ohne Generator werden nie gewählt und blockieren ihre Nachfolger nicht (`practicable` in `select_next`). Die Elternkarte zeigt sie blass.
+- Generator-Kinds stehen in `content/math/generators/README.md`. Eine Spec pro Kompetenz, 66 von 68 haben eine, nur die beiden Textaufgaben-Kompetenzen nicht (die kommen aus dem geprüften Pool). Kompetenzen ohne Generator werden nie gewählt und blockieren ihre Nachfolger nicht (`practicable` in `select_next`). Die Elternkarte zeigt sie blass.
 - Aufgaben mit Auswahl (`options`) heben die Rate-Rate auf mindestens 1 / Anzahl Optionen.
 - Der Demo-Fall steht in `tests/test_tutor.py` und über HTTP in `tests/test_api.py`.
 - API: Lösung bleibt im Backend (`tasks.payload`). Eine Aufgabe kann nur einmal beantwortet werden. `mastery` hat nur Zeilen für geübte Kompetenzen, der Rest gilt als `not_started`.
+- Jahresziel: `GET /children/{id}/progress` zählt die Kompetenzen aus dem Curriculum-Mapping (bis Jahresende erwartet), davon prüfbare, gemeisterte, in Arbeit. Kein Zeitplan im Schuljahr: der Lehrplan gibt keinen vor. Curriculum fest `de-by/math-1`, bis Kinder ein Bundesland haben.
 - Tests laufen gegen SQLite im Speicher (Dependency-Override von `get_session`), die App gegen Postgres.
 
 ## Prototyp 0.1

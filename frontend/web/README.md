@@ -17,11 +17,13 @@ Backend-Adresse über `VITE_API_URL`, Standard `http://127.0.0.1:8000`.
 
 ```
 src/
-  api/client.ts        Typen und die vier Aufrufe
-  representations/     counters.ts (Aufgabe → Plättchen), TwentyField.tsx
+  api/client.ts        Typen und die Aufrufe ans Backend
+  representations/     Figure.tsx wählt das Bild zur Aufgabe, pick.ts die Darstellung; counters.ts (Aufgabe → Plättchen);
+                       ein Bild pro Datei: TwentyField, Dice, Scattered, NumberLine, Shapes, Grid, Clock,
+                       DigitalClock, Money, Lengths, Units, Ruler, BarChart, Table
   child/               Practice (Sitzung), TaskView (Aufgabe), Keypad, Olli
-  parent/ParentArea    PIN und Karte
-  start/Start          Kind wählen oder anlegen
+  parent/ParentArea    PIN, Kinder anlegen, Jahresziel und Karte
+  start/Start          Kind wählen
   storage.ts           Kinderliste im localStorage
   speech.ts            Vorlesen per Browser-Sprachausgabe
   index.css            Tokens und alle Styles
@@ -47,8 +49,9 @@ Regeln:
 - Kein Text, den ein Erstklässler nicht braucht. Jede Frage lässt sich vorlesen.
 - Eine Bewegung: beim Prüfen füllen sich die leeren Plättchen.
 - Eine Sitzung hat 10 Aufgaben, sichtbar als Kästchen oben rechts. Danach ist Schluss.
+- Ein neues Kind bekommt zuerst den Standortcheck. Olli sagt das im Kopf der Seite und tröstet bei Fehlern: "Das üben wir später."
 - Tastatur groß, Eingabe per Zahlenblock oder große Auswahlknöpfe. Auf dem Rechner geht auch die Tastatur.
 
-Darstellungen: `plain` und `twenty_field` sind gebaut. Zählaufgaben mit `dice`, `fingers`, `scattered` oder `tally` zeigen vorerst ebenfalls das Zwanzigerfeld. `number_line` fällt auf `plain` zurück.
+Darstellungen: Das Backend nennt pro Aufgabe die erlaubten Darstellungen, `Figure` zeichnet die erste, die das Frontend kann. Sind es mehrere (etwa `bar_chart` und `table`), entscheidet die Aufgaben-ID, damit dieselbe Aufgabe ihr Bild behält. `plain` ist kein Bild. Gebaut sind `twenty_field`, `dice`, `scattered`, `number_line`, `shapes`, `grid`, `clock`, `digital_clock`, `money`, `lengths`, `units`, `ruler`, `bar_chart` und `table`. Nicht gezeichnet: `fingers` (die Würfelbilder springen ein) und `tally` (Zählaufgaben fallen auf das Zwanzigerfeld zurück). Alle Bilder sind Inline-SVG oder HTML, Gitter und Längen rechnen in Kästchen von 28 px wie das Papier. Die Operanden, die jedes Bild liest, stehen in `content/math/generators/README.md`.
 
 Die Eltern-PIN ist `1234`, fest im Code, bis es Elternkonten gibt.

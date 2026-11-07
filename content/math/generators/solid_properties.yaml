@@ -1,0 +1,49 @@
+id: solid_properties
+competency: solid_properties
+kind: item_choice
+settings:
+  items:
+    - prompt: "Rollt oder kippt eine Kugel?"
+      answer: rollt
+      options: [rollt, kippt, beides]
+    - prompt: "Rollt oder kippt ein Würfel?"
+      answer: kippt
+      options: [rollt, kippt, beides]
+    - prompt: "Rollt oder kippt ein Quader?"
+      answer: kippt
+      options: [rollt, kippt, beides]
+    - prompt: "Rollt oder kippt eine Pyramide?"
+      answer: kippt
+      options: [rollt, kippt, beides]
+    - prompt: "Rollt oder kippt ein Zylinder?"
+      answer: beides
+      options: [rollt, kippt, beides]
+    - prompt: "Rollt oder kippt ein Kegel?"
+      answer: beides
+      options: [rollt, kippt, beides]
+    - prompt: "Wie viele Ecken hat ein Würfel?"
+      answer: "8"
+      options: ["6", "8", "12"]
+    - prompt: "Wie viele Kanten hat ein Würfel?"
+      answer: "12"
+      options: ["6", "8", "12"]
+    - prompt: "Wie viele Flächen hat ein Würfel?"
+      answer: "6"
+      options: ["6", "8", "12"]
+    - prompt: "Wie viele Ecken hat ein Quader?"
+      answer: "8"
+      options: ["4", "6", "8"]
+    - prompt: "Wie viele Flächen hat ein Quader?"
+      answer: "6"
+      options: ["4", "6", "8"]
+    - prompt: "Wie viele Ecken hat eine Kugel?"
+      answer: "0"
+      options: ["0", "1", "8"]
+    - prompt: "Wie viele Ecken hat eine Pyramide mit viereckigem Boden?"
+      answer: "5"
+      options: ["4", "5", "8"]
+    - prompt: "Wie viele Spitzen hat ein Kegel?"
+      answer: "1"
+      options: ["0", "1", "2"]
+answer: choice
+representations: [plain]

@@ -1,0 +1,13 @@
+id: clock_full_half_hours
+competency: clock_full_half_hours
+kind: clock
+params:
+  hour: { min: 1, max: 12 }
+settings:
+  minutes: [0, 30]
+levels:
+  easy:
+    settings:
+      minutes: [0]
+answer: choice
+representations: [clock, digital_clock]

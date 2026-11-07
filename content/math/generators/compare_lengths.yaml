@@ -1,0 +1,14 @@
+id: compare_lengths
+competency: compare_lengths
+kind: compare_lengths
+params:
+  a: { min: 1, max: 10 }
+  b: { min: 1, max: 10 }
+settings:
+  ask: [longer, shorter]
+levels:
+  easy:
+    settings:
+      ask: [longer]
+answer: choice
+representations: [lengths]

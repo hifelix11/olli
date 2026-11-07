@@ -36,26 +36,16 @@ def test_nothing_practicable_means_nothing_to_do(graph: CompetencyGraph) -> None
 def test_unpracticable_prerequisite_does_not_block(
     graph: CompetencyGraph, specs: dict[str, GeneratorSpec]
 ) -> None:
-    """add_within_10 needs addition_meaning, which has no generator yet."""
-    assert "addition_meaning" not in specs
+    """plausibility_of_solutions needs word_problems_to_10, which comes from the checked pool."""
+    assert "word_problems_to_10" not in specs
+    assert graph.get("plausibility_of_solutions").prerequisites == ["word_problems_to_10"]
     state = LearnerState.fresh(graph)
-    for competency_id in [
-        "number_sequence_to_10",
-        "subitize_to_5",
-        "count_objects_to_10",
-        "structured_quantities_twenty_field",
-        "number_decomposition_to_10",
-    ]:
-        state.mastery[competency_id] = 0.99
+    for competency_id in specs:
+        if competency_id != "plausibility_of_solutions":
+            state.mastery[competency_id] = MASTERED
     chosen = select_next(graph, state, set(specs))
     assert chosen is not None
-    assert chosen.id in {"add_within_10", "complement_to_10", "read_write_numbers_to_20"}
-    assert graph.get("add_within_10").id in {
-        c.id
-        for c in graph
-        if c.id in specs
-        and all(p not in specs or state.mastery[p] >= MASTERED for p in c.prerequisites)
-    }
+    assert chosen.id == "plausibility_of_solutions"
 
 
 def test_steps_back_after_repeated_failure_and_returns(

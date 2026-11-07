@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { api, type Child, type MasteryRow, type MasteryStatus } from "../api/client";
+import { api, type Child, type MasteryRow, type MasteryStatus, type Progress } from "../api/client";
 import { Keypad } from "../child/Keypad";
 
 /** Platzhalter, bis es Elternkonten gibt. */
@@ -18,26 +18,64 @@ const STATUS: Record<MasteryStatus, string> = {
   not_started: "kommt noch",
 };
 
-export function ParentArea({ child, onExit }: { child: Child; onExit: () => void }) {
+type Props = {
+  kids: Child[];
+  onAdd: (child: Child) => void;
+  onExit: () => void;
+};
+
+export function ParentArea({ kids, onAdd, onExit }: Props) {
   const [pin, setPin] = useState("");
   const [open, setOpen] = useState(false);
   const [wrong, setWrong] = useState(false);
+  const [selected, setSelected] = useState<Child | null>(kids[0] ?? null);
+  const [name, setName] = useState("");
   const [rows, setRows] = useState<MasteryRow[] | null>(null);
+  const [progress, setProgress] = useState<Progress | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!open) return;
-    api
-      .mastery(child.id)
-      .then(setRows)
-      .catch((e: unknown) => setError(String(e)));
-  }, [open, child.id]);
+    if (!open || !selected) return;
+    let cancelled = false;
+    Promise.all([api.mastery(selected.id), api.progress(selected.id)])
+      .then(([mastery, progress]) => {
+        if (cancelled) return;
+        setRows(mastery);
+        setProgress(progress);
+      })
+      .catch((e: unknown) => {
+        if (!cancelled) setError(String(e));
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [open, selected]);
 
   const check = () => {
     if (pin === PIN) setOpen(true);
     else {
       setWrong(true);
       setPin("");
+    }
+  };
+
+  const select = (child: Child) => {
+    setSelected(child);
+    setRows(null);
+    setProgress(null);
+  };
+
+  const add = async () => {
+    const trimmed = name.trim();
+    if (!trimmed) return;
+    try {
+      const child = await api.createChild(trimmed);
+      onAdd(child);
+      select(child);
+      setName("");
+      setError(null);
+    } catch (e) {
+      setError(`Olli erreicht den Server nicht. ${String(e)}`);
     }
   };
 
@@ -60,25 +98,76 @@ export function ParentArea({ child, onExit }: { child: Child; onExit: () => void
     );
   }
 
-  const mastered = rows?.filter((r) => r.status === "mastered").length ?? 0;
-  const inProgress = rows?.filter((r) => r.status === "in_progress").length ?? 0;
-
   return (
     <div className="parent">
       <header>
-        <h1>Lernstand von {child.name}</h1>
+        <h1>Elternbereich</h1>
         <button type="button" className="btn btn-quiet" onClick={onExit}>
           Zurück zum Start
         </button>
       </header>
+      <section>
+        <h2>Kinder</h2>
+        {kids.length > 0 && (
+          <div className="tabs">
+            {kids.map((child) => (
+              <button
+                key={child.id}
+                type="button"
+                className={`btn${child.id === selected?.id ? " btn-primary" : ""}`}
+                onClick={() => select(child)}
+              >
+                {child.name}
+              </button>
+            ))}
+          </div>
+        )}
+        <form
+          className="add"
+          onSubmit={(e) => {
+            e.preventDefault();
+            void add();
+          }}
+        >
+          <input
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            placeholder="Name"
+            aria-label="Name des Kindes"
+            maxLength={30}
+          />
+          <button type="submit" className="btn btn-primary" disabled={!name.trim()}>
+            Kind anlegen
+          </button>
+        </form>
+      </section>
       {error && <p className="error">{error}</p>}
-      {rows && (
+      {selected && rows && progress && (
         <>
-          <p className="summary">
-            {mastered} von {rows.length} Fähigkeiten sitzen, {inProgress} sind in Arbeit.
-            Mathematik, Jahrgangsstufe 1. Blass gezeichnete Fähigkeiten kann Olli noch nicht
-            üben.
-          </p>
+          <h2>Lernstand von {selected.name}</h2>
+          <section className="goal">
+            <h3>Ziel bis Ende der Jahrgangsstufe {progress.grade}</h3>
+            <div
+              className="bar"
+              role="img"
+              aria-label={`${progress.mastered} von ${progress.checkable} Fähigkeiten sitzen`}
+            >
+              <b style={{ width: `${(100 * progress.mastered) / progress.checkable}%` }} />
+            </div>
+            <p className="summary">
+              Zum Ziel gehören {progress.goal} Fähigkeiten, {progress.checkable} davon kann Olli
+              prüfen. Davon sitzen {progress.mastered}, {progress.in_progress} sind in Arbeit.
+              Quelle: {progress.curriculum}.
+            </p>
+            {!progress.placement_done && (
+              <p className="summary">
+                Olli schaut noch, was {selected.name} schon kann. Nach den ersten Aufgaben zeigt
+                die Karte mehr.
+              </p>
+            )}
+          </section>
+          <h3>Karte</h3>
+          <p className="summary">Blass gezeichnete Fähigkeiten kann Olli noch nicht üben.</p>
           <div className="legend">
             {(Object.keys(STATUS) as MasteryStatus[]).map((s) => (
               <span key={s}>
@@ -89,7 +178,7 @@ export function ParentArea({ child, onExit }: { child: Child; onExit: () => void
           </div>
           {AREAS.map((area) => (
             <section key={area.key}>
-              <h2>{area.title}</h2>
+              <h3>{area.title}</h3>
               <div className="map">
                 {rows
                   .filter((r) => r.area === area.key)

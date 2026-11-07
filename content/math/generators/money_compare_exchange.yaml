@@ -1,0 +1,17 @@
+id: money_compare_exchange
+competency: money_compare_exchange
+kind: money_exchange
+settings:
+  pieces:
+    - { value: 1, name: Münzen }
+    - { value: 2, name: Münzen }
+    - { value: 5, name: Scheine }
+    - { value: 10, name: Scheine }
+constraints:
+  amount_max: 20
+levels:
+  easy:
+    constraints:
+      amount_max: 10
+answer: free_input
+representations: [plain]

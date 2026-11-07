@@ -1,0 +1,22 @@
+id: money_coins_notes
+competency: money_coins_notes
+kind: money_amount
+params:
+  count: { min: 2, max: 5 }
+constraints:
+  total_max: 20
+variants:
+  - settings:
+      values: [1, 2, 5, 10]
+      unit: "€"
+  - settings:
+      values: [1, 2, 5, 10]
+      unit: ct
+levels:
+  easy:
+    params:
+      count: { min: 2, max: 3 }
+    constraints:
+      total_max: 10
+answer: free_input
+representations: [money]

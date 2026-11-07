@@ -1,0 +1,31 @@
+id: combinatorics_simple
+competency: combinatorics_simple
+kind: word_problem
+params:
+  a: { min: 2, max: 3 }
+  b: { min: 2, max: 4 }
+constraints:
+  product_max: 12
+settings:
+  items:
+    - op: "×"
+      prompt: "Lena hat {a} T-Shirts und {b} Hosen. Sie zieht ein T-Shirt und eine Hose an. Wie viele verschiedene Möglichkeiten gibt es?"
+    - op: "×"
+      prompt: "Es gibt {a} Eissorten und {b} Sorten Streusel. Du nimmst eine Sorte Eis und eine Sorte Streusel. Wie viele verschiedene Möglichkeiten gibt es?"
+    - op: "×"
+      prompt: "Tom hat {a} Mützen und {b} Schals. Er trägt eine Mütze und einen Schal. Wie viele verschiedene Möglichkeiten gibt es?"
+    - op: "×"
+      prompt: "Auf der Karte stehen {a} Suppen und {b} Nachspeisen. Du wählst eine Suppe und eine Nachspeise. Wie viele verschiedene Möglichkeiten gibt es?"
+levels:
+  easy:
+    params:
+      a: { min: 2, max: 2 }
+      b: { min: 2, max: 3 }
+  hard:
+    params:
+      a: { min: 3, max: 4 }
+      b: { min: 3, max: 4 }
+    constraints:
+      product_max: 16
+answer: free_input
+representations: [plain]

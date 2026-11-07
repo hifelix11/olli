@@ -1,0 +1,13 @@
+id: position_words
+competency: position_words
+kind: grid_position
+settings:
+  width: 5
+  height: 4
+  relations: [links vom, rechts vom, über dem, unter dem]
+levels:
+  easy:
+    settings:
+      relations: [über dem, unter dem]
+answer: choice
+representations: [grid]

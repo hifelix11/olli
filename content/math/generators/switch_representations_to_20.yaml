@@ -1,0 +1,15 @@
+id: switch_representations_to_20
+competency: switch_representations_to_20
+kind: switch_representation
+params:
+  n: { min: 0, max: 20 }
+settings:
+  forms: [twenty_field, number_line, word, tens_ones]
+levels:
+  easy:
+    params:
+      n: { min: 0, max: 10 }
+    settings:
+      forms: [twenty_field, word]
+answer: free_input
+representations: [plain, twenty_field, number_line]

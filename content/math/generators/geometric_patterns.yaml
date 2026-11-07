@@ -1,0 +1,21 @@
+id: geometric_patterns
+competency: geometric_patterns
+kind: pattern_gap
+settings:
+  symbols: [circle, triangle, square]
+  gap: end
+params:
+  unit: { min: 2, max: 3 }
+  repeats: { min: 2, max: 3 }
+levels:
+  easy:
+    params:
+      unit: { min: 2, max: 2 }
+      repeats: { min: 3, max: 3 }
+  hard:
+    params:
+      unit: { min: 3, max: 3 }
+    settings:
+      gap: any
+answer: choice
+representations: [shapes]

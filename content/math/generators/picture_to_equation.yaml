@@ -1,0 +1,19 @@
+id: picture_to_equation
+competency: picture_to_equation
+kind: picture_equation
+settings:
+  operations: ["+", "−"]
+params:
+  a: { min: 2, max: 19 }
+  b: { min: 1, max: 9 }
+constraints:
+  sum_max: 20
+  result_min: 0
+levels:
+  easy:
+    params:
+      a: { min: 2, max: 9 }
+    constraints:
+      sum_max: 10
+answer: choice
+representations: [twenty_field]

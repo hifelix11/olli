@@ -1,0 +1,43 @@
+id: estimate_lengths
+competency: estimate_lengths
+kind: item_choice
+settings:
+  items:
+    - prompt: "Wie lang ist ein Buntstift ungefähr?"
+      answer: 15 cm
+      options: [1 cm, 15 cm, 2 m]
+    - prompt: "Wie breit ist dein Finger ungefähr?"
+      answer: 1 cm
+      options: [1 cm, 10 cm, 1 m]
+    - prompt: "Wie hoch ist eine Tür ungefähr?"
+      answer: 2 m
+      options: [2 cm, 20 cm, 2 m]
+    - prompt: "Wie lang ist dein Schulheft ungefähr?"
+      answer: 20 cm
+      options: [2 cm, 20 cm, 2 m]
+    - prompt: "Wie groß bist du ungefähr?"
+      answer: 1 m
+      options: [10 cm, 1 m, 10 m]
+    - prompt: "Wie lang ist ein Radiergummi ungefähr?"
+      answer: 4 cm
+      options: [4 cm, 40 cm, 4 m]
+    - prompt: "Wie lang ist ein Auto ungefähr?"
+      answer: 4 m
+      options: [4 cm, 40 cm, 4 m]
+    - prompt: "Wie lang ist dein Fuß ungefähr?"
+      answer: 20 cm
+      options: [2 cm, 20 cm, 2 m]
+    - prompt: "Wie lang ist eine Büroklammer ungefähr?"
+      answer: 3 cm
+      options: [3 cm, 30 cm, 3 m]
+    - prompt: "Wie lang ist ein Schulbus ungefähr?"
+      answer: 10 m
+      options: [10 cm, 1 m, 10 m]
+    - prompt: "Wie dick ist ein Buch ungefähr?"
+      answer: 2 cm
+      options: [2 cm, 20 cm, 2 m]
+    - prompt: "Wie breit ist ein Fußballtor ungefähr?"
+      answer: 7 m
+      options: [7 cm, 70 cm, 7 m]
+answer: choice
+representations: [plain]

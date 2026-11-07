@@ -1,0 +1,31 @@
+id: compose_decompose_shapes
+competency: compose_decompose_shapes
+kind: item_choice
+settings:
+  items:
+    - prompt: "Du faltest ein Quadrat einmal von Ecke zu Ecke. Welche Formen entstehen?"
+      answer: zwei Dreiecke
+      options: [zwei Dreiecke, zwei Quadrate, zwei Kreise]
+    - prompt: "Du faltest ein Quadrat einmal in der Mitte, Seite auf Seite. Welche Formen entstehen?"
+      answer: zwei Rechtecke
+      options: [zwei Rechtecke, zwei Dreiecke, zwei Kreise]
+    - prompt: "Du schneidest ein Rechteck einmal von Ecke zu Ecke durch. Welche Formen entstehen?"
+      answer: zwei Dreiecke
+      options: [zwei Quadrate, zwei Dreiecke, zwei Kreise]
+    - prompt: "Du schneidest einen Kreis einmal durch die Mitte. Welche Formen entstehen?"
+      answer: zwei Halbkreise
+      options: [zwei Halbkreise, zwei Dreiecke, zwei Quadrate]
+    - prompt: "Du legst zwei gleiche Quadrate nebeneinander. Welche Form entsteht?"
+      answer: ein Rechteck
+      options: [ein Rechteck, ein Dreieck, ein Kreis]
+    - prompt: "Du legst zwei gleiche Dreiecke mit der längsten Seite aneinander. Welche Form kann entstehen?"
+      answer: ein Quadrat
+      options: [ein Quadrat, ein Kreis, ein Fünfeck]
+    - prompt: "Du legst vier gleiche kleine Quadrate zu einem großen Quadrat. Wie viele kleine Quadrate liegen in einer Reihe?"
+      answer: "2"
+      options: ["2", "3", "4"]
+    - prompt: "Du faltest ein Blatt zweimal in der Mitte. Wie viele Teile siehst du beim Aufklappen?"
+      answer: "4"
+      options: ["2", "3", "4"]
+answer: choice
+representations: [plain]

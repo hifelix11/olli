@@ -1,0 +1,14 @@
+id: symmetry_basics
+competency: symmetry_basics
+kind: symmetry
+settings:
+  width: 6
+  height: 4
+params:
+  cells: { min: 3, max: 6 }
+levels:
+  easy:
+    params:
+      cells: { min: 2, max: 3 }
+answer: choice
+representations: [grid]
