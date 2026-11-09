@@ -12,11 +12,12 @@ dependencies = [
   "sqlalchemy>=2.0",
   "psycopg[binary]>=3.2",
   "alembic>=1.13",
+  "pyjwt[crypto]>=2.10",
+  "httpx2>=2.16",
 ]
 
 [dependency-groups]
 dev = [
-  "httpx2>=2.16.0",
   "pytest>=8",
   "ruff>=0.6",
 ]

@@ -245,6 +245,7 @@ Entscheidungen:
 
 - Backend: Python + FastAPI (gesetzt)
 - Supabase als Postgres + Auth für den Start. Lokal per Supabase CLI in Docker lauffähig. Region Frankfurt, aber US-Firma: bei Schulgesprächen ggf. Thema. Daher: nur FastAPI redet mit der DB, Frontend nie direkt mit Supabase. So bleibt es normales Postgres und ist jederzeit zu Hetzner umziehbar, Auth notfalls gegen Keycloak tauschbar.
+- Auth: Supabase Auth mit E-Mail und Passwort, nur über FastAPI. FastAPI leitet Anmeldung und Registrierung an Supabase weiter und prüft die Tokens über die öffentlichen Schlüssel (JWKS). Die Tabelle `guardians` hat keinen Fremdschlüssel auf `auth.users`. Wechsel zu Keycloak ändert nur `backend/app/api/auth.py`.
 - Frontend: Vite + React + TypeScript (entschieden). Kein SSR nötig für eingeloggte Kinder. Marketing-Seite für Eltern später separat, z. B. mit Next.js oder Astro in eigenem Repo.
 
 Repo-Struktur, oberste Ebene, vier Ordner: backend (Python, FastAPI), frontend (web, später app), content (Fachinhalte pro Fach: Graph, Generatoren, Textaufgaben), curricula (Mapping pro Bundesland).

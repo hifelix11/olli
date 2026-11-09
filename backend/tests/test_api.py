@@ -1,43 +1,14 @@
 """The learning loop over HTTP, against an in-memory SQLite database."""
 
-from collections.abc import Iterator
-
-import pytest
 from fastapi.testclient import TestClient
-from sqlalchemy import create_engine, select
+from sqlalchemy import select
 from sqlalchemy.orm import Session, sessionmaker
-from sqlalchemy.pool import StaticPool
 
-from app.db.models import Base, Child, Mastery, TaskRow
-from app.db.session import get_session
+from app.db.models import Child, Mastery, TaskRow
 from app.domain.generators.models import GeneratorSpec
 from app.domain.graph.graph import CompetencyGraph
-from app.main import app
 
 GOAL = "add_within_20_with_carry"
-
-
-@pytest.fixture
-def db() -> Iterator[sessionmaker[Session]]:
-    engine = create_engine(
-        "sqlite+pysqlite:///:memory:",
-        connect_args={"check_same_thread": False},
-        poolclass=StaticPool,
-    )
-    Base.metadata.create_all(engine)
-    yield sessionmaker(engine)
-    engine.dispose()
-
-
-@pytest.fixture
-def client(db: sessionmaker[Session]) -> Iterator[TestClient]:
-    def override() -> Iterator[Session]:
-        with db.begin() as session:
-            yield session
-
-    app.dependency_overrides[get_session] = override
-    yield TestClient(app)
-    app.dependency_overrides.clear()
 
 
 def solution(db: sessionmaker[Session], task_id: str) -> int | str:

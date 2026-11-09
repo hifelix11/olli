@@ -13,6 +13,8 @@ npm run lint
 
 Backend-Adresse über `VITE_API_URL`, Standard `http://127.0.0.1:8000`.
 
+Anmeldung: Das Frontend schickt E-Mail und Passwort ans Backend, nie an Supabase. `api/client.ts` hängt das Token an jede Anfrage. Bei 401 holt es einmal neue Tokens und wiederholt die Anfrage. Klappt das nicht, endet die Anmeldung und der Login erscheint. Die Kinderliste kommt vom Backend. Abmelden geht im Elternbereich, hinter der PIN.
+
 ## Struktur
 
 ```
@@ -23,8 +25,9 @@ src/
                        DigitalClock, Money, Lengths, Units, Ruler, BarChart, Table
   child/               Practice (Sitzung), TaskView (Aufgabe), Keypad, Olli
   parent/ParentArea    PIN, Kinder anlegen, Jahresziel und Karte
+  start/Login          Anmelden und Konto anlegen (Elternkonto)
   start/Start          Kind wählen
-  storage.ts           Kinderliste im localStorage
+  storage.ts           Tokens des Elternkontos im localStorage
   speech.ts            Vorlesen per Browser-Sprachausgabe
   index.css            Tokens und alle Styles
 ```
@@ -54,4 +57,4 @@ Regeln:
 
 Darstellungen: Das Backend nennt pro Aufgabe die erlaubten Darstellungen, `Figure` zeichnet die erste, die das Frontend kann. Sind es mehrere (etwa `bar_chart` und `table`), entscheidet die Aufgaben-ID, damit dieselbe Aufgabe ihr Bild behält. `plain` ist kein Bild. Gebaut sind `twenty_field`, `dice`, `scattered`, `number_line`, `shapes`, `grid`, `clock`, `digital_clock`, `money`, `lengths`, `units`, `ruler`, `bar_chart` und `table`. Nicht gezeichnet: `fingers` (die Würfelbilder springen ein) und `tally` (Zählaufgaben fallen auf das Zwanzigerfeld zurück). Alle Bilder sind Inline-SVG oder HTML, Gitter und Längen rechnen in Kästchen von 28 px wie das Papier. Die Operanden, die jedes Bild liest, stehen in `content/math/generators/README.md`.
 
-Die Eltern-PIN ist `1234`, fest im Code, bis es Elternkonten gibt.
+Die Eltern-PIN ist `1234`, fest im Code, bis sie im Elternkonto liegt.

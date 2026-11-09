@@ -16,6 +16,7 @@ backend/          Python + FastAPI. Gesamte Logik.
   app/domain/     graph, generators, tracing, selection, analysis, language
   app/domain/tutor.py   Übungsschleife, verbindet die Module
   app/api/routes.py     children, next-task, answers, mastery
+  app/api/auth.py       Login über Supabase Auth, Token-Prüfung
   app/db/         models (children, tasks, attempts, mastery), session, repository
   tests/
 frontend/web/     Vite + React + TypeScript. Nur Anzeige und Antwort. Design-Tokens in src/index.css, Plan in der README.
@@ -95,6 +96,7 @@ supabase start                               # lokale Datenbank
 - Generator-Kinds stehen in `content/math/generators/README.md`. Eine Spec pro Kompetenz, 66 von 68 haben eine, nur die beiden Textaufgaben-Kompetenzen nicht (die kommen aus dem geprüften Pool). Kompetenzen ohne Generator werden nie gewählt und blockieren ihre Nachfolger nicht (`practicable` in `select_next`). Die Elternkarte zeigt sie blass.
 - Aufgaben mit Auswahl (`options`) heben die Rate-Rate auf mindestens 1 / Anzahl Optionen.
 - Der Demo-Fall steht in `tests/test_tutor.py` und über HTTP in `tests/test_api.py`.
+- Elternkonto: Login über `POST /auth/login`, FastAPI leitet an Supabase Auth weiter. Alle Kinder-Routen brauchen `Authorization: Bearer`. Ein Elternteil sieht nur eigene Kinder, fremde sind 404. `guardians` entsteht beim ersten angelegten Kind.
 - API: Lösung bleibt im Backend (`tasks.payload`). Eine Aufgabe kann nur einmal beantwortet werden. `mastery` hat nur Zeilen für geübte Kompetenzen, der Rest gilt als `not_started`.
 - Jahresziel: `GET /children/{id}/progress` zählt die Kompetenzen aus dem Curriculum-Mapping (bis Jahresende erwartet), davon prüfbare, gemeisterte, in Arbeit. Kein Zeitplan im Schuljahr: der Lehrplan gibt keinen vor. Curriculum fest `de-by/math-1`, bis Kinder ein Bundesland haben.
 - Tests laufen gegen SQLite im Speicher (Dependency-Override von `get_session`), die App gegen Postgres.

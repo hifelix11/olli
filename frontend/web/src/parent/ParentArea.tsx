@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { api, type Child, type MasteryRow, type MasteryStatus, type Progress } from "../api/client";
+import { api, auth, type Child, type MasteryRow, type MasteryStatus, type Progress } from "../api/client";
 import { Keypad } from "../child/Keypad";
 
-/** Platzhalter, bis es Elternkonten gibt. */
+/** Platzhalter, bis die PIN im Elternkonto liegt. */
 const PIN = "1234";
 
 const AREAS: { key: string; title: string }[] = [
@@ -102,9 +102,14 @@ export function ParentArea({ kids, onAdd, onExit }: Props) {
     <div className="parent">
       <header>
         <h1>Elternbereich</h1>
-        <button type="button" className="btn btn-quiet" onClick={onExit}>
-          Zurück zum Start
-        </button>
+        <div>
+          <button type="button" className="btn btn-quiet" onClick={onExit}>
+            Zurück zum Start
+          </button>
+          <button type="button" className="btn btn-quiet" onClick={auth.logout}>
+            Abmelden
+          </button>
+        </div>
       </header>
       <section>
         <h2>Kinder</h2>
