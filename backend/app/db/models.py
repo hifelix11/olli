@@ -20,10 +20,20 @@ class Base(DeclarativeBase):
     pass
 
 
+class Guardian(Base):
+    """A parent account. The ID is the user ID from the auth provider. Email stays there."""
+
+    __tablename__ = "guardians"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
+
+
 class Child(Base):
     __tablename__ = "children"
 
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
+    guardian_id: Mapped[str] = mapped_column(ForeignKey("guardians.id"), index=True)
     name: Mapped[str] = mapped_column(String(100))
     placement_done: Mapped[bool] = mapped_column(default=False)  # placement check finished
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)

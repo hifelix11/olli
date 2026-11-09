@@ -1,19 +1,21 @@
-import type { Child } from "./api/client";
+/** Tokens des Elternkontos. Nur das Backend prüft sie. */
+export type Session = { access_token: string; refresh_token: string };
 
-const KEY = "olli.children";
+const KEY = "olli.session";
 
-export function loadChildren(): Child[] {
+export function loadSession(): Session | null {
   try {
-    return JSON.parse(localStorage.getItem(KEY) ?? "[]") as Child[];
+    return JSON.parse(localStorage.getItem(KEY) ?? "null") as Session | null;
   } catch {
-    return [];
+    return null;
   }
 }
 
-export function saveChildren(children: Child[]): void {
+export function saveSession(session: Session | null): void {
   try {
-    localStorage.setItem(KEY, JSON.stringify(children));
+    if (session) localStorage.setItem(KEY, JSON.stringify(session));
+    else localStorage.removeItem(KEY);
   } catch {
-    // Browser ohne Speicher: die Liste lebt dann nur für diese Sitzung.
+    // Browser ohne Speicher: die Anmeldung gilt dann nur für diese Sitzung.
   }
 }

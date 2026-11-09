@@ -1,4 +1,7 @@
-"""Children, tasks, answers, mastery. The task's answer never leaves the backend."""
+"""Children, tasks, answers, mastery. The task's answer never leaves the backend.
+
+A parent sees only their own children. Another parent's child is 404, not 403.
+"""
 
 from copy import deepcopy
 from typing import Annotated, Any
@@ -8,8 +11,9 @@ from pydantic import BaseModel
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from app.api.auth import Parent
 from app.content import load_curriculum, load_generators, load_graph
-from app.db.models import Attempt, Child, Mastery, TaskRow
+from app.db.models import Attempt, Child, Guardian, Mastery, TaskRow
 from app.db.repository import load_state, save_state
 from app.db.session import get_session
 from app.domain.generators.models import Task
@@ -75,11 +79,14 @@ class ProgressOut(BaseModel):
     placement_done: bool
 
 
-def get_child(session: Session, child_id: str) -> Child:
+def owned_child(child_id: str, session: Db, parent: Parent) -> Child:
     child = session.get(Child, child_id)
-    if child is None:
+    if child is None or child.guardian_id != parent:
         raise HTTPException(404, "child not found")
     return child
+
+
+OwnedChild = Annotated[Child, Depends(owned_child)]
 
 
 def mastery_rows(session: Session, child_id: str) -> dict[str, Mastery]:
@@ -95,26 +102,35 @@ def status_of(row: Mastery | None) -> str:
     return "mastered" if row.p_known >= MASTERED else "in_progress"
 
 
+@router.get("/children", response_model=list[ChildOut])
+def list_children(session: Db, parent: Parent) -> Any:
+    return session.scalars(
+        select(Child).where(Child.guardian_id == parent).order_by(Child.created_at)
+    ).all()
+
+
 @router.post("/children", response_model=ChildOut, status_code=201)
-def create_child(body: ChildIn, session: Db) -> Any:
-    child = Child(name=body.name)
+def create_child(body: ChildIn, session: Db, parent: Parent) -> Any:
+    if session.get(Guardian, parent) is None:
+        session.add(Guardian(id=parent))
+        session.flush()
+    child = Child(guardian_id=parent, name=body.name)
     session.add(child)
     session.flush()
     return child
 
 
 @router.get("/children/{child_id}/next-task", response_model=TaskOut | None)
-def next_task(child_id: str, session: Db) -> Any:
+def next_task(child: OwnedChild, session: Db) -> Any:
     """None when every competency is mastered. A new child gets the placement check first."""
-    child = get_child(session, child_id)
     graph = load_graph()
-    state = load_state(session, graph, child_id)
+    state = load_state(session, graph, child.id)
     tutor = Tutor(graph, load_generators(), state, placing=not child.placement_done)
     task = tutor.next_task()
     child.placement_done = not tutor.placing
     if task is None:
         return None
-    row = TaskRow(child_id=child_id, competency=task.competency, payload=task.model_dump())
+    row = TaskRow(child_id=child.id, competency=task.competency, payload=task.model_dump())
     session.add(row)
     session.flush()
     return TaskOut(
@@ -126,25 +142,24 @@ def next_task(child_id: str, session: Db) -> Any:
 
 
 @router.post("/children/{child_id}/answers", response_model=AnswerOut)
-def submit_answer(child_id: str, body: AnswerIn, session: Db) -> Any:
-    child = get_child(session, child_id)
+def submit_answer(child: OwnedChild, body: AnswerIn, session: Db) -> Any:
     row = session.get(TaskRow, body.task_id)
-    if row is None or row.child_id != child_id:
+    if row is None or row.child_id != child.id:
         raise HTTPException(404, "task not found")
     if session.scalar(select(Attempt.id).where(Attempt.task_id == row.id)):
         raise HTTPException(409, "task already answered")
 
     graph = load_graph()
     task = Task(**row.payload)
-    before = load_state(session, graph, child_id)
+    before = load_state(session, graph, child.id)
     tutor = Tutor(graph, load_generators(), deepcopy(before), placing=not child.placement_done)
     result = tutor.submit(task, coerce(body.answer, task.answer))
 
-    save_state(session, child_id, before, tutor.state)
+    save_state(session, child.id, before, tutor.state)
     session.add(
         Attempt(
             task_id=row.id,
-            child_id=child_id,
+            child_id=child.id,
             competency=task.competency,
             answer=body.answer,
             correct=result.correct,
@@ -159,11 +174,10 @@ def submit_answer(child_id: str, body: AnswerIn, session: Db) -> Any:
 
 
 @router.get("/children/{child_id}/mastery", response_model=list[MasteryOut])
-def mastery(child_id: str, session: Db) -> Any:
-    get_child(session, child_id)
+def mastery(child: OwnedChild, session: Db) -> Any:
     graph = load_graph()
     practicable = set(load_generators())
-    rows = mastery_rows(session, child_id)
+    rows = mastery_rows(session, child.id)
     return [
         MasteryOut(
             competency=c.id,
@@ -178,11 +192,10 @@ def mastery(child_id: str, session: Db) -> Any:
 
 
 @router.get("/children/{child_id}/progress", response_model=ProgressOut)
-def progress(child_id: str, session: Db) -> Any:
-    child = get_child(session, child_id)
+def progress(child: OwnedChild, session: Db) -> Any:
     curriculum = load_curriculum()
     checkable = curriculum.competencies & set(load_generators())
-    rows = mastery_rows(session, child_id)
+    rows = mastery_rows(session, child.id)
     statuses = [status_of(rows.get(c)) for c in checkable]
     return ProgressOut(
         curriculum=curriculum.title,

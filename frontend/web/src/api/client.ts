@@ -1,3 +1,5 @@
+import { loadSession, saveSession, type Session } from "../storage";
+
 export type Child = { id: string; name: string };
 
 export type Task = {
@@ -44,24 +46,96 @@ export type Progress = {
 
 const BASE: string = import.meta.env.VITE_API_URL ?? "http://127.0.0.1:8000";
 
+/** Fehler vom Backend. `code` ist der Fehlercode, etwa `invalid_credentials`. */
+export class ApiError extends Error {
+  status: number;
+  code: string;
+
+  constructor(status: number, code: string) {
+    super(`${status}: ${code}`);
+    this.status = status;
+    this.code = code;
+  }
+}
+
+let session = loadSession();
+let refreshing: Promise<boolean> | null = null;
+let onSignOut = () => {};
+
+function setSession(next: Session | null): void {
+  session = next;
+  saveSession(next);
+}
+
+function signOut(): void {
+  setSession(null);
+  onSignOut();
+}
+
+function send(path: string, init?: RequestInit): Promise<Response> {
+  const headers: Record<string, string> = { "content-type": "application/json" };
+  if (session) headers.authorization = `Bearer ${session.access_token}`;
+  return fetch(BASE + path, { ...init, headers });
+}
+
+async function fail(res: Response): Promise<never> {
+  const body = (await res.json().catch(() => null)) as { detail?: unknown } | null;
+  throw new ApiError(res.status, typeof body?.detail === "string" ? body.detail : res.statusText);
+}
+
+/** Neue Tokens holen. Parallele Aufrufe teilen sich eine Anfrage. */
+function refresh(token: string): Promise<boolean> {
+  refreshing ??= send("/auth/refresh", {
+    method: "POST",
+    body: JSON.stringify({ refresh_token: token }),
+  })
+    .then(async (res) => {
+      if (res.ok) setSession((await res.json()) as Session);
+      else if (res.status === 401) signOut();
+      return res.ok;
+    })
+    .finally(() => {
+      refreshing = null;
+    });
+  return refreshing;
+}
+
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
-  const res = await fetch(BASE + path, {
-    ...init,
-    headers: { "content-type": "application/json" },
-  });
-  if (!res.ok) throw new Error(`${res.status}: ${await res.text()}`);
+  let res = await send(path, init);
+  if (res.status === 401 && session && (await refresh(session.refresh_token))) {
+    res = await send(path, init);
+  }
+  if (!res.ok) return fail(res);
   return (await res.json()) as T;
 }
 
+const post = <T>(path: string, body: unknown) =>
+  request<T>(path, { method: "POST", body: JSON.stringify(body) });
+
+export const auth = {
+  signedIn: () => session !== null,
+  /** Meldet, wenn die Anmeldung endet: abgemeldet oder abgelaufen. */
+  onSignOut: (listener: () => void) => {
+    onSignOut = listener;
+  },
+  login: async (email: string, password: string) => {
+    setSession(await post<Session>("/auth/login", { email, password }));
+  },
+  /** false: Das Konto muss erst per E-Mail bestätigt werden. */
+  signup: async (email: string, password: string) => {
+    const next = await post<Session | null>("/auth/signup", { email, password });
+    if (next) setSession(next);
+    return next !== null;
+  },
+  logout: signOut,
+};
+
 export const api = {
-  createChild: (name: string) =>
-    request<Child>("/children", { method: "POST", body: JSON.stringify({ name }) }),
+  children: () => request<Child[]>("/children"),
+  createChild: (name: string) => post<Child>("/children", { name }),
   nextTask: (childId: string) => request<Task | null>(`/children/${childId}/next-task`),
   answer: (childId: string, taskId: string, answer: number | string) =>
-    request<AnswerResult>(`/children/${childId}/answers`, {
-      method: "POST",
-      body: JSON.stringify({ task_id: taskId, answer }),
-    }),
+    post<AnswerResult>(`/children/${childId}/answers`, { task_id: taskId, answer }),
   mastery: (childId: string) => request<MasteryRow[]>(`/children/${childId}/mastery`),
   progress: (childId: string) => request<Progress>(`/children/${childId}/progress`),
 };
