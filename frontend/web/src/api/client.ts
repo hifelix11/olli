@@ -1,6 +1,9 @@
 import { loadSession, saveSession, type Session } from "../storage";
 
-export type Child = { id: string; name: string };
+/** Bild, an dem ein Kind sich erkennt, wie das Zeichen an der Kita-Garderobe. */
+export type Sign = "sun" | "moon" | "star" | "heart" | "fish" | "apple" | "flower" | "boat";
+
+export type Child = { id: string; name: string; sign: Sign };
 
 export type Task = {
   id: string;
@@ -17,9 +20,14 @@ export type Task = {
 
 export type AnswerResult = {
   correct: boolean;
-  answer: number | string;
+  /** Die Lösung. null, solange ein zweiter Versuch offen ist. */
+  answer: number | string | null;
+  /** Das Kind darf es noch einmal versuchen. */
+  retry: boolean;
   p_known: number;
   backtracked_to: string | null;
+  /** Mit dieser Antwort sitzt die Kompetenz. Nie im Standortcheck. */
+  mastered: boolean;
 };
 
 export type MasteryStatus = "mastered" | "in_progress" | "not_started";
@@ -132,9 +140,10 @@ export const auth = {
 
 export const api = {
   children: () => request<Child[]>("/children"),
-  createChild: (name: string) => post<Child>("/children", { name }),
+  createChild: (name: string, sign: Sign) => post<Child>("/children", { name, sign }),
   nextTask: (childId: string) => request<Task | null>(`/children/${childId}/next-task`),
-  answer: (childId: string, taskId: string, answer: number | string) =>
+  /** answer null: "Weiß ich noch nicht". */
+  answer: (childId: string, taskId: string, answer: number | string | null) =>
     post<AnswerResult>(`/children/${childId}/answers`, { task_id: taskId, answer }),
   mastery: (childId: string) => request<MasteryRow[]>(`/children/${childId}/mastery`),
   progress: (childId: string) => request<Progress>(`/children/${childId}/progress`),

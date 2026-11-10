@@ -159,6 +159,26 @@ Offen:
 - [ ] Typischer Verlauf als weiche Anzeige: pro Kompetenz ein `expected_by` (Halbjahr oder Quartal) im Curriculum-YAML, ausdrücklich als "üblich" markiert. Erst, wenn das Jahresziel als Bezug nicht reicht.
 - [ ] Alternative ohne Zeitplan: Eltern sagen, wo die Klasse gerade ist, Olli zeigt, ob das Kind dort sicher ist.
 
+### Ablauf aus Sicht des Kindes
+
+Das Kind ist 6, übt nachmittags allein am Tablet der Eltern, 5 bis 10 Minuten. Im November der ersten Jahrgangsstufe liest es noch keine Sätze. Der Ablauf im Detail steht in `frontend/web/README.md`.
+
+Entscheidungen (2026-11-10):
+
+- Was das Kind verstehen muss, kommt als Stimme, Bild oder Symbol. Text ist für die Eltern.
+- Jedes Kind hat ein Zeichen wie an der Kita-Garderobe. Daran findet es sich auf der Startseite.
+- Zweiter Versuch bei freier Eingabe. Nur der erste zählt für den Lernstand, der zweite ist Hilfebedarf.
+- Der Standortcheck zeigt kein richtig oder falsch und hat "Weiß ich noch nicht". Grund: Er probiert absichtlich zu Schweres, und ein zufälliger Treffer schaltet alle Voraussetzungen mit frei.
+- Am Ende jeder Sitzung ein Stempel ins Heft, ein besonderer, wenn etwas neu sitzt. Kein "Noch eine Runde".
+- Das Zwanzigerfeld bleibt, keine Zwanzigerreihe. Es zeigt die Fünf und die Zehn als Block. Reihenfolge-Aufgaben haben den Zahlenstrahl.
+
+Offen:
+
+- [ ] Ablösung vom Material: Ab `medium` das Bild nur als Hilfe nach dem ersten Fehler zeigen
+- [ ] Stempelseite: alle Stempel gesammelt, zum Zeigen für die Eltern
+- [ ] Zielgerät festlegen: Tablet quer, Tablet hoch oder Handy
+- [ ] Sprachausgabe: Stimmen mit lokaler Verarbeitung bevorzugen oder eigene Aufnahmen
+
 ### Beispiel: Kompetenzgraph Zehnerübergang
 
 Als Daten umgesetzt in `content/math/competencies.yaml` (6 Fähigkeiten, 1 Ziel).
