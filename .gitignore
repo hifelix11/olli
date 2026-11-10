@@ -31,3 +31,6 @@ npm-debug.log*
 # Supabase (lokale Instanz)
 supabase/.branches/
 supabase/.temp/
+
+# Claude Code worktrees
+.claude/worktrees/
