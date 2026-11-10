@@ -13,3 +13,8 @@ export const SIGN_NAMES: Record<Sign, string> = {
   flower: "Blume",
   boat: "Boot",
 };
+
+/** Vorschlag: das erste Zeichen, das noch kein Geschwisterkind hat. */
+export function freeSign(taken: Sign[]): Sign {
+  return SIGNS.find((s) => !taken.includes(s)) ?? SIGNS[0];
+}

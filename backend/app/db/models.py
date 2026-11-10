@@ -26,6 +26,7 @@ class Guardian(Base):
     __tablename__ = "guardians"
 
     id: Mapped[str] = mapped_column(String(36), primary_key=True)
+    pin_hash: Mapped[str | None] = mapped_column(String(128), default=None)  # parent-area PIN
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
 
 

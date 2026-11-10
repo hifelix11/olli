@@ -176,6 +176,10 @@ button {
   gap: 8px;
 }
 
+.onboarding section > * + * {
+  margin-top: 16px;
+}
+
 .login {
   display: flex;
   flex-direction: column;
@@ -629,7 +633,8 @@ button {
   background: var(--blue);
   color: #fff;
   border-color: var(--blue);
-  font-size: 22px;
+  font-size: 20px;
+  padding: 0;
 }
 
 .key:disabled {
@@ -856,6 +861,13 @@ button {
   display: block;
   height: 100%;
   background: var(--ink);
+}
+
+.pin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
 }
 
 .pin-dots {

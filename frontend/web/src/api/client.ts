@@ -5,6 +5,8 @@ export type Sign = "sun" | "moon" | "star" | "heart" | "fish" | "apple" | "flowe
 
 export type Child = { id: string; name: string; sign: Sign };
 
+export type Account = { pin_set: boolean };
+
 export type Task = {
   id: string;
   competency: string;
@@ -139,6 +141,12 @@ export const auth = {
 };
 
 export const api = {
+  account: () => request<Account>("/account"),
+  setPin: (pin: string) =>
+    request<Account>("/account/pin", { method: "PUT", body: JSON.stringify({ pin }) }),
+  checkPin: (pin: string) => post<{ correct: boolean }>("/account/pin/check", { pin }),
+  /** PIN vergessen. Danach abmelden, nach dem Login kommt eine neue PIN. */
+  resetPin: () => request<Account>("/account/pin", { method: "DELETE" }),
   children: () => request<Child[]>("/children"),
   createChild: (name: string, sign: Sign) => post<Child>("/children", { name, sign }),
   nextTask: (childId: string) => request<Task | null>(`/children/${childId}/next-task`),

@@ -4,6 +4,7 @@ type Props = {
   value: string;
   onChange: (value: string) => void;
   onSubmit: () => void;
+  minLength?: number;
   maxLength?: number;
   /** Ohne Text zeigt der Knopf einen Haken. */
   submitLabel?: string;
@@ -14,6 +15,7 @@ export function Keypad({
   value,
   onChange,
   onSubmit,
+  minLength = 1,
   maxLength = 2,
   submitLabel,
   disabled = false,
@@ -44,7 +46,7 @@ export function Keypad({
         type="button"
         className="key key-submit"
         onClick={onSubmit}
-        disabled={disabled || value.length === 0}
+        disabled={disabled || value.length < minLength}
         aria-label={submitLabel ? undefined : "Fertig"}
       >
         {submitLabel ?? <Icon name="check" size={34} />}
