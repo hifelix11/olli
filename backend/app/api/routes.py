@@ -4,7 +4,7 @@ A parent sees only their own children. Another parent's child is 404, not 403.
 """
 
 from copy import deepcopy
-from typing import Annotated, Any
+from typing import Annotated, Any, Literal
 
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
@@ -24,13 +24,19 @@ router = APIRouter()
 Db = Annotated[Session, Depends(get_session)]
 
 
+# Pictures a child finds itself by, like the sign on a kindergarten peg. The frontend draws them.
+Sign = Literal["sun", "moon", "star", "heart", "fish", "apple", "flower", "boat"]
+
+
 class ChildIn(BaseModel):
     name: str
+    sign: Sign
 
 
 class ChildOut(BaseModel):
     id: str
     name: str
+    sign: str
 
 
 class TaskOut(BaseModel):
@@ -48,14 +54,16 @@ class TaskOut(BaseModel):
 
 class AnswerIn(BaseModel):
     task_id: str
-    answer: int | str
+    answer: int | str | None  # None: "I don't know yet". Counts as wrong.
 
 
 class AnswerOut(BaseModel):
     correct: bool
-    answer: int | str
+    answer: int | str | None  # the solution. None while a second try is open
+    retry: bool  # the child may try once more
     p_known: float
     backtracked_to: str | None
+    mastered: bool  # this answer made the competency mastered. Never in placement
 
 
 class MasteryOut(BaseModel):
@@ -114,7 +122,7 @@ def create_child(body: ChildIn, session: Db, parent: Parent) -> Any:
     if session.get(Guardian, parent) is None:
         session.add(Guardian(id=parent))
         session.flush()
-    child = Child(guardian_id=parent, name=body.name)
+    child = Child(guardian_id=parent, name=body.name, sign=body.sign)
     session.add(child)
     session.flush()
     return child
@@ -143,34 +151,53 @@ def next_task(child: OwnedChild, session: Db) -> Any:
 
 @router.post("/children/{child_id}/answers", response_model=AnswerOut)
 def submit_answer(child: OwnedChild, body: AnswerIn, session: Db) -> Any:
+    """The first try updates the learner state. A second try is practice with help and does not."""
     row = session.get(TaskRow, body.task_id)
     if row is None or row.child_id != child.id:
         raise HTTPException(404, "task not found")
-    if session.scalar(select(Attempt.id).where(Attempt.task_id == row.id)):
+    task = Task(**row.payload)
+    placing = not child.placement_done
+    tries = session.scalars(select(Attempt).where(Attempt.task_id == row.id)).all()
+    if tries and (len(tries) > 1 or not second_try(task, tries[0], placing)):
         raise HTTPException(409, "task already answered")
 
     graph = load_graph()
-    task = Task(**row.payload)
     before = load_state(session, graph, child.id)
-    tutor = Tutor(graph, load_generators(), deepcopy(before), placing=not child.placement_done)
-    result = tutor.submit(task, coerce(body.answer, task.answer))
+    given = None if body.answer is None else coerce(body.answer, task.answer)
+    after, backtracked_to = before, None
+    if tries:
+        correct = given == task.answer
+    else:
+        tutor = Tutor(graph, load_generators(), deepcopy(before), placing=placing)
+        result = tutor.submit(task, given)
+        correct, after, backtracked_to = result.correct, tutor.state, result.backtracked_to
+        save_state(session, child.id, before, after)
 
-    save_state(session, child.id, before, tutor.state)
-    session.add(
-        Attempt(
-            task_id=row.id,
-            child_id=child.id,
-            competency=task.competency,
-            answer=body.answer,
-            correct=result.correct,
-        )
+    attempt = Attempt(
+        task_id=row.id,
+        try_no=len(tries) + 1,
+        child_id=child.id,
+        competency=task.competency,
+        answer=body.answer,
+        correct=correct,
     )
+    session.add(attempt)
+    retry = not tries and second_try(task, attempt, placing)
+    p_before, p_after = before.mastery[task.competency], after.mastery[task.competency]
     return AnswerOut(
-        correct=result.correct,
-        answer=task.answer,
-        p_known=tutor.state.mastery[task.competency],
-        backtracked_to=result.backtracked_to,
+        correct=correct,
+        answer=None if retry else task.answer,
+        retry=retry,
+        p_known=p_after,
+        backtracked_to=backtracked_to,
+        mastered=not placing and p_before < MASTERED <= p_after,
     )
+
+
+def second_try(task: Task, first: Attempt, placing: bool) -> bool:
+    """A wrong first answer earns one more try. Not in placement, not after "I don't know yet",
+    not for choices: with two options the second try is a gift."""
+    return not (first.correct or placing or first.answer is None or task.options)
 
 
 @router.get("/children/{child_id}/mastery", response_model=list[MasteryOut])

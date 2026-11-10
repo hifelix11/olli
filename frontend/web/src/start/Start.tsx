@@ -1,5 +1,7 @@
 import type { Child } from "../api/client";
 import { Olli } from "../child/Olli";
+import { SignIcon } from "../child/Sign";
+import { unlockAudio } from "../sound";
 
 type Props = {
   kids: Child[];
@@ -23,9 +25,13 @@ export function Start({ kids, onPractice, onParent }: Props) {
                 <button
                   key={child.id}
                   type="button"
-                  className="btn btn-primary"
-                  onClick={() => onPractice(child)}
+                  className="child-tile"
+                  onClick={() => {
+                    unlockAudio();
+                    onPractice(child);
+                  }}
                 >
+                  <SignIcon sign={child.sign} size={72} />
                   {child.name}
                 </button>
               ))}

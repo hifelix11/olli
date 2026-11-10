@@ -23,12 +23,14 @@ src/
   representations/     Figure.tsx wählt das Bild zur Aufgabe, pick.ts die Darstellung; counters.ts (Aufgabe → Plättchen);
                        ein Bild pro Datei: TwentyField, Dice, Scattered, NumberLine, Shapes, Grid, Clock,
                        DigitalClock, Money, Lengths, Units, Ruler, BarChart, Table
-  child/               Practice (Sitzung), TaskView (Aufgabe), Keypad, Olli
+  child/               Practice (Sitzung), TaskView (Aufgabe), Keypad, Olli, Stamp (Ende der Sitzung),
+                       Sign und signs.ts (Zeichen der Kinder), Icon (Symbole statt Wörter)
   parent/ParentArea    PIN, Kinder anlegen, Jahresziel und Karte
   start/Login          Anmelden und Konto anlegen (Elternkonto)
   start/Start          Kind wählen
   storage.ts           Tokens des Elternkontos im localStorage
   speech.ts            Vorlesen per Browser-Sprachausgabe
+  sound.ts             Zweiklang bei richtig, schaltet Ton und Sprache in Safari frei
   index.css            Tokens und alle Styles
 ```
 
@@ -50,10 +52,24 @@ Regeln:
 
 - Das Zwanzigerfeld ist das Merkzeichen. Alles andere bleibt still: keine Schatten, keine Karten, keine Dekoration.
 - Kein Text, den ein Erstklässler nicht braucht. Jede Frage lässt sich vorlesen.
-- Eine Bewegung: beim Prüfen füllen sich die leeren Plättchen.
-- Eine Sitzung hat 10 Aufgaben, sichtbar als Kästchen oben rechts. Danach ist Schluss.
-- Ein neues Kind bekommt zuerst den Standortcheck. Olli sagt das im Kopf der Seite und tröstet bei Fehlern: "Das üben wir später."
+- Zwei Bewegungen: beim Prüfen füllen sich die leeren Plättchen, am Ende fällt der Stempel ins Heft.
+- Eine Sitzung hat 10 Aufgaben, sichtbar als Kästchen oben rechts. Danach ist Schluss, ohne "Noch eine Runde".
 - Tastatur groß, Eingabe per Zahlenblock oder große Auswahlknöpfe. Auf dem Rechner geht auch die Tastatur.
+
+## Ablauf für das Kind
+
+Das Kind ist 6 und liest noch nicht. Was es verstehen muss, kommt als Stimme, Bild oder Symbol. Text ist für die Eltern. Olli spricht in der ersten Person und nie den Namen des Kindes aus, denn die Sprachausgabe des Browsers kann über einen Server laufen.
+
+1. Start: Jedes Kind hat ein Zeichen wie an der Kita-Garderobe, die Eltern wählen es beim Anlegen. Das Tippen darauf schaltet Ton und Sprache frei.
+2. Begrüßung: Olli sagt, was kommt. Das Kind tippt auf ▶.
+3. Aufgabe: Olli liest sie vor, der Lautsprecher wiederholt sie. Im Kopf nur Olli mit Sprechblase, die Kästchen und das Haus.
+4. Richtig: Zweiklang, Olli freut sich, nach 1,1 s geht es weiter.
+5. Falsch: Bei freier Eingabe sagt Olli "Schau nochmal." und das Kind hat einen zweiten Versuch. Danach zeigt Olli die Lösung, weiter mit →. Bei Auswahl gleich die Lösung, ein zweiter Versuch wäre dort geraten.
+6. Standortcheck: Er probiert absichtlich zu Schweres, deshalb kein richtig oder falsch. Olli sagt "Gemerkt!". Das Fragezeichen ("Weiß ich noch nicht") senkt das Raten, Olli sagt "Das üben wir später." Ist der Check vorbei, sagt Olli: "Jetzt weiß ich, was du kannst."
+7. Zurück zu den Grundlagen: Vor der nächsten Aufgabe sagt Olli "Wir üben erst etwas, das dir dabei hilft." Das klingt nach Werkzeug, nicht nach Abstieg.
+8. Ende: Nach 10 Aufgaben drückt Olli einen Stempel ins Heft. Blau mit Gesicht, rot mit Stern, wenn eine Kompetenz neu sitzt, darunter "Neu: …".
+
+Das Zwanzigerfeld legt zeilenweise, obere Reihe zuerst: 8 + 5 zeigt die volle Zehn und 3 darunter. Gerade und ungerade legt es paarweise in Spalten, ein Plättchen ohne Partner heißt ungerade. Verdoppeln und Halbieren legt es gespiegelt, oben so viele wie unten.
 
 Darstellungen: Das Backend nennt pro Aufgabe die erlaubten Darstellungen, `Figure` zeichnet die erste, die das Frontend kann. Sind es mehrere (etwa `bar_chart` und `table`), entscheidet die Aufgaben-ID, damit dieselbe Aufgabe ihr Bild behält. `plain` ist kein Bild. Gebaut sind `twenty_field`, `dice`, `scattered`, `number_line`, `shapes`, `grid`, `clock`, `digital_clock`, `money`, `lengths`, `units`, `ruler`, `bar_chart` und `table`. Nicht gezeichnet: `fingers` (die Würfelbilder springen ein) und `tally` (Zählaufgaben fallen auf das Zwanzigerfeld zurück). Alle Bilder sind Inline-SVG oder HTML, Gitter und Längen rechnen in Kästchen von 28 px wie das Papier. Die Operanden, die jedes Bild liest, stehen in `content/math/generators/README.md`.
 

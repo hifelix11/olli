@@ -35,6 +35,7 @@ class Child(Base):
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
     guardian_id: Mapped[str] = mapped_column(ForeignKey("guardians.id"), index=True)
     name: Mapped[str] = mapped_column(String(100))
+    sign: Mapped[str] = mapped_column(String(16))  # picture the child finds itself by, e.g. "fish"
     placement_done: Mapped[bool] = mapped_column(default=False)  # placement check finished
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
 
@@ -64,12 +65,15 @@ class TaskRow(Base):
 
 
 class Attempt(Base):
+    """One answer. A task has a first try and at most one second try."""
+
     __tablename__ = "attempts"
 
     id: Mapped[str] = mapped_column(String(36), primary_key=True, default=new_id)
-    task_id: Mapped[str] = mapped_column(ForeignKey("tasks.id"), unique=True)
+    task_id: Mapped[str] = mapped_column(ForeignKey("tasks.id"), index=True)
+    try_no: Mapped[int] = mapped_column(default=1)  # 2: second try, counts as help
     child_id: Mapped[str] = mapped_column(ForeignKey("children.id"))
     competency: Mapped[str] = mapped_column(String(64))
-    answer: Mapped[Any] = mapped_column(JSON)
+    answer: Mapped[Any] = mapped_column(JSON)  # null: "I don't know yet"
     correct: Mapped[bool]
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
