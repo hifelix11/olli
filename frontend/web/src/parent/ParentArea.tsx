@@ -8,12 +8,12 @@ import {
   type Progress,
   type Sign,
 } from "../api/client";
-import { Keypad } from "../child/Keypad";
 import { SignIcon } from "../child/Sign";
-import { SIGN_NAMES, SIGNS } from "../child/signs";
+import { freeSign } from "../child/signs";
+import { PinPad } from "./PinPad";
+import { SignPicker } from "./SignPicker";
 
-/** Platzhalter, bis die PIN im Elternkonto liegt. */
-const PIN = "1234";
+const OFFLINE = "Olli erreicht den Server nicht.";
 
 const AREAS: { key: string; title: string }[] = [
   { key: "numbers_operations", title: "Zahlen und Rechnen" },
@@ -38,12 +38,11 @@ export function ParentArea({ kids, onAdd, onExit }: Props) {
   const [pin, setPin] = useState("");
   const [open, setOpen] = useState(false);
   const [wrong, setWrong] = useState(false);
+  const [forgot, setForgot] = useState(false);
   const [selected, setSelected] = useState<Child | null>(kids[0] ?? null);
   const [name, setName] = useState("");
   // Vorschlag: das erste Zeichen, das noch kein Geschwisterkind hat.
-  const [sign, setSign] = useState<Sign>(
-    SIGNS.find((s) => !kids.some((k) => k.sign === s)) ?? SIGNS[0],
-  );
+  const [sign, setSign] = useState<Sign>(freeSign(kids.map((k) => k.sign)));
   const [rows, setRows] = useState<MasteryRow[] | null>(null);
   const [progress, setProgress] = useState<Progress | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -65,11 +64,25 @@ export function ParentArea({ kids, onAdd, onExit }: Props) {
     };
   }, [open, selected]);
 
-  const check = () => {
-    if (pin === PIN) setOpen(true);
-    else {
-      setWrong(true);
-      setPin("");
+  const check = async () => {
+    try {
+      const { correct } = await api.checkPin(pin);
+      setOpen(correct);
+      setWrong(!correct);
+      setError(null);
+    } catch {
+      setError(OFFLINE);
+    }
+    setPin("");
+  };
+
+  /** Neue PIN nur nach Login mit Passwort: PIN löschen, abmelden, das Onboarding fragt danach. */
+  const resetPin = async () => {
+    try {
+      await api.resetPin();
+      auth.logout();
+    } catch {
+      setError(OFFLINE);
     }
   };
 
@@ -87,10 +100,10 @@ export function ParentArea({ kids, onAdd, onExit }: Props) {
       onAdd(child);
       select(child);
       setName("");
-      setSign(SIGNS.find((s) => s !== sign && !kids.some((k) => k.sign === s)) ?? SIGNS[0]);
+      setSign(freeSign([...kids.map((k) => k.sign), sign]));
       setError(null);
     } catch (e) {
-      setError(`Olli erreicht den Server nicht. ${String(e)}`);
+      setError(`${OFFLINE} ${String(e)}`);
     }
   };
 
@@ -99,13 +112,21 @@ export function ParentArea({ kids, onAdd, onExit }: Props) {
       <div className="center-page">
         <h1>Elternbereich</h1>
         <p>Bitte PIN eingeben.</p>
-        <div className="pin-dots" aria-label={`${pin.length} von 4 Ziffern`}>
-          {[0, 1, 2, 3].map((i) => (
-            <span key={i} className={i < pin.length ? "on" : ""} />
-          ))}
-        </div>
         {wrong && <p className="error">Die PIN stimmt nicht.</p>}
-        <Keypad value={pin} onChange={setPin} onSubmit={check} maxLength={4} submitLabel="Öffnen" />
+        {error && <p className="error">{error}</p>}
+        <PinPad value={pin} onChange={setPin} onSubmit={() => void check()} submitLabel="Öffnen" />
+        {forgot ? (
+          <>
+            <p>Für eine neue PIN mit E-Mail und Passwort neu anmelden.</p>
+            <button type="button" className="btn" onClick={() => void resetPin()}>
+              Abmelden und neue PIN wählen
+            </button>
+          </>
+        ) : (
+          <button type="button" className="btn btn-quiet" onClick={() => setForgot(true)}>
+            PIN vergessen?
+          </button>
+        )}
         <button type="button" className="btn btn-quiet" onClick={onExit}>
           Zurück zum Start
         </button>
@@ -143,22 +164,11 @@ export function ParentArea({ kids, onAdd, onExit }: Props) {
             ))}
           </div>
         )}
-        <p className="summary">Jedes Kind bekommt ein Zeichen. Daran findet es sich auf der Startseite, auch ohne lesen zu können.</p>
-        <div className="signs" role="radiogroup" aria-label="Zeichen">
-          {SIGNS.map((s) => (
-            <button
-              key={s}
-              type="button"
-              role="radio"
-              aria-checked={s === sign}
-              aria-label={SIGN_NAMES[s]}
-              className={`sign-choice${s === sign ? " on" : ""}`}
-              onClick={() => setSign(s)}
-            >
-              <SignIcon sign={s} size={36} />
-            </button>
-          ))}
-        </div>
+        <p className="summary">
+          Jedes Kind bekommt ein Zeichen. Daran findet es sich auf der Startseite, auch ohne lesen
+          zu können.
+        </p>
+        <SignPicker value={sign} onChange={setSign} />
         <form
           className="add"
           onSubmit={(e) => {

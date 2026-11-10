@@ -26,7 +26,10 @@ src/
   child/               Practice (Sitzung), TaskView (Aufgabe), Keypad, Olli, Stamp (Ende der Sitzung),
                        Sign und signs.ts (Zeichen der Kinder), Icon (Symbole statt Wörter)
   parent/ParentArea    PIN, Kinder anlegen, Jahresziel und Karte
+  parent/PinPad        Punkte und Zahlenblock für die PIN
+  parent/SignPicker    Zeichen für ein neues Kind wählen, auch im Onboarding
   start/Login          Anmelden und Konto anlegen (Elternkonto)
+  start/Onboarding     erster Start: Kind mit Zeichen anlegen, PIN wählen
   start/Start          Kind wählen
   storage.ts           Tokens des Elternkontos im localStorage
   speech.ts            Vorlesen per Browser-Sprachausgabe
@@ -73,4 +76,4 @@ Das Zwanzigerfeld legt zeilenweise, obere Reihe zuerst: 8 + 5 zeigt die volle Ze
 
 Darstellungen: Das Backend nennt pro Aufgabe die erlaubten Darstellungen, `Figure` zeichnet die erste, die das Frontend kann. Sind es mehrere (etwa `bar_chart` und `table`), entscheidet die Aufgaben-ID, damit dieselbe Aufgabe ihr Bild behält. `plain` ist kein Bild. Gebaut sind `twenty_field`, `dice`, `scattered`, `number_line`, `shapes`, `grid`, `clock`, `digital_clock`, `money`, `lengths`, `units`, `ruler`, `bar_chart` und `table`. Nicht gezeichnet: `fingers` (die Würfelbilder springen ein) und `tally` (Zählaufgaben fallen auf das Zwanzigerfeld zurück). Alle Bilder sind Inline-SVG oder HTML, Gitter und Längen rechnen in Kästchen von 28 px wie das Papier. Die Operanden, die jedes Bild liest, stehen in `content/math/generators/README.md`.
 
-Die Eltern-PIN ist `1234`, fest im Code, bis sie im Elternkonto liegt.
+Onboarding: Nach dem Login fragt `App` das Backend nach Kindern und PIN. Fehlt etwas, kommt das Onboarding und zeigt nur die fehlenden Schritte: Kind mit Zeichen anlegen, PIN wählen (zweimal), Fertig. Danach übt das neue Kind sofort. Die PIN prüft das Backend. "PIN vergessen?" löscht die PIN und meldet ab. Nach dem Login mit Passwort fragt das Onboarding nach einer neuen PIN.

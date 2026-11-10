@@ -11,9 +11,10 @@ from pydantic import BaseModel
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
+from app.api.account import guardian
 from app.api.auth import Parent
 from app.content import load_curriculum, load_generators, load_graph
-from app.db.models import Attempt, Child, Guardian, Mastery, TaskRow
+from app.db.models import Attempt, Child, Mastery, TaskRow
 from app.db.repository import load_state, save_state
 from app.db.session import get_session
 from app.domain.generators.models import Task
@@ -119,9 +120,7 @@ def list_children(session: Db, parent: Parent) -> Any:
 
 @router.post("/children", response_model=ChildOut, status_code=201)
 def create_child(body: ChildIn, session: Db, parent: Parent) -> Any:
-    if session.get(Guardian, parent) is None:
-        session.add(Guardian(id=parent))
-        session.flush()
+    guardian(session, parent)
     child = Child(guardian_id=parent, name=body.name, sign=body.sign)
     session.add(child)
     session.flush()

@@ -20,19 +20,24 @@ uv run ruff check . && uv run ruff format .
 | `app/domain/language/` | LLM-Aufrufe, strikt gerahmt |
 | `app/api/routes.py` | Routen, siehe unten |
 | `app/api/auth.py` | Login über Supabase Auth, Token-Prüfung, siehe Anmeldung |
+| `app/api/account.py` | PIN für den Elternbereich, nur als gesalzener Hash gespeichert |
 | `app/db/` | Tabellen (`models.py`), Session, Repository für den Lernstand |
 | `app/settings.py` | `DATABASE_URL`, `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`, CORS. Liest `.env` |
 | `app/content.py` | Lädt Graph und Generatoren einmal beim ersten Zugriff |
 
 ## Routen
 
-Alle Routen unter `/children` brauchen `Authorization: Bearer <access_token>`. Ein Elternteil sieht nur eigene Kinder. Ein fremdes Kind ist 404.
+Alle Routen unter `/account` und `/children` brauchen `Authorization: Bearer <access_token>`. Ein Elternteil sieht nur eigene Kinder. Ein fremdes Kind ist 404.
 
 | Route | Zweck |
 | --- | --- |
 | `POST /auth/signup` `{email, password}` | Konto anlegen. Liefert Tokens oder `null`, wenn erst die E-Mail bestätigt werden muss |
 | `POST /auth/login` `{email, password}` | Liefert `access_token`, `refresh_token` |
 | `POST /auth/refresh` `{refresh_token}` | Neue Tokens. 401, wenn die Anmeldung abgelaufen ist |
+| `GET /account` | `pin_set`. `false`: das Onboarding fragt nach einer PIN |
+| `PUT /account/pin` `{pin}` | PIN setzen, genau vier Ziffern |
+| `POST /account/pin/check` `{pin}` | Liefert `correct` |
+| `DELETE /account/pin` | PIN vergessen. Das Frontend meldet danach ab |
 | `GET /children` | Kinder des Elternteils |
 | `POST /children` `{name, sign}` | Kind anlegen, liefert `id`. `sign` ist das Zeichen des Kindes: `sun`, `moon`, `star`, `heart`, `fish`, `apple`, `flower`, `boat` |
 | `GET /children/{id}/next-task` | Nächste Aufgabe ohne Lösung. `null`, wenn alles sitzt |
@@ -43,7 +48,17 @@ Interaktive Doku unter http://127.0.0.1:8000/docs.
 
 ## Datenbank
 
-Tabellen werden beim Start mit `create_all` angelegt (noch keine Migrationen). `create_all` legt fehlende Tabellen an, ändert aber keine bestehenden. Eine neue Spalte braucht deshalb lokal einen Neuanfang der Tabellen. `guardians` (Elternkonten, ID aus Supabase Auth, keine E-Mail), `children`, `tasks` (ausgegebene Aufgaben mit Lösung), `attempts` (jede Antwort, unveränderlich, `try_no` 1 oder 2), `mastery` (nur geübte Kompetenzen).
+Tabellen werden beim Start mit `create_all` angelegt (noch keine Migrationen). `create_all` legt fehlende Tabellen an, ändert aber keine bestehenden. Eine neue Spalte braucht deshalb lokal einen Neuanfang der Tabellen oder ein `ALTER TABLE`. `guardians` (Elternkonten, ID aus Supabase Auth, keine E-Mail, Hash der PIN), `children` (mit Zeichen), `tasks` (ausgegebene Aufgaben mit Lösung), `attempts` (jede Antwort, unveränderlich, `try_no` 1 oder 2), `mastery` (nur geübte Kompetenzen).
+
+Bestehende lokale Tabellen auf den aktuellen Stand bringen, ohne Daten zu verlieren:
+
+```sql
+ALTER TABLE guardians ADD COLUMN IF NOT EXISTS pin_hash varchar(128);
+ALTER TABLE children ADD COLUMN IF NOT EXISTS sign varchar(16) NOT NULL DEFAULT 'sun';
+ALTER TABLE attempts ADD COLUMN IF NOT EXISTS try_no integer NOT NULL DEFAULT 1;
+ALTER TABLE attempts DROP CONSTRAINT IF EXISTS attempts_task_id_key;
+CREATE INDEX IF NOT EXISTS ix_attempts_task_id ON attempts (task_id);
+```
 
 Die Tests laufen gegen SQLite im Speicher, die App gegen Postgres. Das Schema ist einfach genug, dass beide gleich funktionieren.
 
