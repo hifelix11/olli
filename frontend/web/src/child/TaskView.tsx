@@ -1,16 +1,25 @@
 import { useEffect } from "react";
-import type { AnswerResult, Task } from "../api/client";
+import type { Task } from "../api/client";
 import { Figure } from "../representations/Figure";
 import { speak } from "../speech";
+import { Icon } from "./Icon";
 import { Keypad } from "./Keypad";
 
 type Props = {
   task: Task;
   value: string;
   onChange: (value: string) => void;
-  onSubmit: (answer: number | string) => void;
-  result: AnswerResult | null;
+  /** null: "Weiß ich noch nicht". */
+  onSubmit: (answer: number | string | null) => void;
+  /** Beantwortet: keine Eingabe mehr. */
+  closed: boolean;
+  /** Steht in der Lücke und füllt die Plättchen. null: nichts verraten. */
+  solution: number | string | null;
+  /** Nur im Standortcheck. */
+  canSkip: boolean;
   busy: boolean;
+  /** Pfeil nach einer falschen Antwort. Sonst geht es von selbst weiter. */
+  onNext: (() => void) | null;
 };
 
 /** Trennt die Frage ("Welche Zahl fehlt?") von der Rechnung ("2, 3, 4, _"). */
@@ -31,17 +40,18 @@ function aroundGap(figure: string): [string, string] | null {
   return null;
 }
 
-export function TaskView({ task, value, onChange, onSubmit, result, busy }: Props) {
+export function TaskView(props: Props) {
+  const { task, value, onChange, onSubmit, closed, solution, canSkip, busy, onNext } = props;
   const choice = task.options !== null;
   const { question, figure } = split(task.prompt);
   const gap = aroundGap(figure);
-  const shown = result ? String(result.answer) : value;
+  const shown = solution !== null ? String(solution) : value;
   // Lange Rechnungen ("1 Zehner und 4 Einer") und lange Antworten ("Wie viele Kinder sind es jetzt?") kleiner.
   const longFigure = figure.length > 14;
   const stacked = choice && task.options!.some((option) => String(option).length > 12);
 
   useEffect(() => {
-    if (choice || result || busy) return;
+    if (choice || closed || busy) return;
     const onKey = (e: KeyboardEvent) => {
       if (/^[0-9]$/.test(e.key) && value.length < 2) onChange(value + e.key);
       else if (e.key === "Backspace") onChange(value.slice(0, -1));
@@ -49,7 +59,7 @@ export function TaskView({ task, value, onChange, onSubmit, result, busy }: Prop
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [choice, result, busy, value, onChange, onSubmit]);
+  }, [choice, closed, busy, value, onChange, onSubmit]);
 
   const gapBox = (
     <span className={`gap${shown ? "" : " blank"}`} aria-label="Lücke">
@@ -68,10 +78,7 @@ export function TaskView({ task, value, onChange, onSubmit, result, busy }: Prop
               onClick={() => speak(task.prompt)}
               aria-label="Vorlesen"
             >
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor" />
-                <path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11" />
-              </svg>
+              <Icon name="speaker" size={22} />
             </button>
             <span>{question}</span>
           </p>
@@ -89,11 +96,11 @@ export function TaskView({ task, value, onChange, onSubmit, result, busy }: Prop
             )}
           </div>
         )}
-        <Figure task={task} revealed={result !== null} />
+        <Figure task={task} revealed={solution !== null} />
         {!figure && !choice && <div className="figure">{gapBox}</div>}
       </main>
       <footer className="heft-bottom">
-        {result === null && choice && (
+        {!closed && choice && (
           <div className={`options${stacked ? " stacked" : ""}`}>
             {task.options!.map((option) => (
               <button
@@ -108,13 +115,24 @@ export function TaskView({ task, value, onChange, onSubmit, result, busy }: Prop
             ))}
           </div>
         )}
-        {result === null && !choice && (
+        {!closed && !choice && (
           <Keypad
             value={value}
             onChange={onChange}
             onSubmit={() => onSubmit(Number(value))}
             disabled={busy}
           />
+        )}
+        {!closed && canSkip && (
+          <button type="button" className="skip" onClick={() => onSubmit(null)} disabled={busy}>
+            <span aria-hidden="true">?</span>
+            Weiß ich noch nicht
+          </button>
+        )}
+        {onNext && (
+          <button type="button" className="next" onClick={onNext} aria-label="Weiter">
+            <Icon name="next" size={40} />
+          </button>
         )}
       </footer>
     </>

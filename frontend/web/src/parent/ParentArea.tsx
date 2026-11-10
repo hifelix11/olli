@@ -1,6 +1,16 @@
 import { useEffect, useState } from "react";
-import { api, auth, type Child, type MasteryRow, type MasteryStatus, type Progress } from "../api/client";
+import {
+  api,
+  auth,
+  type Child,
+  type MasteryRow,
+  type MasteryStatus,
+  type Progress,
+  type Sign,
+} from "../api/client";
 import { Keypad } from "../child/Keypad";
+import { SignIcon } from "../child/Sign";
+import { SIGN_NAMES, SIGNS } from "../child/signs";
 
 /** Platzhalter, bis die PIN im Elternkonto liegt. */
 const PIN = "1234";
@@ -30,6 +40,10 @@ export function ParentArea({ kids, onAdd, onExit }: Props) {
   const [wrong, setWrong] = useState(false);
   const [selected, setSelected] = useState<Child | null>(kids[0] ?? null);
   const [name, setName] = useState("");
+  // Vorschlag: das erste Zeichen, das noch kein Geschwisterkind hat.
+  const [sign, setSign] = useState<Sign>(
+    SIGNS.find((s) => !kids.some((k) => k.sign === s)) ?? SIGNS[0],
+  );
   const [rows, setRows] = useState<MasteryRow[] | null>(null);
   const [progress, setProgress] = useState<Progress | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -69,10 +83,11 @@ export function ParentArea({ kids, onAdd, onExit }: Props) {
     const trimmed = name.trim();
     if (!trimmed) return;
     try {
-      const child = await api.createChild(trimmed);
+      const child = await api.createChild(trimmed, sign);
       onAdd(child);
       select(child);
       setName("");
+      setSign(SIGNS.find((s) => s !== sign && !kids.some((k) => k.sign === s)) ?? SIGNS[0]);
       setError(null);
     } catch (e) {
       setError(`Olli erreicht den Server nicht. ${String(e)}`);
@@ -122,11 +137,28 @@ export function ParentArea({ kids, onAdd, onExit }: Props) {
                 className={`btn${child.id === selected?.id ? " btn-primary" : ""}`}
                 onClick={() => select(child)}
               >
+                <SignIcon sign={child.sign} size={28} />
                 {child.name}
               </button>
             ))}
           </div>
         )}
+        <p className="summary">Jedes Kind bekommt ein Zeichen. Daran findet es sich auf der Startseite, auch ohne lesen zu können.</p>
+        <div className="signs" role="radiogroup" aria-label="Zeichen">
+          {SIGNS.map((s) => (
+            <button
+              key={s}
+              type="button"
+              role="radio"
+              aria-checked={s === sign}
+              aria-label={SIGN_NAMES[s]}
+              className={`sign-choice${s === sign ? " on" : ""}`}
+              onClick={() => setSign(s)}
+            >
+              <SignIcon sign={s} size={36} />
+            </button>
+          ))}
+        </div>
         <form
           className="add"
           onSubmit={(e) => {

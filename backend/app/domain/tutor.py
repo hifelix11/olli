@@ -46,7 +46,8 @@ class Tutor:
         level = level_for(self.state.mastery[competency.id])
         return generate_task(self.specs[competency.id], level, self.rng)
 
-    def submit(self, task: Task, answer: int | str) -> SubmitResult:
+    def submit(self, task: Task, answer: int | str | None) -> SubmitResult:
+        """None: the child does not know yet. Counts as wrong."""
         competency = self.graph.get(task.competency)
         correct = answer == task.answer
         if task.options:

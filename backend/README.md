@@ -34,16 +34,16 @@ Alle Routen unter `/children` brauchen `Authorization: Bearer <access_token>`. E
 | `POST /auth/login` `{email, password}` | Liefert `access_token`, `refresh_token` |
 | `POST /auth/refresh` `{refresh_token}` | Neue Tokens. 401, wenn die Anmeldung abgelaufen ist |
 | `GET /children` | Kinder des Elternteils |
-| `POST /children` `{name}` | Kind anlegen, liefert `id` |
+| `POST /children` `{name, sign}` | Kind anlegen, liefert `id`. `sign` ist das Zeichen des Kindes: `sun`, `moon`, `star`, `heart`, `fish`, `apple`, `flower`, `boat` |
 | `GET /children/{id}/next-task` | Nächste Aufgabe ohne Lösung. `null`, wenn alles sitzt |
-| `POST /children/{id}/answers` `{task_id, answer}` | Prüft, speichert den Versuch, aktualisiert den Lernstand. Liefert `correct`, Lösung, `p_known`, `backtracked_to` |
+| `POST /children/{id}/answers` `{task_id, answer}` | Prüft, speichert den Versuch, aktualisiert den Lernstand. `answer: null` heißt "Weiß ich noch nicht" und zählt als falsch. Liefert `correct`, Lösung, `retry`, `p_known`, `backtracked_to`, `mastered`. Bei `retry` ist die Lösung `null`, das Kind darf einmal nachbessern. Der zweite Versuch ändert den Lernstand nicht |
 | `GET /children/{id}/mastery` | Alle Kompetenzen mit `p_known`, Status `mastered`, `in_progress`, `not_started` und `practicable` (hat einen Generator) |
 
 Interaktive Doku unter http://127.0.0.1:8000/docs.
 
 ## Datenbank
 
-Tabellen werden beim Start mit `create_all` angelegt (noch keine Migrationen). `create_all` legt fehlende Tabellen an, ändert aber keine bestehenden. Eine neue Spalte braucht deshalb lokal einen Neuanfang der Tabellen. `guardians` (Elternkonten, ID aus Supabase Auth, keine E-Mail), `children`, `tasks` (ausgegebene Aufgaben mit Lösung), `attempts` (jede Antwort, unveränderlich), `mastery` (nur geübte Kompetenzen).
+Tabellen werden beim Start mit `create_all` angelegt (noch keine Migrationen). `create_all` legt fehlende Tabellen an, ändert aber keine bestehenden. Eine neue Spalte braucht deshalb lokal einen Neuanfang der Tabellen. `guardians` (Elternkonten, ID aus Supabase Auth, keine E-Mail), `children`, `tasks` (ausgegebene Aufgaben mit Lösung), `attempts` (jede Antwort, unveränderlich, `try_no` 1 oder 2), `mastery` (nur geübte Kompetenzen).
 
 Die Tests laufen gegen SQLite im Speicher, die App gegen Postgres. Das Schema ist einfach genug, dass beide gleich funktionieren.
 

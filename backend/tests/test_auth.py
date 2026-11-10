@@ -55,8 +55,8 @@ def test_children_need_a_valid_token(client: TestClient, token: str) -> None:
 
 def test_parent_sees_only_own_children(client: TestClient) -> None:
     other = bearer(OTHER)
-    mine = client.post("/children", json={"name": "Lena"}).json()
-    theirs = client.post("/children", json={"name": "Max"}, headers=other).json()
+    mine = client.post("/children", json={"name": "Lena", "sign": "fish"}).json()
+    theirs = client.post("/children", json={"name": "Max", "sign": "sun"}, headers=other).json()
 
     assert client.get("/children").json() == [mine]
     assert client.get("/children", headers=other).json() == [theirs]
