@@ -1,7 +1,7 @@
 function Coin({ value, unit }: { value: number; unit: string }) {
   return (
     <svg viewBox="0 0 64 64" width="64" height="64" aria-hidden="true">
-      <circle cx="32" cy="32" r="29" fill="var(--paper)" stroke="var(--ink)" strokeWidth="3" />
+      <circle cx="32" cy="32" r="29" fill="var(--sun-soft)" stroke="var(--ink)" strokeWidth="3" />
       <circle cx="32" cy="32" r="23" fill="none" stroke="var(--ink)" strokeWidth="1" />
       <text x="32" y="32" textAnchor="middle" dominantBaseline="central" fontSize="16" fontWeight="700" fill="var(--ink)">
         {value} {unit}
@@ -13,7 +13,7 @@ function Coin({ value, unit }: { value: number; unit: string }) {
 function Note({ value }: { value: number }) {
   return (
     <svg viewBox="0 0 100 56" width="100" height="56" aria-hidden="true">
-      <rect x="2" y="2" width="96" height="52" rx="4" fill="var(--paper)" stroke="var(--ink)" strokeWidth="3" />
+      <rect x="2" y="2" width="96" height="52" rx="6" fill="var(--blue-soft)" stroke="var(--ink)" strokeWidth="3" />
       <rect x="10" y="10" width="80" height="36" fill="none" stroke="var(--ink)" strokeWidth="1" />
       <text x="50" y="28" textAnchor="middle" dominantBaseline="central" fontSize="20" fontWeight="700" fill="var(--ink)">
         {value} €

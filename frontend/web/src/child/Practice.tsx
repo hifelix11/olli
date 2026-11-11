@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { api, labelOf, type AnswerResult, type Child, type Task } from "../api/client";
 import { chime } from "../sound";
-import { speak } from "../speech";
+import { hasWords, speak } from "../speech";
 import { Icon } from "./Icon";
 import { Olli, type Mood } from "./Olli";
 import { Stamp } from "./Stamp";
@@ -23,6 +23,12 @@ const GREETING = {
 const PLACEMENT_OVER = "Jetzt weiß ich, was du kannst. Ab jetzt üben wir.";
 const STEP_BACK = "Wir üben erst etwas, das dir dabei hilft.";
 
+/** Antworten aus Wörtern liest Olli mit vor. */
+function wordOptions(task: Task): string[] {
+  const labels = (task.options ?? []).map((option) => option.label);
+  return labels.some(hasWords) ? labels : [];
+}
+
 type Phase =
   | { kind: "loading" }
   | { kind: "welcome"; task: Task }
@@ -38,6 +44,8 @@ export function Practice({ child, onExit }: { child: Child; onExit: () => void }
   const [answered, setAnswered] = useState(0);
   const [learned, setLearned] = useState<string[]>([]);
   const [busy, setBusy] = useState(false);
+  const [reading, setReading] = useState<number | null>(null); // Antwort, die Olli gerade vorliest
+  const [keypad, setKeypad] = useState(false); // quer: Zahlenblock rechts, Auswahl unter der Tafel
   const intro = useRef<string | null>(null); // sagt Olli vor der nächsten Aufgabe
   const alive = useRef(true);
 
@@ -53,15 +61,25 @@ export function Practice({ child, onExit }: { child: Child; onExit: () => void }
     speak(text);
   }, []);
 
-  /** Zeigt die Aufgabe und liest sie vor, mit Ollis Satz davor, falls einer wartet. */
-  const show = useCallback((task: Task) => {
-    const before = intro.current;
-    intro.current = null;
-    setValue("");
-    setLine(before ?? "");
-    setPhase({ kind: "task", task, retry: false });
-    speak(before ? `${before} ${task.prompt}` : task.prompt);
+  /** Liest Frage und Antworten vor. Die Antwort, die gerade dran ist, leuchtet auf. */
+  const read = useCallback((task: Task, before: string | null = null) => {
+    const question = before ? `${before} ${task.prompt}` : task.prompt;
+    speak([question, ...wordOptions(task)], (i) => setReading(i ? i - 1 : null));
   }, []);
+
+  /** Zeigt die Aufgabe und liest sie vor, mit Ollis Satz davor, falls einer wartet. */
+  const show = useCallback(
+    (task: Task) => {
+      const before = intro.current;
+      intro.current = null;
+      setValue("");
+      setLine(before ?? "");
+      setKeypad(task.options === null);
+      setPhase({ kind: "task", task, retry: false });
+      read(task, before);
+    },
+    [read],
+  );
 
   const load = useCallback(
     async (previous: Task | null) => {
@@ -180,7 +198,8 @@ export function Practice({ child, onExit }: { child: Child; onExit: () => void }
     const lines = GREETING[phase.task.placement ? "placement" : "practice"];
     return (
       <div className="center-page welcome">
-        <Olli size={140} />
+        <HomeButton onExit={onExit} />
+        <Olli mood="happy" size={184} />
         <h1>Hallo, {child.name}!</h1>
         <div>
           {lines.map((l) => (
@@ -193,17 +212,19 @@ export function Practice({ child, onExit }: { child: Child; onExit: () => void }
           onClick={() => show(phase.task)}
           aria-label="Los geht's"
         >
-          <Icon name="play" size={52} />
+          <Icon name="play" size={64} />
         </button>
-        <HomeButton onExit={onExit} />
       </div>
     );
   }
 
   if (phase.kind === "done") {
     return (
-      <div className="center-page">
-        <Stamp special={newTitles.length > 0} />
+      <div className="center-page done">
+        <div className="reward">
+          <Olli mood="happy" size={128} />
+          <Stamp special={newTitles.length > 0} />
+        </div>
         <h1>{phase.everything ? "Du kannst schon alles!" : "Fertig für heute!"}</h1>
         {newTitles.length > 0 && (
           <ul className="learned">
@@ -212,7 +233,7 @@ export function Practice({ child, onExit }: { child: Child; onExit: () => void }
             ))}
           </ul>
         )}
-        <button type="button" className="btn btn-primary btn-icon" onClick={onExit}>
+        <button type="button" className="btn btn-primary" onClick={onExit}>
           <Icon name="home" />
           Zum Start
         </button>
@@ -232,19 +253,23 @@ export function Practice({ child, onExit }: { child: Child; onExit: () => void }
         : "neutral";
 
   return (
-    <div className="heft">
-      <header className="heft-top">
-        <div className="who">
-          <Olli mood={mood} size={56} />
-          {line && <p className="bubble">{line}</p>}
-        </div>
+    <div className={`stage${keypad ? " keypad-side" : ""}`}>
+      <header className="stage-top">
+        <HomeButton onExit={onExit} />
         <div className="session" aria-label={`${answered} von ${SESSION_LENGTH} Aufgaben`}>
           {Array.from({ length: SESSION_LENGTH }, (_, i) => (
             <span key={i} className={i < answered ? "filled" : ""} />
           ))}
         </div>
-        <HomeButton onExit={onExit} />
       </header>
+      <div className="talk">
+        <Olli mood={mood} size={100} />
+        {line && (
+          <p className="bubble" aria-live="polite">
+            {line}
+          </p>
+        )}
+      </div>
 
       {task ? (
         <TaskView
@@ -257,9 +282,13 @@ export function Practice({ child, onExit }: { child: Child; onExit: () => void }
           canSkip={task.placement}
           busy={busy}
           onNext={result && !task.placement && !result.correct ? advance : null}
+          cheer={result !== null && result.correct && !task.placement}
+          shake={phase.kind === "task" && phase.retry}
+          reading={reading}
+          onRead={() => read(task)}
         />
       ) : (
-        <main className="heft-main" />
+        <main className="stage-main" />
       )}
     </div>
   );

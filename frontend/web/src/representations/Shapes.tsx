@@ -6,7 +6,7 @@ function regular(sides: number, r: number): string {
   }).join(" ");
 }
 
-function Shape({ id, rotation }: { id: string; rotation: number }) {
+export function Shape({ id, rotation = 0 }: { id: string; rotation?: number }) {
   const fill = "var(--blue)";
   const transform = `rotate(${rotation} 40 40)`;
   switch (id) {
@@ -16,6 +16,8 @@ function Shape({ id, rotation }: { id: string; rotation: number }) {
       return <rect x="14" y="14" width="52" height="52" fill={fill} transform={transform} />;
     case "rectangle":
       return <rect x="6" y="22" width="68" height="36" fill={fill} transform={transform} />;
+    case "semicircle":
+      return <path d="M8 56 A32 32 0 0 1 72 56 Z" fill={fill} transform={transform} />;
     case "triangle":
       return <polygon points="40,8 70,66 10,66" fill={fill} transform={transform} />;
     case "quadrilateral":
