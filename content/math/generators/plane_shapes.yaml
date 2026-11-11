@@ -8,5 +8,12 @@ levels:
   easy:
     settings:
       rotations: [0]
+prompt: "Welche Form ist das?"
+labels:
+  triangle: Dreieck
+  circle: Kreis
+  square: Quadrat
+  rectangle: Rechteck
+  quadrilateral: Viereck
 answer: choice
 representations: [shapes]

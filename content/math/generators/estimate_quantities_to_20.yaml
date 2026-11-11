@@ -11,5 +11,6 @@ levels:
       n: { min: 3, max: 12 }
     settings:
       anchors: [5, 10]
+prompt: "Wie viele sind es ungefähr?"
 answer: choice
 representations: [scattered]

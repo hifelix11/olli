@@ -15,5 +15,6 @@ levels:
     settings:
       directions: [forward]
       gap: end
+prompt: "Welche Zahl fehlt? {sequence}"
 answer: free_input
 representations: [plain, number_line]

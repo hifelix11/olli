@@ -6,15 +6,36 @@ params:
 settings:
   forms: [most, least, how_many]
   sets:
-    - { title: Lieblingsobst, categories: [Äpfel, Birnen, Bananen] }
-    - { title: Haustiere, categories: [Hunde, Katzen, Hasen] }
-    - { title: Fahrzeuge, categories: [Autos, Räder, Roller] }
-    - { title: Lieblingsfarbe, categories: [Rot, Blau, Grün] }
+    - { title: favourite_fruit, categories: [apples, pears, bananas] }
+    - { title: pets, categories: [dogs, cats, rabbits] }
+    - { title: vehicles, categories: [cars, bikes, scooters] }
+    - { title: favourite_colour, categories: [red, blue, green] }
 levels:
   easy:
     params:
       value: { min: 1, max: 5 }
     settings:
       forms: [most, how_many]
+prompts:
+  most: "Wovon gibt es am meisten?"
+  least: "Wovon gibt es am wenigsten?"
+  how_many: "Wie viele {name} sind es?"
+labels:
+  favourite_fruit: Lieblingsobst
+  apples: Äpfel
+  pears: Birnen
+  bananas: Bananen
+  pets: Haustiere
+  dogs: Hunde
+  cats: Katzen
+  rabbits: Hasen
+  vehicles: Fahrzeuge
+  cars: Autos
+  bikes: Räder
+  scooters: Roller
+  favourite_colour: Lieblingsfarbe
+  red: Rot
+  blue: Blau
+  green: Grün
 answer: choice
 representations: [bar_chart, table]

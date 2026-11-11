@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import type { Task } from "../api/client";
+import type { Option, Task } from "../api/client";
 import { Figure } from "../representations/Figure";
 import { optionPicture } from "../representations/OptionPicture";
 import { hasWords, speak } from "../speech";
@@ -9,7 +9,7 @@ import { Keypad } from "./Keypad";
 
 type Props = {
   task: Task;
-  /** Getippte Zahl oder gewählte Antwort. Zählt erst mit dem Haken. */
+  /** Getippte Zahl oder der Wert der gewählten Antwort. Zählt erst mit dem Haken. */
   value: string;
   onChange: (value: string) => void;
   /** null: "Weiß ich noch nicht". */
@@ -58,27 +58,23 @@ export function TaskView(props: Props) {
   const choice = task.options !== null;
   const { question, figure } = split(task.prompt);
   const gap = aroundGap(figure);
-  const shown = solution !== null ? String(solution) : value;
   // Lange Rechnungen ("1 Zehner und 4 Einer") und lange Antworten ("Wie viele Kinder sind es jetzt?") kleiner.
   const longFigure = figure.length > 14;
   // Bild und Wort, wenn jede Antwort ein Bild hat. Nicht beim Benennen: Das Bild auf der Tafel ist die Frage.
   const pictures =
-    choice && task.kind !== "shape_name" ? task.options!.map((o) => optionPicture(String(o))) : [];
+    choice && task.kind !== "shape_name" ? task.options!.map((o) => optionPicture(o.value)) : [];
   const withPictures = pictures.length > 0 && pictures.every(Boolean);
-  const stacked =
-    choice && !withPictures && task.options!.some((option) => String(option).length > 12);
+  const stacked = choice && !withPictures && task.options!.some((o) => o.label.length > 12);
   // Wie beim Zahlenblock: erst wählen, dann mit dem Haken bestätigen.
-  const answer = choice
-    ? (task.options!.find((option) => String(option) === value) ?? null)
-    : value
-      ? Number(value)
-      : null;
+  const selected = task.options?.find((o) => String(o.value) === value) ?? null;
+  const answer = choice ? (selected?.value ?? null) : value ? Number(value) : null;
+  // Die gewählte Antwort rückt in die Lücke, wie getippte Ziffern.
+  const shown = solution !== null ? String(solution) : (selected?.label ?? value);
 
   /** Antippen wählt aus und sagt die Antwort. Das Kind kann noch wechseln. */
-  const select = (option: number | string) => {
-    const text = String(option);
-    onChange(text);
-    if (hasWords(text)) speak(text);
+  const select = (option: Option) => {
+    onChange(String(option.value));
+    if (hasWords(option.label)) speak(option.label);
   };
 
   useEffect(() => {
@@ -140,22 +136,22 @@ export function TaskView(props: Props) {
             <div className={`options${stacked ? " stacked" : ""}`}>
               {task.options!.map((option, i) => (
                 <button
-                  key={String(option)}
+                  key={String(option.value)}
                   type="button"
                   className={[
                     "option",
                     withPictures && "with-picture",
                     reading === i && "reading",
-                    String(option) === value && "selected",
+                    option === selected && "selected",
                   ]
                     .filter(Boolean)
                     .join(" ")}
                   onClick={() => select(option)}
-                  aria-pressed={String(option) === value}
+                  aria-pressed={option === selected}
                   disabled={busy}
                 >
                   {withPictures && <span className="option-picture">{pictures[i]}</span>}
-                  <span>{option}</span>
+                  <span>{option.label}</span>
                 </button>
               ))}
             </div>

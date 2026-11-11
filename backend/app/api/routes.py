@@ -17,7 +17,7 @@ from app.content import load_curriculum, load_generators, load_graph
 from app.db.models import Attempt, Child, Mastery, TaskRow
 from app.db.repository import load_state, save_state
 from app.db.session import get_session
-from app.domain.generators.models import Task
+from app.domain.generators.models import Option, Task
 from app.domain.selection.select import MASTERED
 from app.domain.tutor import Tutor
 
@@ -48,7 +48,7 @@ class TaskOut(BaseModel):
     level: str
     prompt: str
     operands: dict[str, int | str]
-    options: list[int | str] | None
+    options: list[Option] | None  # show the label, send back the value
     representations: list[str]
     placement: bool  # part of the placement check, not of practice
 

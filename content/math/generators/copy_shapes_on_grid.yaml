@@ -10,5 +10,9 @@ levels:
   easy:
     params:
       cells: { min: 3, max: 4 }
+prompt: "Links ist die Vorlage, rechts die Kopie. Ist die Kopie richtig?"
+labels:
+  "yes": ja
+  "no": nein
 answer: choice
 representations: [grid]

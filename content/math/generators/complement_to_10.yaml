@@ -8,5 +8,7 @@ levels:
   easy:
     params:
       a: { min: 5, max: 9 }
+prompts:
+  "a+_=c": "{a} + _ = {c}"
 answer: free_input
 representations: [plain, twenty_field]

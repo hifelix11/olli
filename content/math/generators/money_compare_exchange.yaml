@@ -3,15 +3,19 @@ competency: money_compare_exchange
 kind: money_exchange
 settings:
   pieces:
-    - { value: 1, name: Münzen }
-    - { value: 2, name: Münzen }
-    - { value: 5, name: Scheine }
-    - { value: 10, name: Scheine }
+    - { value: 1, type: coins }
+    - { value: 2, type: coins }
+    - { value: 5, type: notes }
+    - { value: 10, type: notes }
 constraints:
   amount_max: 20
 levels:
   easy:
     constraints:
       amount_max: 10
+prompt: "Du wechselst {amount} € in lauter {value}-€-{name}. Wie viele {name} bekommst du?"
+labels:
+  coins: Münzen
+  notes: Scheine
 answer: free_input
 representations: [plain]

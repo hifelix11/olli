@@ -12,5 +12,10 @@ levels:
       forms: ["a+_=c"]
     params:
       target: { min: 3, max: 10 }
+prompts:
+  "a+_=c": "{a} + _ = {c}"
+  "_+b=c": "_ + {b} = {c}"
+  "c-_=a": "{c} − _ = {a}"
+  "_-b=a": "_ − {b} = {a}"
 answer: free_input
 representations: [plain]

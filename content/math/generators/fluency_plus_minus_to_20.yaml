@@ -21,5 +21,8 @@ levels:
     constraints:
       carry: true
       borrow: true
+prompts:
+  "+": "{a} + {b} = ?"
+  "−": "{a} − {b} = ?"
 answer: free_input
 representations: [plain]

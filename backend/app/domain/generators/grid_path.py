@@ -1,7 +1,9 @@
 """kind: grid_path. Follow legs like "2 nach rechts und 1 nach oben" from the start.
 
 settings: width, height. params: legs (number of legs), steps (per leg).
-Three cells carry letters: the goal and two cells reached by mixing up a direction.
+labels right, left, up and down name one leg with {n} steps; label "and" joins the last leg.
+The prompt shows the legs as {route}. Three cells carry letters: the goal and two cells
+reached by mixing up a direction. Answers: A, B, C.
 """
 
 import random
@@ -9,10 +11,9 @@ import random
 from app.domain.generators.figures import Cell
 from app.domain.generators.models import GeneratorSpec, Task, choose, make_task
 
-DIRECTIONS: dict[str, Cell] = {"rechts": (1, 0), "links": (-1, 0), "oben": (0, -1), "unten": (0, 1)}
-MIRROR = {"rechts": "links", "links": "rechts", "oben": "unten", "unten": "oben"}
-LETTERS: list[int | str] = ["A", "B", "C"]
-PROMPT = "Der Käfer geht {legs}. Wo kommt er an?"
+DIRECTIONS: dict[str, Cell] = {"right": (1, 0), "left": (-1, 0), "up": (0, -1), "down": (0, 1)}
+MIRROR = {"right": "left", "left": "right", "up": "down", "down": "up"}
+LETTERS = ["A", "B", "C"]
 
 Leg = tuple[str, int]
 
@@ -25,9 +26,11 @@ def walk(start: Cell, legs: list[Leg]) -> Cell:
     return (x, y)
 
 
-def describe(legs: list[Leg]) -> str:
-    parts = [f"{steps} nach {direction}" for direction, steps in legs]
-    return ", ".join(parts[:-1]) + (" und " if len(parts) > 1 else "") + parts[-1]
+def describe(spec: GeneratorSpec, legs: list[Leg]) -> str:
+    parts = [spec.label(direction, n=steps) for direction, steps in legs]
+    if len(parts) == 1:
+        return parts[0]
+    return f"{', '.join(parts[:-1])} {spec.label('and')} {parts[-1]}"
 
 
 def generate(spec: GeneratorSpec, level: str, rng: random.Random) -> Task:
@@ -68,7 +71,9 @@ def generate(spec: GeneratorSpec, level: str, rng: random.Random) -> Task:
         "marks": " ".join(
             f"{letter}:{x},{y}" for letter, (x, y) in zip(LETTERS, cells, strict=True)
         ),
-        "legs": describe(legs),
+        "legs": " ".join(f"{direction}:{steps}" for direction, steps in legs),
         "end": f"{goal[0]},{goal[1]}",
     }
-    return make_task(s, level, operands, LETTERS[cells.index(goal)], PROMPT, LETTERS)
+    answer = LETTERS[cells.index(goal)]
+    words = {"route": describe(s, legs)}
+    return make_task(s, level, operands, answer, s.template(), s.options(LETTERS), words)

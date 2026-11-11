@@ -3,10 +3,15 @@ import random
 import pytest
 
 from app.domain.generators.generate import generate_task
-from app.domain.generators.models import GeneratorSpec
+from app.domain.generators.models import GeneratorSpec, Task
 from app.domain.graph.graph import CompetencyGraph
 
 LEVELS = ["easy", "medium", "hard"]
+
+
+def values(task: Task) -> list[int | str]:
+    assert task.options is not None
+    return [o.value for o in task.options]
 
 
 def test_every_spec_generates_at_every_level(specs: dict[str, GeneratorSpec]) -> None:
@@ -15,9 +20,41 @@ def test_every_spec_generates_at_every_level(specs: dict[str, GeneratorSpec]) ->
         for level in LEVELS:
             for _ in range(50):
                 task = generate_task(spec, level, rng)
-                assert task.prompt
+                assert task.prompt and "{" not in task.prompt
                 if task.options is not None:
-                    assert task.answer in task.options
+                    assert task.answer in values(task)
+                    assert len(set(values(task))) == len(task.options)
+                    assert all(o.label and "{" not in o.label for o in task.options)
+
+
+def test_missing_texts_raise(specs: dict[str, GeneratorSpec]) -> None:
+    """A text missing in the YAML fails in the tests, never in front of a child."""
+    no_labels = specs["even_odd_to_20"].model_copy(update={"labels": {}})
+    with pytest.raises(ValueError, match="no label 'even'"):
+        generate_task(no_labels, "medium", random.Random(0))
+    no_prompt = specs["add_within_10"].model_copy(update={"prompt": None})
+    with pytest.raises(ValueError, match="no prompt"):
+        generate_task(no_prompt, "medium", random.Random(0))
+
+
+def test_unquoted_yes_and_no_are_rejected() -> None:
+    """YAML reads yes and no as true and false."""
+    with pytest.raises(ValueError, match="quotes"):
+        GeneratorSpec(id="x", competency="x", kind="symmetry", labels={True: "ja"})
+    with pytest.raises(ValueError):
+        Task(**{**TASK, "answer": True})
+
+
+TASK = {
+    "competency": "x",
+    "generator": "x",
+    "kind": "symmetry",
+    "level": "medium",
+    "prompt": "?",
+    "operands": {},
+    "answer": "yes",
+    "representations": ["grid"],
+}
 
 
 def test_addition_respects_ranges_and_sum(specs: dict[str, GeneratorSpec]) -> None:
@@ -99,7 +136,7 @@ def test_check_equation_answer_is_truthful(specs: dict[str, GeneratorSpec]) -> N
         task = generate_task(specs["check_results"], "medium", rng)
         a, b, shown = (int(task.operands[k]) for k in ("a", "b", "result"))
         true = a + b if task.operands["op"] == "+" else a - b
-        assert task.answer == ("richtig" if shown == true else "falsch")
+        assert task.answer == ("correct" if shown == true else "incorrect")
 
 
 def test_chance_vocabulary(specs: dict[str, GeneratorSpec]) -> None:
@@ -108,7 +145,7 @@ def test_chance_vocabulary(specs: dict[str, GeneratorSpec]) -> None:
     for _ in range(200):
         task = generate_task(specs["chance_vocabulary"], "medium", rng)
         answers.add(task.answer)
-    assert answers == {"sicher", "möglich", "unmöglich"}
+    assert answers == {"certain", "possible", "impossible"}
 
 
 def test_impossible_constraints_raise(specs: dict[str, GeneratorSpec]) -> None:
@@ -174,8 +211,9 @@ def test_picture_equation_matches_the_action(specs: dict[str, GeneratorSpec]) ->
         task = generate_task(specs["picture_to_equation"], "medium", rng)
         a, b, op = task.operands["a"], task.operands["b"], task.operands["op"]
         assert task.answer == f"{a} {op} {b}"
-        assert task.options is not None and len(set(task.options)) == 3
+        assert len(set(values(task))) == 3
         assert ("dazu" in task.prompt) == (op == "+")
+        assert ("kommt" in task.prompt or "wird" in task.prompt) == (b == 1)
 
 
 def test_plus_minus_mixes_operations(specs: dict[str, GeneratorSpec]) -> None:
@@ -191,14 +229,20 @@ def test_plus_minus_mixes_operations(specs: dict[str, GeneratorSpec]) -> None:
 
 
 def test_clock_names_full_and_half_hours(specs: dict[str, GeneratorSpec]) -> None:
-    from app.domain.generators.clock import name
+    from app.domain.generators.clock import option
 
-    assert (name(3, 0), name(3, 30), name(12, 30)) == ("3 Uhr", "halb 4", "halb 1")
+    spec = specs["clock_full_half_hours"]
+    names = [option(spec, h, m) for h, m in [(3, 0), (3, 30), (12, 30)]]
+    assert [(o.value, o.label) for o in names] == [
+        ("3:00", "3 Uhr"),
+        ("3:30", "halb 4"),
+        ("12:30", "halb 1"),
+    ]
     rng = random.Random(0)
     for _ in range(100):
-        task = generate_task(specs["clock_full_half_hours"], "medium", rng)
-        assert task.answer == name(int(task.operands["hour"]), int(task.operands["minute"]))
-        assert task.options is not None and len(set(task.options)) == 3
+        task = generate_task(spec, "medium", rng)
+        assert task.answer == f"{task.operands['hour']}:{int(task.operands['minute']):02d}"
+        assert len(set(values(task))) == 3
 
 
 def test_time_span_forms(specs: dict[str, GeneratorSpec]) -> None:
@@ -208,6 +252,8 @@ def test_time_span_forms(specs: dict[str, GeneratorSpec]) -> None:
         start, hours, end = (int(task.operands[k]) for k in ("start", "hours", "end"))
         assert end == start + hours <= 12
         assert task.answer == (hours if task.operands["form"] == "duration" else end)
+        if task.operands["form"] == "later":
+            assert ("1 Stunde " if hours == 1 else f"{hours} Stunden ") in task.prompt
 
 
 def test_calendar_neighbours(specs: dict[str, GeneratorSpec]) -> None:
@@ -219,7 +265,8 @@ def test_calendar_neighbours(specs: dict[str, GeneratorSpec]) -> None:
         items = next(c["items"] for c in cycles if item in c["items"])
         step = 1 if task.operands["direction"] == "after" else -1
         assert task.answer == items[(items.index(item) + step) % len(items)]
-        assert task.options is not None and item not in task.options
+        assert item not in values(task)
+        assert specs["calendar_basics"].label(item) in task.prompt
 
 
 def test_money_amount_sums_the_pieces(specs: dict[str, GeneratorSpec]) -> None:
@@ -249,33 +296,33 @@ def test_compare_lengths(specs: dict[str, GeneratorSpec]) -> None:
         task = generate_task(specs["compare_lengths"], "medium", rng)
         a, b, ask = int(task.operands["a"]), int(task.operands["b"]), task.operands["ask"]
         if a == b:
-            assert task.answer == "gleich lang"
+            assert task.answer == "equal"
         else:
             longer = "A" if a > b else "B"
             assert task.answer == (longer if ask == "longer" else {"A": "B", "B": "A"}[longer])
 
 
-def test_compare_quantities_keeps_the_unit(specs: dict[str, GeneratorSpec]) -> None:
+def test_compare_quantities_shows_the_unit(specs: dict[str, GeneratorSpec]) -> None:
     rng = random.Random(0)
     for _ in range(100):
         task = generate_task(specs["order_quantities"], "medium", rng)
-        a, b, unit, ask = (task.operands[k] for k in ("a", "b", "unit", "ask"))
+        a, b, ask = (task.operands[k] for k in ("a", "b", "ask"))
         winner = max(int(a), int(b)) if ask == "more" else min(int(a), int(b))
-        assert task.answer == f"{winner} {unit}"
-        assert task.options == [f"{a} {unit}", f"{b} {unit}"]
+        assert task.answer == winner
+        assert values(task) == [a, b]
+        assert task.options is not None
+        assert all(o.label.startswith(f"{o.value} ") for o in task.options)
 
 
 def test_shape_name_options_never_overlap(specs: dict[str, GeneratorSpec]) -> None:
     """A square is also a rectangle and a quadrilateral: no option may be another name for it."""
-    from app.domain.generators.shapes import NAMES, family
+    from app.domain.generators.shapes import family
 
-    by_name = {v: k for k, v in NAMES.items()}
     rng = random.Random(0)
     for _ in range(100):
         task = generate_task(specs["plane_shapes"], "medium", rng)
-        assert task.answer == NAMES[str(task.operands["shapes"])]
-        assert task.options is not None and len(task.options) == 3
-        assert len({tuple(family(by_name[str(o)])) for o in task.options}) == 3
+        assert task.answer == task.operands["shapes"]
+        assert len({tuple(family(str(v))) for v in values(task)}) == 3
 
 
 def test_shape_count(specs: dict[str, GeneratorSpec]) -> None:
@@ -288,15 +335,12 @@ def test_shape_count(specs: dict[str, GeneratorSpec]) -> None:
 
 
 def test_pattern_gap_follows_the_repeat(specs: dict[str, GeneratorSpec]) -> None:
-    from app.domain.generators.shapes import NAMES
-
-    by_name = {v: k for k, v in NAMES.items()}
     rng = random.Random(0)
     for level in LEVELS:
         for _ in range(100):
             task = generate_task(specs["geometric_patterns"], level, rng)
             row = str(task.operands["shapes"]).split()
-            row[row.index("_")] = by_name[str(task.answer)]
+            row[row.index("_")] = str(task.answer)
             periods = [
                 p
                 for p in range(1, len(row))
@@ -316,9 +360,10 @@ def test_grid_path_marks_the_goal(specs: dict[str, GeneratorSpec]) -> None:
             start = next(iter(cells_of(task.operands["start"])))
             marks = marks_of(task.operands["marks"])
             legs = []
-            for part in str(task.operands["legs"]).replace(" und ", ", ").split(", "):
-                steps, direction = part.split(" nach ")
+            for leg in str(task.operands["legs"]).split():
+                direction, steps = leg.split(":")
                 legs.append((direction, int(steps)))
+            assert f" {legs[-1][1]} nach " in task.prompt
             assert marks[str(task.answer)] == walk(start, legs)
             assert all(0 <= x < width and 0 <= y < height for x, y in marks.values())
             assert len(set(marks.values())) == 3 and start not in marks.values()
@@ -343,9 +388,9 @@ def test_symmetry_answer_is_truthful(specs: dict[str, GeneratorSpec]) -> None:
         width = int(task.operands["width"])
         cells = cells_of(task.operands["cells"])
         mirrored = {(width - 1 - x, y) for x, y in cells}
-        assert task.answer == ("ja" if mirrored == cells else "nein")
+        assert task.answer == ("yes" if mirrored == cells else "no")
         answers.add(task.answer)
-    assert answers == {"ja", "nein"}
+    assert answers == {"yes", "no"}
 
 
 def test_grid_copy_answer_is_truthful(specs: dict[str, GeneratorSpec]) -> None:
@@ -356,10 +401,10 @@ def test_grid_copy_answer_is_truthful(specs: dict[str, GeneratorSpec]) -> None:
     for _ in range(100):
         task = generate_task(specs["copy_shapes_on_grid"], "medium", rng)
         cells, copy = cells_of(task.operands["cells"]), cells_of(task.operands["copy"])
-        assert task.answer == ("ja" if normalized(copy) == normalized(cells) else "nein")
+        assert task.answer == ("yes" if normalized(copy) == normalized(cells) else "no")
         assert len(copy) == len(cells)
         answers.add(task.answer)
-    assert answers == {"ja", "nein"}
+    assert answers == {"yes", "no"}
 
 
 def test_switch_representation_carries_its_form(specs: dict[str, GeneratorSpec]) -> None:
@@ -389,20 +434,23 @@ def test_bar_chart_forms(specs: dict[str, GeneratorSpec]) -> None:
     rng = random.Random(0)
     forms = set()
     for spec_id in ("read_tables_charts", "build_charts"):
+        spec = specs[spec_id]
         for _ in range(100):
-            task = generate_task(specs[spec_id], "medium", rng)
-            cats = str(task.operands["categories"]).split()
+            task = generate_task(spec, "medium", rng)
+            cats = str(task.operands["categories"]).split()  # labels, as the chart shows them
             vals = [int(v) for v in str(task.operands["values"]).split()]
             ask = str(task.operands["ask"])
             forms.add(ask)
             if ask == "most":
-                assert task.answer == cats[vals.index(max(vals))]
+                assert spec.label(task.answer) == cats[vals.index(max(vals))]
             elif ask == "least":
-                assert task.answer == cats[vals.index(min(vals))]
+                assert spec.label(task.answer) == cats[vals.index(min(vals))]
             elif ask == "how_many":
-                assert task.answer == vals[cats.index(str(task.operands["target"]))]
+                target = spec.label(task.operands["target"])
+                assert task.answer == vals[cats.index(target)]
+                assert target in task.prompt
             else:
-                counted = dict(p.rsplit(" ", 1) for p in str(task.operands["counted"]).split(", "))
-                wrong = [c for c, v in zip(cats, vals, strict=True) if int(counted[c]) != v]
-                assert wrong == [task.answer]
+                counted = [int(v) for v in str(task.operands["counted"]).split()]
+                wrong = [c for c, v, n in zip(cats, vals, counted, strict=True) if v != n]
+                assert wrong == [spec.label(task.answer)]
     assert forms == {"most", "least", "how_many", "wrong_bar"}

@@ -5,5 +5,6 @@ params:
   total: { min: 2, max: 6 }
   red_a: { min: 0, max: 6 }
   red_b: { min: 0, max: 6 }
+prompt: "In Säckchen A sind {red_a} rote und {blue_a} blaue Kugeln. In Säckchen B sind {red_b} rote und {blue_b} blaue Kugeln. Wo ist die Chance auf eine rote Kugel größer?"
 answer: choice
 representations: [plain]

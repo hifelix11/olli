@@ -1,4 +1,4 @@
-"""kind: check_equation. Is the shown result right or wrong?
+"""kind: check_equation. Is the shown result right or wrong? Answers: correct, incorrect.
 
 settings.operations: subset of ["+", "−"]. Constraints: sum_max (for +), result_min (for −).
 """
@@ -6,9 +6,6 @@ settings.operations: subset of ["+", "−"]. Constraints: sum_max (for +), resul
 import random
 
 from app.domain.generators.models import GeneratorSpec, Task, choose, make_task
-
-OPTIONS: list[int | str] = ["richtig", "falsch"]
-PROMPT = "Stimmt das? {a} {op} {b} = {result}"
 
 
 def generate(spec: GeneratorSpec, level: str, rng: random.Random) -> Task:
@@ -30,4 +27,6 @@ def generate(spec: GeneratorSpec, level: str, rng: random.Random) -> Task:
         if shown < 0:
             shown = true_result + 1
     operands: dict[str, int | str] = {"a": x, "b": y, "op": op, "result": shown}
-    return make_task(s, level, operands, "richtig" if correct else "falsch", PROMPT, OPTIONS)
+    answer = "correct" if correct else "incorrect"
+    options = s.options(["correct", "incorrect"])
+    return make_task(s, level, operands, answer, s.template(), options)

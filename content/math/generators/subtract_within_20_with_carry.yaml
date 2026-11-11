@@ -14,5 +14,6 @@ levels:
   hard:
     params:
       a: { min: 15, max: 18 }
+prompt: "{a} − {b} = ?"
 answer: free_input
 representations: [plain, twenty_field]

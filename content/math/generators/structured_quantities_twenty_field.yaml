@@ -7,5 +7,6 @@ levels:
   easy:
     params:
       n: { min: 5, max: 10 }
+prompt: "Wie viele sind es?"
 answer: free_input
 representations: [twenty_field]

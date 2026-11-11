@@ -10,5 +10,9 @@ levels:
   easy:
     params:
       cells: { min: 2, max: 3 }
+prompt: "Die rote Linie ist die Spiegelachse. Ist die Figur symmetrisch?"
+labels:
+  "yes": ja
+  "no": nein
 answer: choice
 representations: [grid]

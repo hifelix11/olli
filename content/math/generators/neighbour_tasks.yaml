@@ -8,5 +8,6 @@ params:
   b: { min: 2, max: 9 }
 constraints:
   sum_max: 20
+prompt: "{a} + {a} = {c}. Also: {a} + {d} = _"
 answer: free_input
 representations: [plain]
