@@ -12,5 +12,6 @@ variants:
     constraints:
       result_min: 10
       result_max: 10
+prompt: "{a} − {b} = ?"
 answer: free_input
 representations: [plain, twenty_field]

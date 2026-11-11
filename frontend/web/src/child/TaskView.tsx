@@ -48,7 +48,7 @@ export function TaskView(props: Props) {
   const shown = solution !== null ? String(solution) : value;
   // Lange Rechnungen ("1 Zehner und 4 Einer") und lange Antworten ("Wie viele Kinder sind es jetzt?") kleiner.
   const longFigure = figure.length > 14;
-  const stacked = choice && task.options!.some((option) => String(option).length > 12);
+  const stacked = choice && task.options!.some((option) => option.label.length > 12);
 
   useEffect(() => {
     if (choice || closed || busy) return;
@@ -104,13 +104,13 @@ export function TaskView(props: Props) {
           <div className={`options${stacked ? " stacked" : ""}`}>
             {task.options!.map((option) => (
               <button
-                key={String(option)}
+                key={String(option.value)}
                 type="button"
                 className="option"
-                onClick={() => onSubmit(option)}
+                onClick={() => onSubmit(option.value)}
                 disabled={busy}
               >
-                {option}
+                {option.label}
               </button>
             ))}
           </div>

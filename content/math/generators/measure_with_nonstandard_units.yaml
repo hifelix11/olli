@@ -3,11 +3,12 @@ competency: measure_with_nonstandard_units
 kind: measure
 params:
   n: { min: 1, max: 10 }
-settings:
-  unit: Büroklammern
 levels:
   easy:
     params:
       n: { min: 1, max: 5 }
+prompt: "Wie viele {unit} lang ist der Stab?"
+labels:
+  unit: Büroklammern
 answer: free_input
 representations: [units]

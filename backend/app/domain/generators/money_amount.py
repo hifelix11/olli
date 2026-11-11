@@ -9,8 +9,6 @@ from itertools import combinations_with_replacement
 
 from app.domain.generators.models import GeneratorSpec, Task, choose, make_task
 
-PROMPT = "Wie viel Geld ist das?"
-
 
 def generate(spec: GeneratorSpec, level: str, rng: random.Random) -> Task:
     s = spec.resolve(level, rng)
@@ -23,4 +21,4 @@ def generate(spec: GeneratorSpec, level: str, rng: random.Random) -> Task:
         "coins": " ".join(str(v) for v in coins),
         "unit": s.settings.get("unit", "€"),
     }
-    return make_task(s, level, operands, sum(coins), PROMPT)
+    return make_task(s, level, operands, sum(coins), s.template())

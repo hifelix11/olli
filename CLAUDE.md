@@ -52,6 +52,7 @@ Diese Regeln sind Entscheidungen. Nicht ohne Rücksprache ändern.
 - TypeScript strict. Keine Logik im Frontend, die ins Backend gehört. Keine UI-Bibliothek, Styles in `index.css` mit den Tokens aus `frontend/web/README.md`.
 - UI-Texte kurz, Sentence case, Du-Form für Kinder, Sie-frei für Eltern. Olli spricht in der ersten Person.
 - IDs in YAML sind `snake_case` und stabil. Nie umbenennen, `attempts` referenzieren sie.
+- Aufgabentexte stehen im YAML (`prompt`, `prompts`, `labels`), nie im Python-Code. Antworten und Optionen sind IDs oder Zahlen, nie Wörter. Die API schickt Optionen als `{value, label}`: das Kind sieht `label`, zurück kommt `value`. Details in `content/math/generators/README.md`.
 - Fachliche Zerlegungen (Kompetenzen, Voraussetzungen) sind Vorschläge, bis eine Didaktikerin sie geprüft hat. Status `draft` bleibt, bis das passiert ist.
 - Kinderdaten: Datensparsamkeit. Keine Klarnamen in Logs oder LLM-Prompts.
 

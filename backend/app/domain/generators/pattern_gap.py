@@ -1,15 +1,12 @@
 """kind: pattern_gap. A row of shapes repeats a unit; one shape is missing.
 
-settings.symbols: shape ids. params: unit (length of the repeated part), repeats.
-settings.gap: "end" (default) or "any". Options: the names of all symbols.
+settings.symbols: shape ids, each with a label. params: unit (length of the repeated part), repeats.
+settings.gap: "end" (default) or "any". Options: all symbols.
 """
 
 import random
 
 from app.domain.generators.models import GeneratorSpec, Task, choose, make_task
-from app.domain.generators.shapes import NAMES
-
-PROMPT = "Wie geht das Muster weiter?"
 
 
 def generate(spec: GeneratorSpec, level: str, rng: random.Random) -> Task:
@@ -23,5 +20,4 @@ def generate(spec: GeneratorSpec, level: str, rng: random.Random) -> Task:
     row = unit * repeats
     gap = len(row) - 1 if s.settings.get("gap", "end") == "end" else rng.randrange(len(row))
     shown = " ".join("_" if i == gap else x for i, x in enumerate(row))
-    options: list[int | str] = [NAMES[x] for x in symbols]
-    return make_task(s, level, {"shapes": shown}, NAMES[row[gap]], PROMPT, options)
+    return make_task(s, level, {"shapes": shown}, row[gap], s.template(), s.options(symbols))

@@ -3,5 +3,6 @@ competency: subitize_to_5
 kind: count
 params:
   n: { min: 1, max: 5 }
+prompt: "Wie viele sind es?"
 answer: free_input
 representations: [dice, fingers]

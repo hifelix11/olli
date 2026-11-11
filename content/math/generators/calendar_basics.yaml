@@ -4,18 +4,45 @@ kind: cycle_neighbour
 settings:
   directions: [after, before]
   cycles:
-    - items: [Montag, Dienstag, Mittwoch, Donnerstag, Freitag, Samstag, Sonntag]
-      after: Welcher Tag kommt nach {item}?
-      before: Welcher Tag kommt vor {item}?
-    - items: [Januar, Februar, März, April, Mai, Juni, Juli, August, September, Oktober, November, Dezember]
-      after: Welcher Monat kommt nach {item}?
-      before: Welcher Monat kommt vor {item}?
-    - items: [Frühling, Sommer, Herbst, Winter]
-      after: Welche Jahreszeit kommt nach dem {item}?
-      before: Welche Jahreszeit kommt vor dem {item}?
+    - items: [monday, tuesday, wednesday, thursday, friday, saturday, sunday]
+      prompts:
+        after: Welcher Tag kommt nach {name}?
+        before: Welcher Tag kommt vor {name}?
+    - items: [january, february, march, april, may, june, july, august, september, october, november, december]
+      prompts:
+        after: Welcher Monat kommt nach {name}?
+        before: Welcher Monat kommt vor {name}?
+    - items: [spring, summer, autumn, winter]
+      prompts:
+        after: Welche Jahreszeit kommt nach dem {name}?
+        before: Welche Jahreszeit kommt vor dem {name}?
 levels:
   easy:
     settings:
       directions: [after]
+labels:
+  monday: Montag
+  tuesday: Dienstag
+  wednesday: Mittwoch
+  thursday: Donnerstag
+  friday: Freitag
+  saturday: Samstag
+  sunday: Sonntag
+  january: Januar
+  february: Februar
+  march: März
+  april: April
+  may: Mai
+  june: Juni
+  july: Juli
+  august: August
+  september: September
+  october: Oktober
+  november: November
+  december: Dezember
+  spring: Frühling
+  summer: Sommer
+  autumn: Herbst
+  winter: Winter
 answer: choice
 representations: [plain]

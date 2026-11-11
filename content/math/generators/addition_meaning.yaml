@@ -12,5 +12,9 @@ levels:
   easy:
     constraints:
       sum_max: 6
+prompt: "{a} Plättchen. {b} {action}. Welche Aufgabe passt?"
+labels:
+  add: { one: kommt dazu, other: kommen dazu }
+  remove: { one: wird weggenommen, other: werden weggenommen }
 answer: choice
 representations: [twenty_field]

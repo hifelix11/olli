@@ -4,34 +4,40 @@ kind: item_choice
 settings:
   items:
     - prompt: Auf dem Tisch liegen 6 Äpfel. Was bedeutet die 6?
-      answer: Anzahl
-      options: [Anzahl, Platznummer, Maßzahl]
+      answer: cardinal
+      options: [cardinal, ordinal, measure]
     - prompt: Im Bus sitzen 9 Kinder. Was bedeutet die 9?
-      answer: Anzahl
-      options: [Kennzeichnung, Anzahl, Maßzahl]
+      answer: cardinal
+      options: [nominal, cardinal, measure]
     - prompt: Tom läuft als 3. ins Ziel. Was bedeutet die 3?
-      answer: Platznummer
-      options: [Anzahl, Platznummer, Kennzeichnung]
+      answer: ordinal
+      options: [cardinal, ordinal, nominal]
     - prompt: Mia steht in der Reihe an 5. Stelle. Was bedeutet die 5?
-      answer: Platznummer
-      options: [Platznummer, Anzahl, Zählzahl]
+      answer: ordinal
+      options: [ordinal, cardinal, counting]
     - prompt: Der Stift ist 12 cm lang. Was bedeutet die 12?
-      answer: Maßzahl
-      options: [Anzahl, Maßzahl, Platznummer]
+      answer: measure
+      options: [cardinal, measure, ordinal]
     - prompt: Das Seil ist 2 m lang. Was bedeutet die 2?
-      answer: Maßzahl
-      options: [Platznummer, Anzahl, Maßzahl]
+      answer: measure
+      options: [ordinal, cardinal, measure]
     - prompt: Der Bus mit der Nummer 7 fährt zur Schule. Was bedeutet die 7?
-      answer: Kennzeichnung
-      options: [Anzahl, Maßzahl, Kennzeichnung]
+      answer: nominal
+      options: [cardinal, measure, nominal]
     - prompt: Lena wohnt im Haus mit der Nummer 15. Was bedeutet die 15?
-      answer: Kennzeichnung
-      options: [Kennzeichnung, Anzahl, Platznummer]
+      answer: nominal
+      options: [nominal, cardinal, ordinal]
     - prompt: Die Straßenbahn mit der Nummer 4 fährt zum Zoo. Was bedeutet die 4?
-      answer: Kennzeichnung
-      options: [Maßzahl, Kennzeichnung, Anzahl]
+      answer: nominal
+      options: [measure, nominal, cardinal]
     - prompt: Beim Verstecken zählt Tom laut bis 5. Was bedeutet die 5?
-      answer: Zählzahl
-      options: [Zählzahl, Maßzahl, Kennzeichnung]
+      answer: counting
+      options: [counting, measure, nominal]
+labels:
+  cardinal: Anzahl
+  ordinal: Platznummer
+  measure: Maßzahl
+  nominal: Kennzeichnung
+  counting: Zählzahl
 answer: choice
 representations: [plain]

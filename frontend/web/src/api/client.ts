@@ -7,6 +7,9 @@ export type Child = { id: string; name: string; sign: Sign };
 
 export type Account = { pin_set: boolean };
 
+/** Eine Antwort zur Auswahl. Das Kind sieht label, zurück geht value. */
+export type Option = { value: number | string; label: string };
+
 export type Task = {
   id: string;
   competency: string;
@@ -15,10 +18,15 @@ export type Task = {
   level: string;
   prompt: string;
   operands: Record<string, number | string>;
-  options: (number | string)[] | null;
+  options: Option[] | null;
   representations: string[];
   placement: boolean;
 };
+
+/** Wie das Kind eine Lösung sieht: bei Auswahl das Label, sonst die Zahl. */
+export function labelOf(task: Task, answer: number | string): string {
+  return task.options?.find((option) => option.value === answer)?.label ?? String(answer);
+}
 
 export type AnswerResult = {
   correct: boolean;

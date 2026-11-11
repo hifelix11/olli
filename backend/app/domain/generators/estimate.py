@@ -7,8 +7,6 @@ import random
 
 from app.domain.generators.models import GeneratorSpec, Task, choose, make_task
 
-PROMPT = "Wie viele sind es ungefähr?"
-
 
 def generate(spec: GeneratorSpec, level: str, rng: random.Random) -> Task:
     s = spec.resolve(level, rng)
@@ -20,5 +18,4 @@ def generate(spec: GeneratorSpec, level: str, rng: random.Random) -> Task:
             candidates.append(n)
     n = choose(candidates, spec, level, rng)
     answer = min(anchors, key=lambda a: abs(n - a))
-    options: list[int | str] = list(anchors)
-    return make_task(s, level, {"n": n}, answer, PROMPT, options)
+    return make_task(s, level, {"n": n}, answer, s.template(), s.options(anchors))

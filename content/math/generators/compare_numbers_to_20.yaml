@@ -9,5 +9,6 @@ levels:
     params:
       a: { min: 0, max: 10 }
       b: { min: 0, max: 10 }
+prompt: "{a} _ {b}"
 answer: choice
 representations: [plain, twenty_field]

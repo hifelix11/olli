@@ -18,5 +18,6 @@ levels:
       count: { min: 2, max: 3 }
     constraints:
       total_max: 10
+prompt: "Wie viel Geld ist das?"
 answer: free_input
 representations: [money]

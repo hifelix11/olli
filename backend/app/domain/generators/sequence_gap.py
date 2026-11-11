@@ -8,8 +8,6 @@ import random
 
 from app.domain.generators.models import GeneratorSpec, Task, choose, make_task
 
-PROMPT = "Welche Zahl fehlt? {sequence}"
-
 
 def generate(spec: GeneratorSpec, level: str, rng: random.Random) -> Task:
     s = spec.resolve(level, rng)
@@ -28,4 +26,4 @@ def generate(spec: GeneratorSpec, level: str, rng: random.Random) -> Task:
     gap = length - 1 if st.get("gap") == "end" else rng.randrange(length)
     shown = ", ".join("_" if i == gap else str(v) for i, v in enumerate(seq))
     operands: dict[str, int | str] = {"sequence": shown, "step": step, "direction": direction}
-    return make_task(s, level, operands, seq[gap], PROMPT)
+    return make_task(s, level, operands, seq[gap], s.template())

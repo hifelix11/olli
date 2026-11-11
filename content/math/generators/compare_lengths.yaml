@@ -10,5 +10,10 @@ levels:
   easy:
     settings:
       ask: [longer]
+prompts:
+  longer: "Welcher Stab ist länger?"
+  shorter: "Welcher Stab ist kürzer?"
+labels:
+  equal: gleich lang
 answer: choice
 representations: [lengths]

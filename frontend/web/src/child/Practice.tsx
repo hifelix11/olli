@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { api, type AnswerResult, type Child, type Task } from "../api/client";
+import { api, labelOf, type AnswerResult, type Child, type Task } from "../api/client";
 import { chime } from "../sound";
 import { speak } from "../speech";
 import { Icon } from "./Icon";
@@ -124,7 +124,7 @@ export function Practice({ child, onExit }: { child: Child; onExit: () => void }
         else if (result.correct) {
           chime();
           setLine("Richtig!");
-        } else say(`Die Lösung ist ${result.answer}.`);
+        } else if (result.answer !== null) say(`Die Lösung ist ${labelOf(task, result.answer)}.`);
       } catch (error) {
         if (alive.current) setPhase({ kind: "error", message: String(error) });
       } finally {
@@ -253,7 +253,7 @@ export function Practice({ child, onExit }: { child: Child; onExit: () => void }
           onChange={setValue}
           onSubmit={(answer) => void submit(answer)}
           closed={result !== null}
-          solution={result && !task.placement ? result.answer : null}
+          solution={result?.answer != null && !task.placement ? labelOf(task, result.answer) : null}
           canSkip={task.placement}
           busy={busy}
           onNext={result && !task.placement && !result.correct ? advance : null}

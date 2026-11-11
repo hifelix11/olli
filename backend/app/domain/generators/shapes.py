@@ -1,18 +1,11 @@
-"""Plane shapes shared by the shape kinds: ids, German names, corner counts, families.
+"""Plane shapes shared by the shape kinds: ids, corner counts, families.
 
-A family groups names that overlap (a square is also a rectangle and a quadrilateral).
+The names are labels in the specs.
+
+A family groups shapes whose names overlap (a square is also a rectangle and a quadrilateral).
 Distractors never come from the answer's family, so every choice task has one right option.
 """
 
-NAMES = {
-    "triangle": "Dreieck",
-    "circle": "Kreis",
-    "square": "Quadrat",
-    "rectangle": "Rechteck",
-    "quadrilateral": "Viereck",
-    "pentagon": "Fünfeck",
-    "hexagon": "Sechseck",
-}
 CORNERS = {
     "triangle": 3,
     "circle": 0,
