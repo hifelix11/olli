@@ -12,5 +12,6 @@ levels:
   hard:
     constraints:
       sum_max: 20
+prompt: "{a} + {b} = {c}. Also: {b} + {a} = _"
 answer: free_input
 representations: [plain]

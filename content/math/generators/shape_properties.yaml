@@ -11,5 +11,8 @@ levels:
       shapes: [triangle, square, rectangle]
       ask: [corners]
       rotations: [0]
+prompts:
+  corners: "Wie viele Ecken hat die Form?"
+  sides: "Wie viele Seiten hat die Form?"
 answer: free_input
 representations: [shapes]

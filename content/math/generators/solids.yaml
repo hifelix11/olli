@@ -4,46 +4,53 @@ kind: item_choice
 settings:
   items:
     - prompt: "Welche Form hat ein Ball?"
-      answer: Kugel
-      options: [Kugel, Würfel, Zylinder]
+      answer: sphere
+      options: [sphere, cube, cylinder]
     - prompt: "Welche Form hat eine Orange?"
-      answer: Kugel
-      options: [Kegel, Kugel, Quader]
+      answer: sphere
+      options: [cone, sphere, cuboid]
     - prompt: "Welche Form hat eine Murmel?"
-      answer: Kugel
-      options: [Zylinder, Würfel, Kugel]
+      answer: sphere
+      options: [cylinder, cube, sphere]
     - prompt: "Welche Form hat ein Spielwürfel?"
-      answer: Würfel
-      options: [Würfel, Quader, Kugel]
+      answer: cube
+      options: [cube, cuboid, sphere]
     - prompt: "Welche Form hat ein Zuckerwürfel?"
-      answer: Würfel
-      options: [Kugel, Würfel, Kegel]
+      answer: cube
+      options: [sphere, cube, cone]
     - prompt: "Welche Form hat ein Schuhkarton?"
-      answer: Quader
-      options: [Quader, Würfel, Kegel]
+      answer: cuboid
+      options: [cuboid, cube, cone]
     - prompt: "Welche Form hat ein Ziegelstein?"
-      answer: Quader
-      options: [Zylinder, Quader, Würfel]
+      answer: cuboid
+      options: [cylinder, cuboid, cube]
     - prompt: "Welche Form hat eine Konservendose?"
-      answer: Zylinder
-      options: [Zylinder, Kugel, Pyramide]
+      answer: cylinder
+      options: [cylinder, sphere, pyramid]
     - prompt: "Welche Form hat eine Klopapierrolle?"
-      answer: Zylinder
-      options: [Quader, Kugel, Zylinder]
+      answer: cylinder
+      options: [cuboid, sphere, cylinder]
     - prompt: "Welche Form hat eine dicke runde Kerze?"
-      answer: Zylinder
-      options: [Kegel, Zylinder, Würfel]
+      answer: cylinder
+      options: [cone, cylinder, cube]
     - prompt: "Welche Form hat eine leere Eistüte?"
-      answer: Kegel
-      options: [Kegel, Zylinder, Würfel]
+      answer: cone
+      options: [cone, cylinder, cube]
     - prompt: "Welche Form hat ein spitzer Partyhut?"
-      answer: Kegel
-      options: [Pyramide, Kugel, Kegel]
+      answer: cone
+      options: [pyramid, sphere, cone]
     - prompt: "Welche Form hat ein Verkehrshütchen?"
-      answer: Kegel
-      options: [Zylinder, Kegel, Pyramide]
+      answer: cone
+      options: [cylinder, cone, pyramid]
     - prompt: "Ein Bauwerk in Ägypten hat vier dreieckige Seiten und eine Spitze. Welche Form ist das?"
-      answer: Pyramide
-      options: [Pyramide, Kegel, Quader]
+      answer: pyramid
+      options: [pyramid, cone, cuboid]
+labels:
+  sphere: Kugel
+  cube: Würfel
+  cylinder: Zylinder
+  cuboid: Quader
+  cone: Kegel
+  pyramid: Pyramide
 answer: choice
 representations: [plain]

@@ -1,13 +1,12 @@
 """kind: money_exchange. Change an amount into pieces of one value: how many pieces?
 
-settings.pieces: list of {value, name}, e.g. {value: 2, name: Münzen}. Constraint: amount_max (20).
+settings.pieces: list of {value, type}, e.g. {value: 2, type: coins}. The type's label is {name}.
+Constraint: amount_max (20).
 """
 
 import random
 
 from app.domain.generators.models import GeneratorSpec, Task, choose, make_task
-
-PROMPT = "Du wechselst {amount} € in lauter {value}-€-{name}. Wie viele {name} bekommst du?"
 
 
 def generate(spec: GeneratorSpec, level: str, rng: random.Random) -> Task:
@@ -22,6 +21,7 @@ def generate(spec: GeneratorSpec, level: str, rng: random.Random) -> Task:
     operands: dict[str, int | str] = {
         "amount": amount,
         "value": piece["value"],
-        "name": piece["name"],
+        "type": piece["type"],
     }
-    return make_task(s, level, operands, amount // piece["value"], PROMPT)
+    words = {"name": s.label(piece["type"])}
+    return make_task(s, level, operands, amount // piece["value"], s.template(), words=words)

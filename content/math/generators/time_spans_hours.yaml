@@ -13,5 +13,10 @@ levels:
       hours: { min: 1, max: 3 }
     settings:
       forms: [later]
+prompts:
+  duration: "Von {start} Uhr bis {end} Uhr. Wie viele Stunden sind das?"
+  later: "Es ist {start} Uhr. Wie spät ist es {span} später?"
+labels:
+  hours: { one: "{n} Stunde", other: "{n} Stunden" }
 answer: free_input
 representations: [plain]

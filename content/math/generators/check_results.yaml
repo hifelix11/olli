@@ -15,5 +15,9 @@ levels:
       operations: ["+"]
     constraints:
       sum_max: 10
+prompt: "Stimmt das? {a} {op} {b} = {result}"
+labels:
+  correct: richtig
+  incorrect: falsch
 answer: choice
 representations: [plain]

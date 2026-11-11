@@ -7,52 +7,52 @@ params:
 settings:
   items:
     - prompt: "Im Hof spielen {a} Kinder. {b} Kinder kommen dazu. Welche Frage kannst du ausrechnen?"
-      answer: "Wie viele Kinder sind es jetzt?"
+      answer: how_many_now
       options:
-        - "Wie viele Kinder sind es jetzt?"
-        - "Wie alt sind die Kinder?"
-        - "Wie heißen die Kinder?"
+        how_many_now: "Wie viele Kinder sind es jetzt?"
+        how_old: "Wie alt sind die Kinder?"
+        names: "Wie heißen die Kinder?"
     - prompt: "Lena hat {a} Bonbons. Sie isst {b} davon. Welche Frage kannst du ausrechnen?"
-      answer: "Wie viele Bonbons hat Lena noch?"
+      answer: how_many_left
       options:
-        - "Wie schmecken die Bonbons?"
-        - "Wie viele Bonbons hat Lena noch?"
-        - "Woher hat Lena die Bonbons?"
+        taste: "Wie schmecken die Bonbons?"
+        how_many_left: "Wie viele Bonbons hat Lena noch?"
+        where_from: "Woher hat Lena die Bonbons?"
     - prompt: "Im Bus sitzen {a} Kinder. An der Haltestelle steigen {b} Kinder aus. Welche Frage kannst du ausrechnen?"
-      answer: "Wie viele Kinder sind noch im Bus?"
+      answer: how_many_left
       options:
-        - "Wohin fährt der Bus?"
-        - "Wie alt ist der Busfahrer?"
-        - "Wie viele Kinder sind noch im Bus?"
+        where_to: "Wohin fährt der Bus?"
+        driver_age: "Wie alt ist der Busfahrer?"
+        how_many_left: "Wie viele Kinder sind noch im Bus?"
     - prompt: "Tom hat {a} rote und {b} blaue Autos. Welche Frage kannst du ausrechnen?"
-      answer: "Wie viele Autos hat Tom?"
+      answer: how_many
       options:
-        - "Wie viele Autos hat Tom?"
-        - "Welches Auto ist am schnellsten?"
-        - "Wo spielt Tom?"
+        how_many: "Wie viele Autos hat Tom?"
+        fastest: "Welches Auto ist am schnellsten?"
+        where: "Wo spielt Tom?"
     - prompt: "Auf dem Teller liegen {a} Kekse. Mia nimmt {b} Kekse. Welche Frage kannst du ausrechnen?"
-      answer: "Wie viele Kekse bleiben auf dem Teller?"
+      answer: how_many_left
       options:
-        - "Wer hat die Kekse gebacken?"
-        - "Wie viele Kekse bleiben auf dem Teller?"
-        - "Wie groß ist der Teller?"
+        who_baked: "Wer hat die Kekse gebacken?"
+        how_many_left: "Wie viele Kekse bleiben auf dem Teller?"
+        plate_size: "Wie groß ist der Teller?"
     - prompt: "Im Garten blühen {a} gelbe und {b} rote Tulpen. Welche Frage kannst du ausrechnen?"
-      answer: "Wie viele Tulpen blühen im Garten?"
+      answer: how_many
       options:
-        - "Wie riechen die Tulpen?"
-        - "Wie viele Tulpen blühen im Garten?"
-        - "Wer hat die Tulpen gepflanzt?"
+        smell: "Wie riechen die Tulpen?"
+        how_many: "Wie viele Tulpen blühen im Garten?"
+        who_planted: "Wer hat die Tulpen gepflanzt?"
     - prompt: "Ben hat {a} Sticker. Er bekommt {b} Sticker geschenkt. Welche Frage kannst du ausrechnen?"
-      answer: "Wie viele Sticker hat Ben jetzt?"
+      answer: how_many_now
       options:
-        - "Wie viele Sticker hat Ben jetzt?"
-        - "Wer schenkt Ben die Sticker?"
-        - "Welche Farbe haben die Sticker?"
+        how_many_now: "Wie viele Sticker hat Ben jetzt?"
+        who_gives: "Wer schenkt Ben die Sticker?"
+        colour: "Welche Farbe haben die Sticker?"
     - prompt: "Auf dem Parkplatz stehen {a} Autos. {b} Autos fahren weg. Welche Frage kannst du ausrechnen?"
-      answer: "Wie viele Autos stehen noch da?"
+      answer: how_many_left
       options:
-        - "Wie schnell fahren die Autos?"
-        - "Wie viele Autos stehen noch da?"
-        - "Wem gehören die Autos?"
+        speed: "Wie schnell fahren die Autos?"
+        how_many_left: "Wie viele Autos stehen noch da?"
+        owner: "Wem gehören die Autos?"
 answer: choice
 representations: [plain]

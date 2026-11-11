@@ -3,11 +3,12 @@ competency: measure_cm
 kind: measure
 params:
   n: { min: 1, max: 20 }
-settings:
-  unit: Zentimeter
 levels:
   easy:
     params:
       n: { min: 1, max: 10 }
+prompt: "Wie viele {unit} lang ist der Stab?"
+labels:
+  unit: Zentimeter
 answer: free_input
 representations: [ruler]

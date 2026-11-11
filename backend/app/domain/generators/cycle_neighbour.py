@@ -1,7 +1,8 @@
 """kind: cycle_neighbour. What comes after (or before) an item of a cycle, e.g. weekdays?
 
-settings.cycles: list of {items, after, before}; after and before are prompts with {item}.
-settings.directions: subset of [after, before]. Options: the answer and two other items.
+settings.cycles: list of {items, prompts}; items are IDs, prompts has after and before.
+The prompt names the item as {name}. settings.directions: subset of [after, before].
+Options: the answer and two other items.
 """
 
 import random
@@ -17,7 +18,9 @@ def generate(spec: GeneratorSpec, level: str, rng: random.Random) -> Task:
     i = rng.randrange(len(items))
     answer = items[(i + (1 if direction == "after" else -1)) % len(items)]
     others = [x for x in items if x not in (items[i], answer)]
-    options: list[int | str] = [answer, *rng.sample(others, 2)]
-    rng.shuffle(options)
+    values = [answer, *rng.sample(others, 2)]
+    rng.shuffle(values)
     operands: dict[str, int | str] = {"item": items[i], "direction": direction}
-    return make_task(s, level, operands, answer, cycle[direction], options)
+    prompt = cycle["prompts"][direction]
+    words = {"name": s.label(items[i])}
+    return make_task(s, level, operands, answer, prompt, s.options(values), words)

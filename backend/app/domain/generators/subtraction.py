@@ -4,8 +4,6 @@ import random
 
 from app.domain.generators.models import GeneratorSpec, Task, choose, make_task
 
-PROMPT = "{a} − {b} = ?"
-
 
 def generate(spec: GeneratorSpec, level: str, rng: random.Random) -> Task:
     s = spec.resolve(level, rng)
@@ -21,4 +19,4 @@ def generate(spec: GeneratorSpec, level: str, rng: random.Random) -> Task:
         and (not c.get("borrow") or x % 10 < y % 10)
     ]
     x, y = choose(pairs, spec, level, rng)
-    return make_task(s, level, {"a": x, "b": y}, x - y, PROMPT)
+    return make_task(s, level, {"a": x, "b": y}, x - y, s.template())

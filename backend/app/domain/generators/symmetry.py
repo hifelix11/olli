@@ -1,6 +1,6 @@
 """kind: symmetry. A figure on a grid with a vertical axis in the middle: is it symmetric?
 
-settings: width (even), height. params: cells (figure cells in the left half).
+settings: width (even), height. params: cells (figure cells in the left half). Answers: yes, no.
 Half of the tasks mirror the left half exactly, the other half flip one cell on the right.
 """
 
@@ -8,9 +8,6 @@ import random
 
 from app.domain.generators.figures import encode, random_figure
 from app.domain.generators.models import GeneratorSpec, Task, choose, make_task
-
-OPTIONS: list[int | str] = ["ja", "nein"]
-PROMPT = "Die rote Linie ist die Spiegelachse. Ist die Figur symmetrisch?"
 
 
 def generate(spec: GeneratorSpec, level: str, rng: random.Random) -> Task:
@@ -29,4 +26,5 @@ def generate(spec: GeneratorSpec, level: str, rng: random.Random) -> Task:
         "cells": encode(figure),
         "axis": "vertical",
     }
-    return make_task(s, level, operands, "ja" if symmetric else "nein", PROMPT, OPTIONS)
+    answer = "yes" if symmetric else "no"
+    return make_task(s, level, operands, answer, s.template(), s.options(["yes", "no"]))

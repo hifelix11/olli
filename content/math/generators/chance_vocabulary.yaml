@@ -4,5 +4,12 @@ kind: chance
 params:
   red: { min: 0, max: 5 }
   blue: { min: 0, max: 5 }
+prompt: "Im Säckchen sind {red} rote und {blue} blaue Kugeln. Du ziehst eine Kugel. Ist es sicher, möglich oder unmöglich, dass sie {color} ist?"
+labels:
+  certain: sicher
+  possible: möglich
+  impossible: unmöglich
+  red: rot
+  blue: blau
 answer: choice
 representations: [plain]

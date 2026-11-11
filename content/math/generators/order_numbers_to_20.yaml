@@ -10,5 +10,6 @@ settings:
   max_value: 20
   directions: [forward, backward]
   gap: any
+prompt: "Welche Zahl fehlt? {sequence}"
 answer: free_input
 representations: [plain, number_line]

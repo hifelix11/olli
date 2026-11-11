@@ -13,5 +13,6 @@ levels:
   hard:
     constraints:
       sum_min: 8
+prompt: "{a} + {b} = ?"
 answer: free_input
 representations: [plain, twenty_field]

@@ -17,5 +17,10 @@ levels:
       unit: { min: 3, max: 3 }
     settings:
       gap: any
+prompt: "Wie geht das Muster weiter?"
+labels:
+  circle: Kreis
+  triangle: Dreieck
+  square: Quadrat
 answer: choice
 representations: [shapes]

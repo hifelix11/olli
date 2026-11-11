@@ -2,35 +2,38 @@ id: plausibility_of_solutions
 competency: plausibility_of_solutions
 kind: item_choice
 settings:
-  options: [ja, nein]
+  options: ["yes", "no"]
   items:
     - prompt: "Ein Eis kostet 40 €. Kann das stimmen?"
-      answer: nein
+      answer: "no"
     - prompt: "Ein Apfel kostet 1 €. Kann das stimmen?"
-      answer: ja
+      answer: "yes"
     - prompt: "Lena ist 7 Jahre alt und geht in die Schule. Kann das stimmen?"
-      answer: ja
+      answer: "yes"
     - prompt: "Ein Bleistift ist 20 m lang. Kann das stimmen?"
-      answer: nein
+      answer: "no"
     - prompt: "In der Klasse sind 20 Kinder. Kann das stimmen?"
-      answer: ja
+      answer: "yes"
     - prompt: "Eine Katze hat 6 Beine. Kann das stimmen?"
-      answer: nein
+      answer: "no"
     - prompt: "Ein Fahrrad hat 2 Räder. Kann das stimmen?"
-      answer: ja
+      answer: "yes"
     - prompt: "Ein Schulbus hat 2 Sitzplätze. Kann das stimmen?"
-      answer: nein
+      answer: "no"
     - prompt: "Die Schule dauert heute 4 Stunden. Kann das stimmen?"
-      answer: ja
+      answer: "yes"
     - prompt: "Lena isst 18 Brötchen zum Frühstück. Kann das stimmen?"
-      answer: nein
+      answer: "no"
     - prompt: "Tom schläft 20 Stunden am Tag. Kann das stimmen?"
-      answer: nein
+      answer: "no"
     - prompt: "Tom sagt, 2 Eis kosten zusammen 40 €. Kann das stimmen?"
-      answer: nein
+      answer: "no"
     - prompt: "Mia sagt, 3 Äpfel und 4 Äpfel sind 7 Äpfel. Kann das stimmen?"
-      answer: ja
+      answer: "yes"
     - prompt: "Ben sagt, von 5 Keksen isst er 2 und dann sind noch 7 übrig. Kann das stimmen?"
-      answer: nein
+      answer: "no"
+labels:
+  "yes": ja
+  "no": nein
 answer: choice
 representations: [plain]

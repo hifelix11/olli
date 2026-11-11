@@ -4,40 +4,53 @@ kind: item_choice
 settings:
   items:
     - prompt: "Du schaust von oben auf einen Würfel. Welche Form siehst du?"
-      answer: Quadrat
-      options: [Quadrat, Kreis, Dreieck]
+      answer: square
+      options: [square, circle, triangle]
     - prompt: "Du schaust von der Seite auf einen Würfel. Welche Form siehst du?"
-      answer: Quadrat
-      options: [Dreieck, Quadrat, Kreis]
+      answer: square
+      options: [triangle, square, circle]
     - prompt: "Du schaust von oben auf eine Kugel. Welche Form siehst du?"
-      answer: Kreis
-      options: [Kreis, Quadrat, Dreieck]
+      answer: circle
+      options: [circle, square, triangle]
     - prompt: "Du schaust von oben auf eine Dose. Welche Form siehst du?"
-      answer: Kreis
-      options: [Rechteck, Kreis, Dreieck]
+      answer: circle
+      options: [rectangle, circle, triangle]
     - prompt: "Du schaust von der Seite auf eine Dose. Welche Form siehst du?"
-      answer: Rechteck
-      options: [Rechteck, Kreis, Dreieck]
+      answer: rectangle
+      options: [rectangle, circle, triangle]
     - prompt: "Du schaust von der Seite auf einen Kegel. Welche Form siehst du?"
-      answer: Dreieck
-      options: [Dreieck, Kreis, Rechteck]
+      answer: triangle
+      options: [triangle, circle, rectangle]
     - prompt: "Du schaust von oben auf einen Kegel. Welche Form siehst du?"
-      answer: Kreis
-      options: [Dreieck, Kreis, Quadrat]
+      answer: circle
+      options: [triangle, circle, square]
     - prompt: "Du schaust von der Seite auf eine Pyramide. Welche Form siehst du?"
-      answer: Dreieck
-      options: [Quadrat, Dreieck, Kreis]
+      answer: triangle
+      options: [square, triangle, circle]
     - prompt: "Du schaust von vorne auf einen Schuhkarton. Welche Form siehst du?"
-      answer: Rechteck
-      options: [Rechteck, Kreis, Dreieck]
+      answer: rectangle
+      options: [rectangle, circle, triangle]
     - prompt: "Mia steht dir gegenüber und hebt ihre rechte Hand. Auf welcher Seite siehst du die Hand?"
-      answer: links
-      options: [links, rechts]
+      answer: left
+      options: [left, right]
     - prompt: "Du sitzt im Bus hinter Tom. Was siehst du von Tom?"
-      answer: seinen Rücken
-      options: [seinen Rücken, sein Gesicht, seine Füße]
+      answer: back
+      options: [back, face, feet]
     - prompt: "Du liegst unter einem Tisch und schaust nach oben. Was siehst du?"
-      answer: die Tischplatte von unten
-      options: [die Tischplatte von unten, die Tischplatte von oben, den Fußboden]
+      answer: table_from_below
+      options: [table_from_below, table_from_above, floor]
+labels:
+  square: Quadrat
+  circle: Kreis
+  triangle: Dreieck
+  rectangle: Rechteck
+  left: links
+  right: rechts
+  back: seinen Rücken
+  face: sein Gesicht
+  feet: seine Füße
+  table_from_below: die Tischplatte von unten
+  table_from_above: die Tischplatte von oben
+  floor: den Fußboden
 answer: choice
 representations: [plain]

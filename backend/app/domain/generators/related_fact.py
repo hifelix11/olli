@@ -1,18 +1,12 @@
 """kind: related_fact. Show a known fact, ask the related one.
 
 settings.relation: commutative (b + a), inverse (c − b), neighbour (a + a → a + (a + 1)).
-Constraint: sum_max.
+Constraint: sum_max. The prompt may use {a}, {b}, {c} = a + b and {d} = a + 1.
 """
 
 import random
 
 from app.domain.generators.models import GeneratorSpec, Task, choose, make_task
-
-PROMPTS = {
-    "commutative": "{a} + {b} = {c}. Also: {b} + {a} = _",
-    "inverse": "{a} + {b} = {c}. Also: {c} − {b} = _",
-    "neighbour": "{a} + {a} = {c}. Also: {a} + {d} = _",
-}
 
 
 def generate(spec: GeneratorSpec, level: str, rng: random.Random) -> Task:
@@ -27,4 +21,4 @@ def generate(spec: GeneratorSpec, level: str, rng: random.Random) -> Task:
     x, y = choose(pairs, spec, level, rng)
     operands: dict[str, int | str] = {"a": x, "b": y, "c": x + y, "d": x + 1}
     answer = {"commutative": x + y, "inverse": x, "neighbour": 2 * x + 1}[relation]
-    return make_task(s, level, operands, answer, PROMPTS[relation])
+    return make_task(s, level, operands, answer, s.template())

@@ -1,7 +1,8 @@
 id: number_decomposition_to_10
 competency: number_decomposition_to_10
 kind: missing_number
-prompt: "{c} = {a} + _"
+prompts:
+  "a+_=c": "{c} = {a} + _"
 params:
   a: { min: 1, max: 9 }
   target: { min: 3, max: 10 }

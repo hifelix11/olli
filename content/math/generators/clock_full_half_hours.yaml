@@ -9,5 +9,9 @@ levels:
   easy:
     settings:
       minutes: [0]
+prompt: "Wie spät ist es?"
+labels:
+  full: "{hour} Uhr"
+  half: "halb {next_hour}"
 answer: choice
 representations: [clock, digital_clock]

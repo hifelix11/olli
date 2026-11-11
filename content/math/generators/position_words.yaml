@@ -4,10 +4,16 @@ kind: grid_position
 settings:
   width: 5
   height: 4
-  relations: [links vom, rechts vom, über dem, unter dem]
+  relations: [left, right, above, below]
 levels:
   easy:
     settings:
-      relations: [über dem, unter dem]
+      relations: [above, below]
+prompt: "Welcher Buchstabe steht {place}?"
+labels:
+  left: links vom Käfer
+  right: rechts vom Käfer
+  above: über dem Käfer
+  below: unter dem Käfer
 answer: choice
 representations: [grid]

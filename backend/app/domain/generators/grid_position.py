@@ -1,6 +1,7 @@
 """kind: grid_position. Letters around the Käfer: which one is left, right, above or below it?
 
 settings: width, height, relations (subset of RELATIONS keys). Three letters sit next to the Käfer.
+Each relation has a label, shown in the prompt as {place}. Answers: A, B, C.
 """
 
 import random
@@ -8,14 +9,8 @@ import random
 from app.domain.generators.figures import Cell
 from app.domain.generators.models import GeneratorSpec, Task, make_task
 
-RELATIONS: dict[str, Cell] = {
-    "links vom": (-1, 0),
-    "rechts vom": (1, 0),
-    "über dem": (0, -1),
-    "unter dem": (0, 1),
-}
-LETTERS: list[int | str] = ["A", "B", "C"]
-PROMPT = "Welcher Buchstabe steht {relation} Käfer?"
+RELATIONS: dict[str, Cell] = {"left": (-1, 0), "right": (1, 0), "above": (0, -1), "below": (0, 1)}
+LETTERS = ["A", "B", "C"]
 
 
 def generate(spec: GeneratorSpec, level: str, rng: random.Random) -> Task:
@@ -40,4 +35,5 @@ def generate(spec: GeneratorSpec, level: str, rng: random.Random) -> Task:
         "marks": " ".join(marks),
         "relation": asked,
     }
-    return make_task(s, level, operands, answer, PROMPT, LETTERS)
+    words = {"place": s.label(asked)}
+    return make_task(s, level, operands, answer, s.template(), s.options(LETTERS), words)

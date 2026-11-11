@@ -4,23 +4,23 @@ kind: item_choice
 settings:
   items:
     - prompt: "Rollt oder kippt eine Kugel?"
-      answer: rollt
-      options: [rollt, kippt, beides]
+      answer: rolls
+      options: [rolls, tips, both]
     - prompt: "Rollt oder kippt ein Würfel?"
-      answer: kippt
-      options: [rollt, kippt, beides]
+      answer: tips
+      options: [rolls, tips, both]
     - prompt: "Rollt oder kippt ein Quader?"
-      answer: kippt
-      options: [rollt, kippt, beides]
+      answer: tips
+      options: [rolls, tips, both]
     - prompt: "Rollt oder kippt eine Pyramide?"
-      answer: kippt
-      options: [rollt, kippt, beides]
+      answer: tips
+      options: [rolls, tips, both]
     - prompt: "Rollt oder kippt ein Zylinder?"
-      answer: beides
-      options: [rollt, kippt, beides]
+      answer: both
+      options: [rolls, tips, both]
     - prompt: "Rollt oder kippt ein Kegel?"
-      answer: beides
-      options: [rollt, kippt, beides]
+      answer: both
+      options: [rolls, tips, both]
     - prompt: "Wie viele Ecken hat ein Würfel?"
       answer: "8"
       options: ["6", "8", "12"]
@@ -45,5 +45,9 @@ settings:
     - prompt: "Wie viele Spitzen hat ein Kegel?"
       answer: "1"
       options: ["0", "1", "2"]
+labels:
+  rolls: rollt
+  tips: kippt
+  both: beides
 answer: choice
 representations: [plain]

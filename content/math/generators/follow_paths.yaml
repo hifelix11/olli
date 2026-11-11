@@ -14,5 +14,12 @@ levels:
   hard:
     params:
       legs: { min: 3, max: 3 }
+prompt: "Der Käfer geht {route}. Wo kommt er an?"
+labels:
+  right: "{n} nach rechts"
+  left: "{n} nach links"
+  up: "{n} nach oben"
+  down: "{n} nach unten"
+  and: und
 answer: choice
 representations: [grid]

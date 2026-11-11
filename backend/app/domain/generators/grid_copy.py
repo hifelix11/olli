@@ -1,4 +1,4 @@
-"""kind: grid_copy. A figure and its copy on two grids: is the copy right?
+"""kind: grid_copy. A figure and its copy on two grids: is the copy right? Answers: yes, no.
 
 settings: width, height. params: cells (size of the figure).
 A wrong copy has one cell moved, so that the shape differs even when shifted.
@@ -8,9 +8,6 @@ import random
 
 from app.domain.generators.figures import border, encode, normalized, random_figure
 from app.domain.generators.models import GeneratorSpec, Task, choose, make_task
-
-OPTIONS: list[int | str] = ["ja", "nein"]
-PROMPT = "Links ist die Vorlage, rechts die Kopie. Ist die Kopie richtig?"
 
 
 def generate(spec: GeneratorSpec, level: str, rng: random.Random) -> Task:
@@ -29,4 +26,5 @@ def generate(spec: GeneratorSpec, level: str, rng: random.Random) -> Task:
         "cells": encode(figure),
         "copy": encode(copy),
     }
-    return make_task(s, level, operands, "ja" if correct else "nein", PROMPT, OPTIONS)
+    answer = "yes" if correct else "no"
+    return make_task(s, level, operands, answer, s.template(), s.options(["yes", "no"]))
