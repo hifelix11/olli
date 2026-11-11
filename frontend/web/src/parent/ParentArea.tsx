@@ -8,6 +8,7 @@ import {
   type Progress,
   type Sign,
 } from "../api/client";
+import { Icon } from "../child/Icon";
 import { SignIcon } from "../child/Sign";
 import { freeSign } from "../child/signs";
 import { PinPad } from "./PinPad";
@@ -110,6 +111,9 @@ export function ParentArea({ kids, onAdd, onExit }: Props) {
   if (!open) {
     return (
       <div className="center-page">
+        <span className="lock">
+          <Icon name="lock" size={44} />
+        </span>
         <h1>Elternbereich</h1>
         <p>Bitte PIN eingeben.</p>
         {wrong && <p className="error">Die PIN stimmt nicht.</p>}
@@ -136,7 +140,7 @@ export function ParentArea({ kids, onAdd, onExit }: Props) {
 
   return (
     <div className="parent">
-      <header>
+      <header className="parent-top">
         <h1>Elternbereich</h1>
         <div>
           <button type="button" className="btn btn-quiet" onClick={onExit}>
@@ -147,7 +151,7 @@ export function ParentArea({ kids, onAdd, onExit }: Props) {
           </button>
         </div>
       </header>
-      <section>
+      <section className="panel">
         <h2>Kinder</h2>
         {kids.length > 0 && (
           <div className="tabs">
@@ -155,10 +159,10 @@ export function ParentArea({ kids, onAdd, onExit }: Props) {
               <button
                 key={child.id}
                 type="button"
-                className={`btn${child.id === selected?.id ? " btn-primary" : ""}`}
+                className={`tab${child.id === selected?.id ? " on" : ""}`}
                 onClick={() => select(child)}
               >
-                <SignIcon sign={child.sign} size={28} />
+                <SignIcon sign={child.sign} size={40} />
                 {child.name}
               </button>
             ))}
@@ -190,9 +194,9 @@ export function ParentArea({ kids, onAdd, onExit }: Props) {
       </section>
       {error && <p className="error">{error}</p>}
       {selected && rows && progress && (
-        <>
+        <section className="panel">
           <h2>Lernstand von {selected.name}</h2>
-          <section className="goal">
+          <div className="goal">
             <h3>Ziel bis Ende der Jahrgangsstufe {progress.grade}</h3>
             <div
               className="bar"
@@ -212,7 +216,7 @@ export function ParentArea({ kids, onAdd, onExit }: Props) {
                 die Karte mehr.
               </p>
             )}
-          </section>
+          </div>
           <h3>Karte</h3>
           <p className="summary">Blass gezeichnete Fähigkeiten kann Olli noch nicht üben.</p>
           <div className="legend">
@@ -248,7 +252,7 @@ export function ParentArea({ kids, onAdd, onExit }: Props) {
               </div>
             </section>
           ))}
-        </>
+        </section>
       )}
     </div>
   );

@@ -1,6 +1,6 @@
 import type { Sign } from "../api/client";
 
-/** Reihenfolge wie im Elternbereich. Jedes Zeichen in Plättchenrot oder -blau. */
+/** Reihenfolge wie im Elternbereich. Jedes Zeichen hat sein eigenes Farbfeld (Sign.tsx). */
 export const SIGNS: Sign[] = ["sun", "moon", "star", "heart", "fish", "apple", "flower", "boat"];
 
 export const SIGN_NAMES: Record<Sign, string> = {

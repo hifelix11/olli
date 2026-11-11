@@ -1,4 +1,5 @@
 import type { Child } from "../api/client";
+import { Icon } from "../child/Icon";
 import { Olli } from "../child/Olli";
 import { SignIcon } from "../child/Sign";
 import { unlockAudio } from "../sound";
@@ -11,33 +12,34 @@ type Props = {
 
 export function Start({ kids, onPractice, onParent }: Props) {
   return (
-    <div className="start">
-      <h1>
-        <Olli size={64} />
-        Hallo, ich bin Olli.
-      </h1>
-      <section>
-        <h2>Wer übt heute?</h2>
-        <div className="child-list">
-          {kids.map((child) => (
-            <button
-              key={child.id}
-              type="button"
-              className="child-tile"
-              onClick={() => {
-                unlockAudio();
-                onPractice(child);
-              }}
-            >
-              <SignIcon sign={child.sign} size={72} />
-              {child.name}
-            </button>
-          ))}
-        </div>
-      </section>
-      <button type="button" className="btn btn-quiet" onClick={onParent}>
-        Eltern
-      </button>
+    <div className="pick">
+      <header className="pick-top">
+        <span className="wordmark">olli</span>
+        <button type="button" className="btn btn-quiet" onClick={onParent}>
+          <Icon name="lock" size={20} />
+          Eltern
+        </button>
+      </header>
+      <div className="pick-hello">
+        <Olli mood="happy" size={112} />
+        <h1>Wer übt heute?</h1>
+      </div>
+      <div className="child-list">
+        {kids.map((child) => (
+          <button
+            key={child.id}
+            type="button"
+            className="child-tile"
+            onClick={() => {
+              unlockAudio();
+              onPractice(child);
+            }}
+          >
+            <SignIcon sign={child.sign} size={112} />
+            {child.name}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }

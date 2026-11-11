@@ -11,7 +11,7 @@ export function Clock({ hour, minute }: { hour: number; minute: number }) {
   const minuteHand = point((minute / 60) * 2 * Math.PI, 70);
   return (
     <svg className="picture clock" viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="Uhr">
-      <circle cx={C} cy={C} r="92" fill="var(--paper)" stroke="var(--ink)" strokeWidth="3" />
+      <circle cx={C} cy={C} r="92" fill="var(--board)" stroke="var(--ink)" strokeWidth="3" />
       {Array.from({ length: 12 }, (_, i) => {
         const a = ((i + 1) / 12) * 2 * Math.PI;
         const label = point(a, 74);
