@@ -21,7 +21,7 @@ Das vollständige Konzept steht in [docs/konzept.md](docs/konzept.md).
 | Ordner | Inhalt |
 | --- | --- |
 | `backend/` | Python + FastAPI. Kompetenzgraph, Knowledge Tracing, Auswahl-Logik, Fehleranalyse, LLM-Schicht, API, Datenbank. Die gesamte Logik lebt hier. |
-| `frontend/web/` | Vite + React + TypeScript als PWA. Kinderbereich, Elternbereich, Darstellungen der Aufgaben. Nur Anzeige und Antwort. |
+| `frontend/app/` | Flutter. Eine Codebasis für Web, iPad und später Android. Kinderbereich, Elternbereich, Darstellungen der Aufgaben. Nur Anzeige und Antwort. |
 | `content/` | Fachinhalte als Daten, pro Fach: Kompetenzgraph, Generatoren, geprüfte Textaufgaben. Bundesland-unabhängig. |
 | `curricula/` | Mapping pro Bundesland: Kompetenz → Lehrplanstelle, Jahrgangsstufe, Halbjahr. Neues Bundesland = neue Datei. |
 | `docs/` | Konzept und Entscheidungen. |
@@ -44,8 +44,8 @@ Kein Modell wird pro Kind trainiert. Das Mitlernen ist ein Lernstandsmodell in d
 | Bereich | Entscheidung |
 | --- | --- |
 | Backend | Python 3.12+, FastAPI, uv |
-| Frontend | Vite + React + TypeScript, PWA |
-| Spielwelt | PixiJS oder Phaser (später) |
+| Frontend | Flutter (Dart), für Web, iPad und später Android |
+| Spielwelt | Flame (später) |
 | Datenbank | PostgreSQL über Supabase, lokal per Supabase CLI |
 | Auth | Supabase Auth, Eltern-PIN als zusätzliche Sperre |
 | Inhalte | YAML im Repo, beim Start in die Datenbank geladen |
@@ -67,11 +67,11 @@ Drin:
 - Elternbereich mit PIN und Graph als Karte
 - Figur als Maskottchen, das lobt und erklärt
 
-Nicht drin: Textaufgaben, Sprachstufen, Fehlermuster-Analyse, Spielwelt, Lehrkraft-Bereich, native App.
+Nicht drin: Textaufgaben, Sprachstufen, Fehlermuster-Analyse, Spielwelt, Lehrkraft-Bereich, Veröffentlichung im App Store.
 
 ## Loslegen
 
-Voraussetzungen: Python 3.12+, [uv](https://docs.astral.sh/uv/), Node 22+, Docker, [Supabase CLI](https://supabase.com/docs/guides/local-development).
+Voraussetzungen: Python 3.12+, [uv](https://docs.astral.sh/uv/), [Flutter](https://docs.flutter.dev/get-started/install) 3.44+, Docker, [Supabase CLI](https://supabase.com/docs/guides/local-development).
 
 ```bash
 # Backend
@@ -83,10 +83,10 @@ uv run uvicorn app.main:app --reload
 # Tests
 uv run pytest
 
-# Frontend, http://localhost:5173
-cd frontend/web
-npm install
-npm run dev
+# Frontend, danach http://localhost:5173 im Browser öffnen
+cd frontend/app
+flutter pub get
+flutter run -d web-server --web-port 5173
 
 # Datenbank (lokal)
 supabase start

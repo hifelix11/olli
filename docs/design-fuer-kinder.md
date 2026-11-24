@@ -157,12 +157,12 @@ Sitzungen:
 
 ## Abgleich mit Olli
 
-Was das Frontend heute macht, laut [frontend/web/README.md](../frontend/web/README.md) und Code, verglichen mit den Quellen.
+Was das Frontend heute macht, laut der README des Frontends (heute [frontend/app/README.md](../frontend/app/README.md)) und Code, verglichen mit den Quellen.
 
 Passt schon:
 
 - Schrift Andika mit einstöckigem a, Zahlen 64 px, Frage 28 px: große, klare Schrift [8, 12].
-- Jede Frage lässt sich vorlesen: für Leseanfänger [12, 13].
+- Jede Frage lässt sich vorlesen: für Leseanfänger [12, 13]. Seit dem Umbau auf Flutter (2026-11-24) pausiert: Die App zeigt vorerst nur Text, bis Olli eine eigene Stimme hat.
 - 10 Aufgaben je Sitzung, sichtbar als Kästchen: klares Ziel, kleine Häppchen, natürliches Ende [2, 3, 13].
 - Heft-Look statt Kleinkind-Comic: wirkt nicht "für Babys" [6, 12]. Heft und Wendeplättchen sind bekannte Dinge aus der Schule [13].
 - Keine Dekoration, eine Farbpalette: kein Reizüberfluss [6, 7]. Farben sind geschlechtsneutral [6].
