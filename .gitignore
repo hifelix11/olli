@@ -22,12 +22,6 @@ __pycache__/
 dist/
 build/
 
-# Node
-node_modules/
-frontend/web/dist/
-*.tsbuildinfo
-npm-debug.log*
-
 # Supabase (lokale Instanz)
 supabase/.branches/
 supabase/.temp/

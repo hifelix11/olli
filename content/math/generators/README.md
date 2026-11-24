@@ -76,7 +76,7 @@ Darstellungen (`representations`) und die Operanden, die das Frontend dafür lie
 | Darstellung | liest | zeigt |
 | --- | --- | --- |
 | `plain` | | nur den Text |
-| `twenty_field` | je nach kind, siehe `counters.ts` | Zwanzigerfeld mit Plättchen |
+| `twenty_field` | je nach kind, siehe `frontend/app/lib/representations/counters.dart` | Zwanzigerfeld mit Plättchen |
 | `dice` | n | Würfelbild |
 | `scattered` | n | ungeordnete Plättchen |
 | `number_line` | n | Zahlenstrahl 0 bis 20 mit Pfeil |

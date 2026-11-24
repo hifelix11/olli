@@ -20,7 +20,8 @@ backend/          Python + FastAPI. Gesamte Logik.
   app/api/account.py    PIN für den Elternbereich
   app/db/         models (children, tasks, attempts, mastery), session, repository
   tests/
-frontend/web/     Vite + React + TypeScript. Nur Anzeige und Antwort. Design-Tokens in src/index.css, Plan in der README.
+frontend/app/     Flutter (Dart). Eine Codebasis für Web, iPad, später Android. Nur Anzeige und Antwort.
+                  Design-Tokens in lib/ui/tokens.dart, Plan in der README.
 content/          Fachinhalte als Daten, bundesland-unabhängig
   math/competencies.yaml   Kompetenzgraph
   math/generators/         Generator-Spezifikationen pro Kompetenz
@@ -43,13 +44,15 @@ Diese Regeln sind Entscheidungen. Nicht ohne Rücksprache ändern.
 7. `attempts` sind rohe, unveränderliche Ereignisse. Nie überschreiben, nie löschen, außer bei DSGVO-Löschung eines Profils.
 8. Darstellung ist vom Generator getrennt. Dieselbe Aufgabe kann als Rechnung, Zwanzigerfeld oder Szene erscheinen.
 9. Kinder sind Profile unter dem Elternkonto, ohne eigenes Login. Elternbereich per PIN.
+10. Das Frontend ist Flutter. Keine Hülle um eine Web-App (Capacitor und Ähnliches). Grund: Die Oberfläche ist selbst gezeichnet und soll auf Tablet und Handy als echte App laufen.
 
 ## Konventionen
 
 - Sprache: Code, Identifier und Commit-Messages auf Englisch. Doku, Inhalte und UI-Texte auf Deutsch.
 - Schulbegriffe wie im Lehrplan: Jahrgangsstufe, nicht Klasse. Klasse nur für die Lerngruppe (`classes`).
 - Python 3.12+, uv, FastAPI, Pydantic v2, ruff, pytest. Alles typisiert.
-- TypeScript strict. Keine Logik im Frontend, die ins Backend gehört. Keine UI-Bibliothek, Styles in `index.css` mit den Tokens aus `frontend/web/README.md`.
+- Dart, Flutter, `flutter analyze`, `dart format` mit 100 Spalten. Keine Logik im Frontend, die ins Backend gehört. Keine UI-Bibliothek: eigene Bedienelemente in `lib/ui/controls.dart`, Farben und Schrift aus `lib/ui/tokens.dart`. Bilder sind Code (`Sketch`, `CustomPainter`), keine Dateien. Wenige Pakete, jedes neue begründen.
+- Olli spricht vorerst nur als Text. Die Stimme des Geräts kommt nicht in die App. Eine eigene Stimme folgt über eine Schnittstelle.
 - UI-Texte kurz, Sentence case, Du-Form für Kinder, Sie-frei für Eltern. Olli spricht in der ersten Person.
 - IDs in YAML sind `snake_case` und stabil. Nie umbenennen, `attempts` referenzieren sie.
 - Aufgabentexte stehen im YAML (`prompt`, `prompts`, `labels`), nie im Python-Code. Antworten und Optionen sind IDs oder Zahlen, nie Wörter. Die API schickt Optionen als `{value, label}`: das Kind sieht `label`, zurück kommt `value`. Details in `content/math/generators/README.md`.
@@ -63,7 +66,9 @@ cd backend && uv sync                        # Abhängigkeiten
 cd backend && uv run uvicorn app.main:app --reload
 cd backend && uv run pytest
 cd backend && uv run ruff check . && uv run ruff format .
-cd frontend/web && npm run dev               # sobald angelegt
+cd frontend/app && flutter run -d web-server --web-port 5173   # dann http://localhost:5173 öffnen
+cd frontend/app && flutter test && flutter analyze
+cd frontend/app && dart format lib test
 supabase start                               # lokale Datenbank
 ```
 
@@ -109,4 +114,4 @@ supabase start                               # lokale Datenbank
 
 Ziel der Demo: Das System merkt, wo ein Kind hängt, und geht zurück. Das ist der Kern, nicht die Spielwelt. Zuerst ein Durchstich: ein Generator, Knowledge Tracing, Auswahl. Dann breiter.
 
-Nicht im Scope: Textaufgaben, Sprachstufen, Fehlermuster-Analyse, Spielwelt, Lehrkraft-Bereich, native App.
+Nicht im Scope: Textaufgaben, Sprachstufen, Fehlermuster-Analyse, Spielwelt, Lehrkraft-Bereich, Veröffentlichung im App Store.

@@ -161,7 +161,7 @@ Offen:
 
 ### Ablauf aus Sicht des Kindes
 
-Das Kind ist 6, übt nachmittags allein am Tablet der Eltern, 5 bis 10 Minuten. Im November der ersten Jahrgangsstufe liest es noch keine Sätze. Der Ablauf im Detail steht in `frontend/web/README.md`.
+Das Kind ist 6, übt nachmittags allein am Tablet der Eltern, 5 bis 10 Minuten. Im November der ersten Jahrgangsstufe liest es noch keine Sätze. Der Ablauf im Detail steht in `frontend/app/README.md`.
 
 Entscheidungen (2026-11-10):
 
@@ -177,7 +177,7 @@ Offen:
 - [ ] Ablösung vom Material: Ab `medium` das Bild nur als Hilfe nach dem ersten Fehler zeigen
 - [ ] Stempelseite: alle Stempel gesammelt, zum Zeigen für die Eltern
 - [ ] Zielgerät festlegen: Tablet quer, Tablet hoch oder Handy
-- [ ] Sprachausgabe: Stimmen mit lokaler Verarbeitung bevorzugen oder eigene Aufnahmen
+- [ ] Stimme für Olli. Entschieden (2026-11-24): nicht die Stimme des Geräts, sie klingt zu schlecht. Die App zeigt vorerst nur Text. Offen ist der Weg: eigene Aufnahmen oder eine Schnittstelle, die geprüfte Sätze vertont.
 
 ### Beispiel: Kompetenzgraph Zehnerübergang
 
@@ -266,9 +266,11 @@ Entscheidungen:
 - Backend: Python + FastAPI (gesetzt)
 - Supabase als Postgres + Auth für den Start. Lokal per Supabase CLI in Docker lauffähig. Region Frankfurt, aber US-Firma: bei Schulgesprächen ggf. Thema. Daher: nur FastAPI redet mit der DB, Frontend nie direkt mit Supabase. So bleibt es normales Postgres und ist jederzeit zu Hetzner umziehbar, Auth notfalls gegen Keycloak tauschbar.
 - Auth: Supabase Auth mit E-Mail und Passwort, nur über FastAPI. FastAPI leitet Anmeldung und Registrierung an Supabase weiter und prüft die Tokens über die öffentlichen Schlüssel (JWKS). Die Tabelle `guardians` hat keinen Fremdschlüssel auf `auth.users`. Wechsel zu Keycloak ändert nur `backend/app/api/auth.py`.
-- Frontend: Vite + React + TypeScript (entschieden). Kein SSR nötig für eingeloggte Kinder. Marketing-Seite für Eltern später separat, z. B. mit Next.js oder Astro in eigenem Repo.
+- Frontend: Flutter (entschieden 2026-11-24, davor Vite + React + TypeScript). Eine Codebasis für Web, iPad und später Android. Gründe: Tablet und Handy sind das Ziel, nicht der Browser. Die Oberfläche ist komplett selbst gezeichnet (Formenkiste, Plättchen, Figur), dafür ist Flutter gebaut. Schieben, Zeichnen und Animation sind dort der normale Weg, Rive ist gut eingebunden, für eine Spielwelt gibt es Flame. Der Wechsel kostete nur die Anzeige, die Logik liegt im Backend.
+- Keine Hülle um eine Web-App (Capacitor): Das ist kein tragfähiger Weg zu einer App für Tablet und Handy. Die Zeilen Frontend, Spielwelt und Native App in der Tabelle oben sind damit überholt.
+- Marketing-Seite für Eltern später separat als normale Website, z. B. mit Astro in eigenem Repo. Flutter Web lädt länger und ist für Suchmaschinen unsichtbar, für die App hinter dem Login ist das egal.
 
-Repo-Struktur, oberste Ebene, vier Ordner: backend (Python, FastAPI), frontend (web, später app), content (Fachinhalte pro Fach: Graph, Generatoren, Textaufgaben), curricula (Mapping pro Bundesland).
+Repo-Struktur, oberste Ebene, vier Ordner: backend (Python, FastAPI), frontend (app: Flutter für Web, iPad und später Android), content (Fachinhalte pro Fach: Graph, Generatoren, Textaufgaben), curricula (Mapping pro Bundesland).
 
 ### Prototyp Version 0.1
 
