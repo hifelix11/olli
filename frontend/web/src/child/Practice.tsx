@@ -45,7 +45,6 @@ export function Practice({ child, onExit }: { child: Child; onExit: () => void }
   const [learned, setLearned] = useState<string[]>([]);
   const [busy, setBusy] = useState(false);
   const [reading, setReading] = useState<number | null>(null); // Antwort, die Olli gerade vorliest
-  const [keypad, setKeypad] = useState(false); // quer: Zahlenblock rechts, Auswahl unter der Tafel
   const intro = useRef<string | null>(null); // sagt Olli vor der nächsten Aufgabe
   const alive = useRef(true);
 
@@ -74,7 +73,6 @@ export function Practice({ child, onExit }: { child: Child; onExit: () => void }
       intro.current = null;
       setValue("");
       setLine(before ?? "");
-      setKeypad(task.options === null);
       setPhase({ kind: "task", task, retry: false });
       read(task, before);
     },
@@ -253,7 +251,7 @@ export function Practice({ child, onExit }: { child: Child; onExit: () => void }
         : "neutral";
 
   return (
-    <div className={`stage${keypad ? " keypad-side" : ""}`}>
+    <div className="stage">
       <header className="stage-top">
         <HomeButton onExit={onExit} />
         <div className="session" aria-label={`${answered} von ${SESSION_LENGTH} Aufgaben`}>

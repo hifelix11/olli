@@ -63,7 +63,7 @@ Regeln:
 - Gelb heißt los: Play, Haken, Pfeil. Die Knöpfe für Eltern sind Nacht.
 - Jeder Knopf gibt beim Drücken nach (Skalierung), Tasten werden dabei blau. Kinder erwarten auf jeden Tipp eine Antwort.
 - Bewegung nur als Antwort: Olli hüpft bei richtig, Formen fliegen aus der Tafel, die Tafel wackelt beim zweiten Versuch, ein Plättchen ploppt in den Fortschritt, der Stempel fällt. `prefers-reduced-motion` schaltet alles ab.
-- Olli sitzt auf der Kante der Tafel, die Sprechblase daneben. Olli und Tafel stehen als Gruppe in der Mitte. Antworten liegen unter der Tafel. Nur der Zahlenblock liegt quer rechts in einer festen Spalte: Unter der Tafel ist er zu hoch, und die Tafel springt nach der Antwort nicht.
+- Olli sitzt auf der Kante der Tafel, die Sprechblase daneben. Olli und Tafel stehen als Gruppe in der Mitte. Antworten liegen unter der Tafel, auch der Zahlenblock: Die Ziffern 1 bis 0 stehen in einer Reihe, schmal in zwei Reihen, Löschen und Haken darunter. So bleibt er flach.
 - Kein Scrollen beim Üben, auch nicht auf dem Telefon.
 - Kein Text, den ein Erstklässler nicht braucht. Jede Frage lässt sich vorlesen.
 - Eine Sitzung hat 10 Aufgaben, sichtbar als zehn Plättchen oben, mit Lücke nach fünf. Danach ist Schluss, ohne "Noch eine Runde".

@@ -32,7 +32,7 @@ export function Keypad({
       ))}
       <button
         type="button"
-        className="key"
+        className="key key-erase"
         onClick={() => onChange(value.slice(0, -1))}
         disabled={disabled || value.length === 0}
         aria-label="Letzte Ziffer löschen"
