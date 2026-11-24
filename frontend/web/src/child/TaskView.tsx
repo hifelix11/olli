@@ -1,12 +1,15 @@
 import { useEffect } from "react";
-import type { Task } from "../api/client";
+import type { Option, Task } from "../api/client";
 import { Figure } from "../representations/Figure";
-import { speak } from "../speech";
+import { optionPicture } from "../representations/OptionPicture";
+import { hasWords, speak } from "../speech";
+import { Burst } from "./Burst";
 import { Icon } from "./Icon";
 import { Keypad } from "./Keypad";
 
 type Props = {
   task: Task;
+  /** Getippte Zahl oder der Wert der gewählten Antwort. Zählt erst mit dem Haken. */
   value: string;
   onChange: (value: string) => void;
   /** null: "Weiß ich noch nicht". */
@@ -20,6 +23,14 @@ type Props = {
   busy: boolean;
   /** Pfeil nach einer falschen Antwort. Sonst geht es von selbst weiter. */
   onNext: (() => void) | null;
+  /** Richtig: Formen fliegen aus der Tafel. */
+  cheer: boolean;
+  /** Zweiter Versuch: die Tafel wackelt einmal. */
+  shake: boolean;
+  /** Antwort, die Olli gerade vorliest. Sie leuchtet auf. */
+  reading: number | null;
+  /** Lautsprecher: Frage und Antworten noch einmal. */
+  onRead: () => void;
 };
 
 /** Trennt die Frage ("Welche Zahl fehlt?") von der Rechnung ("2, 3, 4, _"). */
@@ -41,25 +52,42 @@ function aroundGap(figure: string): [string, string] | null {
 }
 
 export function TaskView(props: Props) {
-  const { task, value, onChange, onSubmit, closed, solution, canSkip, busy, onNext } = props;
+  const { task, value, onChange, onSubmit, closed, solution, canSkip, busy, onNext, cheer, shake } =
+    props;
+  const { reading, onRead } = props;
   const choice = task.options !== null;
   const { question, figure } = split(task.prompt);
   const gap = aroundGap(figure);
-  const shown = solution !== null ? String(solution) : value;
   // Lange Rechnungen ("1 Zehner und 4 Einer") und lange Antworten ("Wie viele Kinder sind es jetzt?") kleiner.
   const longFigure = figure.length > 14;
-  const stacked = choice && task.options!.some((option) => option.label.length > 12);
+  // Bild und Wort, wenn jede Antwort ein Bild hat. Nicht beim Benennen: Das Bild auf der Tafel ist die Frage.
+  const pictures =
+    choice && task.kind !== "shape_name" ? task.options!.map((o) => optionPicture(o.value)) : [];
+  const withPictures = pictures.length > 0 && pictures.every(Boolean);
+  const stacked = choice && !withPictures && task.options!.some((o) => o.label.length > 12);
+  // Wie beim Zahlenblock: erst wählen, dann mit dem Haken bestätigen.
+  const selected = task.options?.find((o) => String(o.value) === value) ?? null;
+  const answer = choice ? (selected?.value ?? null) : value ? Number(value) : null;
+  // Die gewählte Antwort rückt in die Lücke, wie getippte Ziffern.
+  const shown = solution !== null ? String(solution) : (selected?.label ?? value);
+
+  /** Antippen wählt aus und sagt die Antwort. Das Kind kann noch wechseln. */
+  const select = (option: Option) => {
+    onChange(String(option.value));
+    if (hasWords(option.label)) speak(option.label);
+  };
 
   useEffect(() => {
-    if (choice || closed || busy) return;
+    if (closed || busy) return;
     const onKey = (e: KeyboardEvent) => {
-      if (/^[0-9]$/.test(e.key) && value.length < 2) onChange(value + e.key);
+      if (e.key === "Enter" && answer !== null) onSubmit(answer);
+      else if (choice) return;
+      else if (/^[0-9]$/.test(e.key) && value.length < 2) onChange(value + e.key);
       else if (e.key === "Backspace") onChange(value.slice(0, -1));
-      else if (e.key === "Enter" && value) onSubmit(Number(value));
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [choice, closed, busy, value, onChange, onSubmit]);
+  }, [choice, closed, busy, value, answer, onChange, onSubmit]);
 
   const gapBox = (
     <span className={`gap${shown ? "" : " blank"}`} aria-label="Lücke">
@@ -69,50 +97,73 @@ export function TaskView(props: Props) {
 
   return (
     <>
-      <main className="heft-main">
-        {question && (
-          <p className={`question${question.length > 40 ? " long" : ""}`}>
+      <main className="stage-main">
+        <div className={`board${shake ? " shake" : ""}`}>
+          {question && (
+            <p className={`question${question.length > 40 ? " long" : ""}`}>
+              <button
+                type="button"
+                className="speak"
+                onClick={onRead}
+                aria-label="Vorlesen"
+              >
+                <Icon name="speaker" size={26} />
+              </button>
+              <span>{question}</span>
+            </p>
+          )}
+          {figure && (
+            <div className={`figure${longFigure ? " long" : ""}`}>
+              {gap ? (
+                <>
+                  <span>{gap[0]}</span>
+                  {gapBox}
+                  <span>{gap[1]}</span>
+                </>
+              ) : (
+                <span>{figure}</span>
+              )}
+            </div>
+          )}
+          <Figure task={task} revealed={solution !== null} />
+          {!figure && !choice && <div className="figure">{gapBox}</div>}
+          {cheer && <Burst />}
+        </div>
+      </main>
+      <footer className="stage-bottom">
+        {!closed && choice && (
+          <div className="choice">
+            <div className={`options${stacked ? " stacked" : ""}`}>
+              {task.options!.map((option, i) => (
+                <button
+                  key={String(option.value)}
+                  type="button"
+                  className={[
+                    "option",
+                    withPictures && "with-picture",
+                    reading === i && "reading",
+                    option === selected && "selected",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
+                  onClick={() => select(option)}
+                  aria-pressed={option === selected}
+                  disabled={busy}
+                >
+                  {withPictures && <span className="option-picture">{pictures[i]}</span>}
+                  <span>{option.label}</span>
+                </button>
+              ))}
+            </div>
             <button
               type="button"
-              className="speak"
-              onClick={() => speak(task.prompt)}
-              aria-label="Vorlesen"
+              className="next"
+              onClick={() => answer !== null && onSubmit(answer)}
+              disabled={busy || answer === null}
+              aria-label="Fertig"
             >
-              <Icon name="speaker" size={22} />
+              <Icon name="check" size={44} />
             </button>
-            <span>{question}</span>
-          </p>
-        )}
-        {figure && (
-          <div className={`figure${longFigure ? " long" : ""}`}>
-            {gap ? (
-              <>
-                <span>{gap[0]}</span>
-                {gapBox}
-                <span>{gap[1]}</span>
-              </>
-            ) : (
-              <span>{figure}</span>
-            )}
-          </div>
-        )}
-        <Figure task={task} revealed={solution !== null} />
-        {!figure && !choice && <div className="figure">{gapBox}</div>}
-      </main>
-      <footer className="heft-bottom">
-        {!closed && choice && (
-          <div className={`options${stacked ? " stacked" : ""}`}>
-            {task.options!.map((option) => (
-              <button
-                key={String(option.value)}
-                type="button"
-                className="option"
-                onClick={() => onSubmit(option.value)}
-                disabled={busy}
-              >
-                {option.label}
-              </button>
-            ))}
           </div>
         )}
         {!closed && !choice && (
@@ -131,7 +182,7 @@ export function TaskView(props: Props) {
         )}
         {onNext && (
           <button type="button" className="next" onClick={onNext} aria-label="Weiter">
-            <Icon name="next" size={40} />
+            <Icon name="next" size={44} />
           </button>
         )}
       </footer>

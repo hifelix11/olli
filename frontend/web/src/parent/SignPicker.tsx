@@ -16,7 +16,7 @@ export function SignPicker({ value, onChange }: { value: Sign; onChange: (sign: 
           className={`sign-choice${s === value ? " on" : ""}`}
           onClick={() => onChange(s)}
         >
-          <SignIcon sign={s} size={36} />
+          <SignIcon sign={s} size={60} />
         </button>
       ))}
     </div>

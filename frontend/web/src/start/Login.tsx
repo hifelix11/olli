@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ApiError, auth } from "../api/client";
-import { Olli } from "../child/Olli";
+import { Entry } from "./Entry";
 
 const MESSAGES: Record<string, string> = {
   invalid_credentials: "E-Mail oder Passwort stimmt nicht.",
@@ -51,11 +51,7 @@ export function Login({ onDone }: Props) {
 
   const title = signup ? "Konto anlegen" : "Anmelden";
   return (
-    <div className="start">
-      <h1>
-        <Olli size={64} />
-        Hallo, ich bin Olli.
-      </h1>
+    <Entry>
       <section>
         <h2>{title}</h2>
         <p>Das Konto gehört den Eltern. Kinder üben ohne eigenes Konto.</p>
@@ -104,6 +100,6 @@ export function Login({ onDone }: Props) {
       >
         {signup ? "Schon ein Konto? Anmelden" : "Noch kein Konto? Konto anlegen"}
       </button>
-    </div>
+    </Entry>
   );
 }

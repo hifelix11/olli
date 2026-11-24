@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { api, type Child, type Sign } from "../api/client";
-import { Olli } from "../child/Olli";
 import { freeSign } from "../child/signs";
 import { PinPad } from "../parent/PinPad";
 import { SignPicker } from "../parent/SignPicker";
 import { unlockAudio } from "../sound";
+import { Entry } from "./Entry";
 
 type Step = "child" | "pin" | "done";
 
@@ -69,18 +69,11 @@ export function Onboarding({ needsChild, needsPin, onAdd, onDone }: Props) {
 
   const step = steps[index];
   return (
-    <div className="start onboarding">
-      <h1>
-        <Olli size={64} />
-        Hallo, ich bin Olli.
-      </h1>
+    <Entry>
       {step === "child" && (
         <section>
           <h2>Wer übt mit mir?</h2>
-          <p>
-            Ich übe Mathe mit Kindern der ersten Jahrgangsstufe. Ich merke mir, was sitzt, und gehe
-            zurück, wo es hängt.
-          </p>
+          <p>Ich merke mir, was sitzt, und gehe zurück, wo es hängt.</p>
           <p>
             Zuerst ein Zeichen. Daran findet sich das Kind auf der Startseite, auch ohne lesen zu
             können.
@@ -145,6 +138,6 @@ export function Onboarding({ needsChild, needsPin, onAdd, onDone }: Props) {
           </button>
         </section>
       )}
-    </div>
+    </Entry>
   );
 }

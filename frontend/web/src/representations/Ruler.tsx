@@ -6,7 +6,7 @@ export function Ruler({ n }: { n: number }) {
   return (
     <svg className="picture ruler" viewBox="0 0 520 96" role="img" aria-label="Ein Stab über einem Lineal">
       <rect x={X0} y="6" width={n * STEP} height="22" fill="var(--blue)" />
-      <rect x="6" y="38" width="508" height="52" fill="var(--paper)" stroke="var(--ink)" strokeWidth="2" />
+      <rect x="6" y="38" width="508" height="52" fill="var(--board)" stroke="var(--ink)" strokeWidth="2" />
       {Array.from({ length: 21 }, (_, i) => {
         const x = X0 + i * STEP;
         const big = i % 5 === 0;

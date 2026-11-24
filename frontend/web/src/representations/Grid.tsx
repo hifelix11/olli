@@ -1,4 +1,4 @@
-const CELL = 28; // wie das Karopapier
+const CELL = 28; // ein Kästchen
 
 type Point = [number, number];
 
@@ -32,7 +32,7 @@ function Cells({ width, height, filled, axis, start, marks = [] }: CellsProps) {
   const h = height * CELL;
   return (
     <svg viewBox={`-2 -2 ${w + 4} ${h + 4}`} width={w + 4} height={h + 4} aria-hidden="true">
-      <rect x="0" y="0" width={w} height={h} fill="var(--paper)" />
+      <rect x="0" y="0" width={w} height={h} fill="var(--board)" />
       {filled.map(([x, y]) => (
         <rect key={`${x},${y}`} x={x * CELL} y={y * CELL} width={CELL} height={CELL} fill="var(--blue)" />
       ))}

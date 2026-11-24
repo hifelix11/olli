@@ -1,31 +1,38 @@
 import { useEffect, useState } from "react";
 import { api, auth, type Child } from "./api/client";
+import { Olli } from "./child/Olli";
 import { Practice } from "./child/Practice";
 import { ParentArea } from "./parent/ParentArea";
+import { navigate, useRoute } from "./route";
 import { Login } from "./start/Login";
 import { Onboarding } from "./start/Onboarding";
 import { Start } from "./start/Start";
-
-type View = { name: "start" } | { name: "practice"; child: Child } | { name: "parent" };
 
 /** Was dem Konto noch fehlt. null: alles da, kein Onboarding. */
 type Setup = { child: boolean; pin: boolean } | null;
 
 export default function App() {
   const [signedIn, setSignedIn] = useState(auth.signedIn);
-  const [view, setView] = useState<View>({ name: "start" });
   const [kids, setKids] = useState<Child[] | null>(null);
   const [setup, setSetup] = useState<Setup>(null);
   const [error, setError] = useState<string | null>(null);
-  const home = () => setView({ name: "start" });
+  const route = useRoute();
+  const home = () => navigate({ name: "start" });
+  const practicing = route?.name === "practice" ? kids?.find((k) => k.id === route.childId) : undefined;
+  // Unbekannte Adresse oder fremdes Kind: zurück zum Start.
+  const lost = kids !== null && (route === null || (route.name === "practice" && !practicing));
 
   useEffect(() => {
     auth.onSignOut(() => {
       setSignedIn(false);
       setKids(null);
-      setView({ name: "start" });
+      navigate({ name: "start" }, true);
     });
   }, []);
+
+  useEffect(() => {
+    if (lost) navigate({ name: "start" }, true);
+  }, [lost]);
 
   useEffect(() => {
     if (!signedIn) return;
@@ -50,6 +57,7 @@ export default function App() {
   if (kids === null) {
     return (
       <div className="center-page">
+        <Olli mood="thinking" size={120} />
         {error ? <p className="error">{error}</p> : <p>Einen Moment.</p>}
         {error && (
           <button type="button" className="btn btn-quiet" onClick={() => location.reload()}>
@@ -68,20 +76,20 @@ export default function App() {
         onAdd={(child) => setKids([...kids, child])}
         onDone={(child) => {
           setSetup(null);
-          setView(child ? { name: "practice", child } : { name: "start" });
+          navigate(child ? { name: "practice", childId: child.id } : { name: "start" });
         }}
       />
     );
   }
-  if (view.name === "practice") return <Practice child={view.child} onExit={home} />;
-  if (view.name === "parent") {
+  if (practicing) return <Practice key={practicing.id} child={practicing} onExit={home} />;
+  if (route?.name === "parent") {
     return <ParentArea kids={kids} onAdd={(child) => setKids([...kids, child])} onExit={home} />;
   }
   return (
     <Start
       kids={kids}
-      onPractice={(child) => setView({ name: "practice", child })}
-      onParent={() => setView({ name: "parent" })}
+      onPractice={(child) => navigate({ name: "practice", childId: child.id })}
+      onParent={() => navigate({ name: "parent" })}
     />
   );
 }

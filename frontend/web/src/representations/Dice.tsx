@@ -19,7 +19,7 @@ export function Dice({ n }: { n: number }) {
       role="img"
       aria-label="Würfelbild"
     >
-      <rect x="4" y="4" width="112" height="112" rx="18" fill="var(--paper)" stroke="var(--ink)" strokeWidth="3" />
+      <rect x="4" y="4" width="112" height="112" rx="18" fill="var(--board)" stroke="var(--ink)" strokeWidth="3" />
       {pips.map(([c, r]) => (
         <circle key={`${c}${r}`} cx={30 + c * 30} cy={30 + r * 30} r="9" fill="var(--ink)" />
       ))}

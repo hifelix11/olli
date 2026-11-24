@@ -1,43 +1,80 @@
 export type Mood = "neutral" | "happy" | "thinking";
 
-/** Olli, der Otter. Nur ein Gesicht mit drei Stimmungen. */
+const FUR = "#f08a3c";
+const DARK = "#d9702a";
+const CREAM = "#ffe6cc";
+const INK = "#24204a";
+const CHEEK = "#ff9ec4";
+
+/** Olli, der Otter: ein runder Kiesel mit kleinen Ohren, heller Schnauze und Schnurrhaaren. */
 export function Olli({ mood = "neutral", size = 72 }: { mood?: Mood; size?: number }) {
-  const fur = "#8b5e3c";
-  const light = "#e8c9a8";
-  const ink = "#1d2b50";
+  const happy = mood === "happy";
+  const look = mood === "thinking" ? { x: 1.5, y: -2 } : { x: 0, y: 0 };
   return (
     <svg
       className={`olli olli-${mood}`}
       width={size}
       height={size}
-      viewBox="0 0 100 100"
+      viewBox="0 0 120 120"
       role="img"
       aria-label="Olli"
     >
-      <circle cx="20" cy="28" r="11" fill={fur} />
-      <circle cx="80" cy="28" r="11" fill={fur} />
-      <circle cx="20" cy="28" r="5" fill={light} />
-      <circle cx="80" cy="28" r="5" fill={light} />
-      <ellipse cx="50" cy="54" rx="40" ry="38" fill={fur} />
-      <ellipse cx="50" cy="66" rx="24" ry="18" fill={light} />
-      {mood === "happy" ? (
+      <circle cx="24" cy="40" r="9" fill={FUR} />
+      <circle cx="96" cy="40" r="9" fill={FUR} />
+      <circle cx="24" cy="40" r="4" fill={DARK} />
+      <circle cx="96" cy="40" r="4" fill={DARK} />
+      {happy ? (
         <>
-          <path d="M28 44 q7 -8 14 0" stroke={ink} strokeWidth="4" fill="none" strokeLinecap="round" />
-          <path d="M58 44 q7 -8 14 0" stroke={ink} strokeWidth="4" fill="none" strokeLinecap="round" />
+          <rect x="3" y="50" width="16" height="30" rx="8" fill={DARK} transform="rotate(-30 11 65)" />
+          <rect x="101" y="50" width="16" height="30" rx="8" fill={DARK} transform="rotate(30 109 65)" />
         </>
       ) : (
         <>
-          <circle cx="35" cy="44" r="4.5" fill={ink} />
-          <circle cx="65" cy="44" r="4.5" fill={ink} />
+          <rect x="9" y="76" width="16" height="28" rx="8" fill={DARK} transform="rotate(16 17 90)" />
+          <rect x="95" y="76" width="16" height="28" rx="8" fill={DARK} transform="rotate(-16 103 90)" />
         </>
       )}
-      <ellipse cx="50" cy="60" rx="7" ry="5" fill={ink} />
-      {mood === "thinking" ? (
-        <path d="M42 74 h12" stroke={ink} strokeWidth="3.5" strokeLinecap="round" />
-      ) : (
-        <path d="M40 70 q10 10 20 0" stroke={ink} strokeWidth="3.5" fill="none" strokeLinecap="round" />
+      <path d="M60 22C90 22 106 40 107 68C108 98 90 116 60 116C30 116 12 98 13 68C14 40 30 22 60 22Z" fill={FUR} />
+      <ellipse cx="60" cy="104" rx="24" ry="10" fill={CREAM} />
+      <ellipse cx="60" cy="71" rx="27" ry="16" fill={CREAM} />
+      <g stroke={INK} strokeWidth="2.2" strokeLinecap="round" opacity="0.7">
+        <path d="M36 70l-14-3M36 75l-14 2M84 70l14-3M84 75l14 2" />
+      </g>
+      {happy && (
+        <>
+          <ellipse cx="34" cy="60" rx="6" ry="3.6" fill={CHEEK} />
+          <ellipse cx="86" cy="60" rx="6" ry="3.6" fill={CHEEK} />
+        </>
       )}
-      <path d="M26 62 h12 M26 68 h12 M62 62 h12 M62 68 h12" stroke={ink} strokeWidth="2" strokeLinecap="round" />
+      {happy ? (
+        <g stroke={INK} strokeWidth="4" strokeLinecap="round" fill="none">
+          <path d="M40 55q6-8 12 0" />
+          <path d="M68 55q6-8 12 0" />
+        </g>
+      ) : (
+        <g>
+          <circle cx={46 + look.x} cy={52 + look.y} r="5.5" fill={INK} />
+          <circle cx={74 + look.x} cy={52 + look.y} r="5.5" fill={INK} />
+          <circle cx={48 + look.x} cy={50 + look.y} r="1.8" fill="#fff" />
+          <circle cx={76 + look.x} cy={50 + look.y} r="1.8" fill="#fff" />
+        </g>
+      )}
+      {mood === "thinking" && <path d="M67 40l13-4" stroke={INK} strokeWidth="3.5" strokeLinecap="round" />}
+      <ellipse cx="60" cy="64" rx="7.5" ry="5" fill={INK} />
+      {happy ? (
+        <path d="M51 71q9 13 18 0Z" fill={INK} stroke={INK} strokeWidth="2" strokeLinejoin="round" />
+      ) : mood === "thinking" ? (
+        <circle cx="61" cy="75" r="3" fill={INK} />
+      ) : (
+        <path
+          d="M52 71q4 5 8 0q4 5 8 0"
+          stroke={INK}
+          strokeWidth="3"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          fill="none"
+        />
+      )}
     </svg>
   );
 }
